@@ -1,0 +1,55 @@
+{
+  "name": "fotopia-serverless-client",
+  "version": "0.0.1",
+  "description": "Serverless photo web app client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbudm/fotopia-serverless-client.git"
+  },
+  "author": "Steve Roberts <mbudm@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "tape './src/**/*__test__.js' -r babel-register | tap-dot",
+    "test-watch": "tape-watch './src/**/*__test__.js' -r babel-register -p tap-spec",
+    "functional": "node ./test/functional.js | tap-spec",
+    "lint": "eslint src"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "dependencies": {
+    "aws-sdk": "^2.12.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "es6-promise": "^4.1.1",
+    "eslint": "^4.14.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "isomorphic-fetch": "^2.2.1",
+    "pre-commit": "^1.2.2",
+    "s3-upload-stream": "^1.0.7",
+    "serverless-offline": "^3.8.3",
+    "serverless-s3-local": "^0.2.8",
+    "serverless-s3-local-sync": "^1.0.1",
+    "serverless-s3-remover": "^0.4.1",
+    "serverless-s3-sync": "^1.3.0",
+    "serverless-webpack": "^4.1.0",
+    "tap-dot": "^1.0.5",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0",
+    "tape-watch": "^2.3.0",
+    "webpack": "^3.9.1",
+    "webpack-node-externals": "^1.6.0",
+    "zlib": "^1.0.5"
+  },
+  "resolutions": {
+    "s3rver": "2.0.1"
+  }
+}
