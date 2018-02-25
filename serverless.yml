@@ -20,7 +20,7 @@ custom:
     # noStart: true
   s3Sync:
     - bucketName: ${self:provider.environment.S3_CLIENT_BUCKET}
-      localDir: src
+      localDir: build
   remover:
      buckets:
        - ${self:provider.environment.S3_CLIENT_BUCKET}
