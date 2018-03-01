@@ -1,35 +1,84 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-const App = () => (
-  <Router>
+class App extends Component {
+  state = {
+    config: {}
+  };
+
+  componentDidMount() {
+    this.getConfig();
+  }
+
+  getConfig() {
+    return fetch(`http://localhost:3000/foto/config`, {
+      accept: 'application/json'
+    })
+      .then(this.checkStatus)
+      .then(this.parseJSON)
+      .then(data => {
+        this.setState({
+          config: data
+        });
+      });
+  }
+  checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    }
+    const error = new Error(`HTTP Error ${response.statusText}`);
+    error.status = response.statusText;
+    error.response = response;
+    console.log(error); // eslint-disable-line no-console
+    throw error;
+  }
+
+  parseJSON(response) {
+    return response.json();
+  }
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <ul>
+            <li>
+              <Link to="/">Login</Link>
+            </li>
+            <li>
+              <Link to="/upload">Upload</Link>
+            </li>
+            <li>
+              <Link to="/view">View</Link>
+            </li>
+          </ul>
+
+          <hr />
+
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <Login clientId={this.state.config.UserPoolClientId} />
+            )}
+          />
+          <Route path="/upload" component={Upload} />
+          <Route path="/view" component={View} />
+        </div>
+      </Router>
+    );
+  }
+}
+
+const Login = props => {
+  console.log('render', props);
+  return (
     <div>
-      <ul>
-        <li>
-          <Link to="/">Login</Link>
-        </li>
-        <li>
-          <Link to="/upload">Upload</Link>
-        </li>
-        <li>
-          <Link to="/view">View</Link>
-        </li>
-      </ul>
-
-      <hr />
-
-      <Route exact path="/" component={Login} />
-      <Route path="/upload" component={Upload} />
-      <Route path="/view" component={View} />
+      <h2>Login</h2>
+      <pre>{props.clientId}</pre>
     </div>
-  </Router>
-);
-
-const Login = () => (
-  <div>
-    <h2>Login</h2>
-  </div>
-);
+  );
+};
 
 const Upload = () => (
   <div>
