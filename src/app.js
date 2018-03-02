@@ -60,7 +60,10 @@ class App extends Component {
             exact
             path="/"
             render={props => (
-              <Login region={this.state.apiConfig.Region} clientId={this.state.apiConfig.UserPoolClientId} />
+              <Login
+                region={this.state.apiConfig.Region}
+                clientId={this.state.apiConfig.UserPoolClientId}
+              />
             )}
           />
           <Route path="/upload" component={Upload} />
@@ -77,9 +80,7 @@ const Login = props => {
   return (
     <div>
       <h2>Login</h2>
-      <pre>
-        {appConfig.getIss(props.region, props.clientId)}
-      </pre>
+      <pre>{appConfig.getIss(props.region, props.clientId)}</pre>
     </div>
   );
 };
