@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_STAGE=production react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "test-once": "CI=true npm test",
     "lint": "prettier --single-quote --write \"src/**/*.js\"",

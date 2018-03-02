@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import appConfig from './config';
 
 class App extends Component {
   state = {
-    config: {}
+    apiConfig: {}
   };
 
   componentDidMount() {
@@ -18,7 +19,7 @@ class App extends Component {
       .then(this.parseJSON)
       .then(data => {
         this.setState({
-          config: data
+          apiConfig: data
         });
       });
   }
@@ -59,7 +60,7 @@ class App extends Component {
             exact
             path="/"
             render={props => (
-              <Login clientId={this.state.config.UserPoolClientId} />
+              <Login region={this.state.apiConfig.Region} clientId={this.state.apiConfig.UserPoolClientId} />
             )}
           />
           <Route path="/upload" component={Upload} />
@@ -72,10 +73,13 @@ class App extends Component {
 
 const Login = props => {
   console.log('render', props);
+  // https://aws.github.io/aws-amplify/media/quick_start.html
   return (
     <div>
       <h2>Login</h2>
-      <pre>{props.clientId}</pre>
+      <pre>
+        {appConfig.getIss(props.region, props.clientId)}
+      </pre>
     </div>
   );
 };
