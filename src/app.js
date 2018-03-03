@@ -1,43 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import appConfig from './config';
+import { withAuthenticator } from 'aws-amplify-react';
 
 class App extends Component {
-  state = {
-    apiConfig: {}
-  };
-
-  componentDidMount() {
-    this.getConfig();
-  }
-
-  getConfig() {
-    return fetch(`http://localhost:3000/foto/config`, {
-      accept: 'application/json'
-    })
-      .then(this.checkStatus)
-      .then(this.parseJSON)
-      .then(data => {
-        this.setState({
-          apiConfig: data
-        });
-      });
-  }
-  checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    }
-    const error = new Error(`HTTP Error ${response.statusText}`);
-    error.status = response.statusText;
-    error.response = response;
-    console.log(error); // eslint-disable-line no-console
-    throw error;
-  }
-
-  parseJSON(response) {
-    return response.json();
-  }
-
   render() {
     return (
       <Router>
@@ -56,16 +21,7 @@ class App extends Component {
 
           <hr />
 
-          <Route
-            exact
-            path="/"
-            render={props => (
-              <Login
-                region={this.state.apiConfig.Region}
-                clientId={this.state.apiConfig.UserPoolClientId}
-              />
-            )}
-          />
+          <Route exact path="/" render={props => <Home />} />
           <Route path="/upload" component={Upload} />
           <Route path="/view" component={View} />
         </div>
@@ -74,13 +30,11 @@ class App extends Component {
   }
 }
 
-const Login = props => {
+const Home = props => {
   console.log('render', props);
-  // https://aws.github.io/aws-amplify/media/quick_start.html
   return (
     <div>
-      <h2>Login</h2>
-      <pre>{appConfig.getIss(props.region, props.clientId)}</pre>
+      <h2>Home</h2>
     </div>
   );
 };
@@ -121,4 +75,4 @@ const ViewItem = ({ match }) => (
   </div>
 );
 
-export default App;
+export default withAuthenticator(App);
