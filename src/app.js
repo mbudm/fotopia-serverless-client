@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { withAuthenticator } from 'aws-amplify-react';
 
 class App extends Component {
   render() {
@@ -75,4 +74,4 @@ const ViewItem = ({ match }) => (
   </div>
 );
 
-export default withAuthenticator(App);
+export default App;
