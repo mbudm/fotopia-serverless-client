@@ -5,7 +5,7 @@ const ACTION_HANDLERS = {
   [SIGN_IN]: (state, action) => {
     return { ...state, ...action.payload };
   },
-  [SIGN_OUT]: (state, action) => ({}),
+  [SIGN_OUT]: (state, action) => ({})
 };
 
 export const user = (state = {}, action) => {

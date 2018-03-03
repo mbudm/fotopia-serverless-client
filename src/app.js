@@ -12,7 +12,7 @@ class App extends Component {
     const { user } = this.props;
     return user.isLoggedIn ? this.renderApp() : this.renderLogin();
   }
-  renderLogin(){
+  renderLogin() {
     return (
       <Router>
         <div>
@@ -22,7 +22,7 @@ class App extends Component {
       </Router>
     );
   }
-  renderApp(){
+  renderApp() {
     return (
       <Router>
         <div>
@@ -47,15 +47,15 @@ class App extends Component {
   }
 }
 
-export default connect((state) => {
+export default connect(state => {
   return {
     user: getUserState(state)
-  }
+  };
 })(App);
 
-function getUserState(state){
+function getUserState(state) {
   return {
     ...state.user,
     isLoggedIn: !!state.user.name
-  } 
+  };
 }
