@@ -1,12 +1,10 @@
 import { all, fork, put } from 'redux-saga/effects';
 import { INIT, GET_CONFIG } from '../constants/actions';
 import listenForGetConfig from './getConfig';
-import listenForLogin from './login';
 
 export default function* root() {
   yield all([
-    fork(listenForGetConfig),
-    fork(listenForLogin),
+    fork(listenForGetConfig)
   ]);
   yield put({ type: INIT });
   yield put({ type: GET_CONFIG });

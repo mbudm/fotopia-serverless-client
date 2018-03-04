@@ -2,7 +2,7 @@ import { RECEIVED_CONFIG } from '../constants/actions';
 
 const ACTION_HANDLERS = {
   [RECEIVED_CONFIG]: (state, action) => {
-    return { ...state, ...action.payload };
+    return { ...state, received: true };
   }
 };
 

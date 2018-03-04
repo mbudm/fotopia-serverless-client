@@ -1,20 +1,36 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { GET_CONFIG, RECEIVED_CONFIG } from '../constants/actions';
+import Amplify from 'aws-amplify';
+import { GET_CONFIG, RECEIVED_CONFIG, } from '../constants/actions';
+import appConfig from '../appConfig';
 
 export default function* listenForGetConfig() {
   yield takeLatest(GET_CONFIG, getConfig);
 }
 
 function* getConfig() {
-  const payload = yield call(fetchConfig);
-  yield put({
-    type: RECEIVED_CONFIG,
-    payload
+  if( process.env.NODE_ENV === 'development'){
+    yield put({ type: RECEIVED_CONFIG });
+  }else{
+    const payload = yield call(fetchConfig);
+    yield call( setupAuth, payload );
+    yield put({ type: RECEIVED_CONFIG });
+  }
+}
+
+function setupAuth(config){
+  Amplify.configure({
+    Auth: {
+      identityPoolId: config.IdentityPoolId,
+      region: config.Region,
+      userPoolId: config.UserPoolId,
+      userPoolWebClientId: config.UserPoolClientId,
+    }
   });
 }
+
 function fetchConfig() {
-  return fetch(`http://localhost:3000/foto/config`, {
+  return fetch(appConfig.getConfig, {
     accept: 'application/json'
   })
     .then(checkStatus)
