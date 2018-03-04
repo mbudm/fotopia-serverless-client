@@ -1,8 +1,4 @@
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser
-} from 'amazon-cognito-identity-js';
+
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { GET_CONFIG, RECEIVED_CONFIG } from '../constants/actions';
 

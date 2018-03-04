@@ -1,9 +1,12 @@
-import { INIT, LOG_IN, LOG_OUT } from '../constants/actions';
+import { INIT, LOG_IN_SUCCESS, LOG_OUT, LOG_IN_FAILURE } from '../constants/actions';
 
 const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({}),
-  [LOG_IN]: (state, action) => {
+  [LOG_IN_SUCCESS]: (state, action) => {
     return { ...state, ...action.payload };
+  },
+  [LOG_IN_FAILURE]: (state, action) => {
+    return { ...state, error: action.error };
   },
   [LOG_OUT]: (state, action) => ({})
 };

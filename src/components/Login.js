@@ -12,21 +12,23 @@ class Login extends Component {
     };
   }
   render() {
+    const {errorMessage} = this.props;
     return (
       <div>
         <h2>Login</h2>
         <form onSubmit={this.handleSubmit}>
           <p>
             <label>Username</label>
-            <input type="text" name="username" />
+            <input type="text" name="username" onChange={this.handleChange}/>
           </p>
           <p>
             <label>Password</label>
-            <input type="password" name="password" />
+            <input type="password" name="password" onChange={this.handleChange}/>
           </p>
           <p>
             <input type="submit" value="Login" />
           </p>
+          {errorMessage && <p><em>{errorMessage}</em></p>}
         </form>
         <hr />
         <ul>
@@ -49,11 +51,16 @@ class Login extends Component {
   };
 }
 
-export default connect(null, dispatch => ({
-  onLogin(payload) {
-    dispatch({
-      type: LOG_IN,
-      payload
-    });
-  }
-}))(Login);
+export default connect(
+  state => ({
+    errorMessage: (state.user && state.user.error ? state.user.error.message : '' )
+  }),
+  dispatch => ({
+    onLogin(payload) {
+      dispatch({
+        type: LOG_IN,
+        payload
+      });
+    }
+  })
+)(Login);
