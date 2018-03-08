@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-auth": "REACT_APP_USE_AUTH=1 react-scripts start",
+    "start-auth": "REACT_APP_USE_API_CONFIG=1 REACT_APP_USE_AUTH=1 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "test-once": "CI=true npm test",
