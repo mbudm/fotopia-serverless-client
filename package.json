@@ -17,7 +17,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "REACT_APP_STAGE=production react-scripts build",
+    "start-auth": "REACT_APP_USE_AUTH=1 react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "test-once": "CI=true npm test",
     "lint": "eslint ./src",

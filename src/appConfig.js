@@ -1,10 +1,9 @@
 const dev = {
-  getIss: (region, clientId) => `http://localhost:3000/foto/iss`
+  getConfig: `http://localhost:3000/foto/config`
 };
 
 const prod = {
-  getIss: (region, clientId) =>
-    `https://cognito-idp.${region}.amazonaws.com/${clientId}/`
+  getConfig: `${process.env.REACT_APP_FOTOPIA_API}/foto/config`
 };
 
 const config = process.env.NODE_ENV === 'production' ? prod : dev;

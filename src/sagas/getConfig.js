@@ -3,33 +3,38 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import Amplify from 'aws-amplify';
 import { GET_CONFIG, RECEIVED_CONFIG, } from '../constants/actions';
 import appConfig from '../appConfig';
+import useAuth from '../util/useAuth'
 
 export default function* listenForGetConfig() {
   yield takeLatest(GET_CONFIG, getConfig);
 }
 
 function* getConfig() {
-  if( process.env.NODE_ENV === 'development'){
-    yield put({ type: RECEIVED_CONFIG });
-  }else{
+  if(useAuth()){
     const payload = yield call(fetchConfig);
     yield call( setupAuth, payload );
+    yield put({ type: RECEIVED_CONFIG });
+  }else{
     yield put({ type: RECEIVED_CONFIG });
   }
 }
 
 function setupAuth(config){
-  Amplify.configure({
-    Auth: {
-      identityPoolId: config.IdentityPoolId,
-      region: config.Region,
-      userPoolId: config.UserPoolId,
-      userPoolWebClientId: config.UserPoolClientId,
-    }
+  return new Promise((resolve) =>{
+    Amplify.configure({
+      Auth: {
+        identityPoolId: config.IdentityPoolId,
+        region: config.Region,
+        userPoolId: config.UserPoolId,
+        userPoolWebClientId: config.UserPoolClientId,
+      }
+    });
+    resolve();
   });
 }
 
 function fetchConfig() {
+  console.log('getconfig', appConfig);
   return fetch(appConfig.getConfig, {
     accept: 'application/json'
   })

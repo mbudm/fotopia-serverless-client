@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import App from './App';
 import { withAuthenticator } from 'aws-amplify-react';
+import useAuth from './util/useAuth'
 
 const AppAuth = withAuthenticator(App);
 
@@ -19,9 +20,9 @@ class AppContainer extends Component {
   }
 
   renderApp() {
-    return process.env.NODE_ENV === 'development' ?
-      (<App />):
-      (<AppAuth />)
+    return useAuth() ?
+      (<AppAuth />):
+      (<App />);
   }
 }
 
