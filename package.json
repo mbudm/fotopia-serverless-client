@@ -6,11 +6,13 @@
   "dependencies": {
     "aws-amplify": "^0.2.9",
     "aws-amplify-react": "^0.1.34",
+    "history": "^4.7.2",
     "pre-commit": "^1.2.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0"

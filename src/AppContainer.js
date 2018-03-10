@@ -8,7 +8,7 @@ const AppAuth = withAuthenticator(App);
 
 class AppContainer extends Component {
   render() {
-    return this.props.config.received ?
+    return this.props.config && this.props.config.received ?
       this.renderApp() :
       this.renderLoader() ;
   }
@@ -22,7 +22,7 @@ class AppContainer extends Component {
   renderApp() {
     return useAuth() ?
       (<AppAuth />):
-      (<App />);
+      (<App history={this.props.history}/>);
   }
 }
 
