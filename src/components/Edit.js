@@ -1,18 +1,17 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Edit = props => {
   return (
     <div>
       <h2>Edit</h2>
-      <p>{this.props.config}</p>
+      <p>{props.config.received}</p>
     </div>
   );
 };
 
-export default withRouter(connect(state => {
+export default connect(state => {
   return {
     config: state.config
   };
-}))(Edit);
+})(Edit);

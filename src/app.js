@@ -1,36 +1,68 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Route, Link } from 'react-router-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { connect } from 'react-redux';
+
+import { navigate } from 'redux-saga-first-router';
+
 import Search from './components/Search';
 import Upload from './components/Upload';
 import Edit from './components/Edit';
 
 class App extends Component {
   render() {
-    console.log('Yo', this.props);
     return (
-      <ConnectedRouter history={this.props.history}>
       <div>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <a href="/" onClick={this.props.onNavigateHome}>Home</a>
           </li>
           <li>
-            <Link to="/upload">Upload</Link>
+            <a href="/upload" onClick={this.props.onNavigateUpload}>Upload</a>
           </li>
           <li>
-            <Link to="/edit">Manage</Link>
+            <a href="/edit" onClick={this.props.onNavigateEdit}>Manage</a>
           </li>
         </ul>
         <hr />
-        <Route exact path="/" component={Search} />
-        <Route path="/upload" component={Upload} />
-        <Route path="/edit" component={Edit} />
-
-        </div>
-      </ConnectedRouter>
+        {this.renderRoute()}
+      </div>
     );
+  }
+
+  renderRoute(){
+    const {routing: {id}} = this.props;
+    const routes = {
+      UPLOAD: () => <Upload />,
+      EDIT: () => <Edit />,
+    }
+    return routes[id] ? routes[id]() : (<Search />);
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    routing: state.router
+  }
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onNavigateHome(e) {
+      e.preventDefault();
+      dispatch(navigate('', {}));
+    },
+    onNavigateUpload(e) {
+      e.preventDefault();
+      dispatch(navigate('UPLOAD', {}, { replace: true }));
+    },
+    onNavigateEdit(e) {
+      e.preventDefault();
+      dispatch(navigate('EDIT', {}, { replace: true }));
+    },
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

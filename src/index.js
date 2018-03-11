@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
+import { saga as routerSaga, buildRoutesMap, route } from 'redux-saga-first-router';
 import createSagaMiddleware from 'redux-saga';
 import createHistory from 'history/createBrowserHistory'
 
@@ -12,9 +12,16 @@ import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 import sagas from './sagas';
 
+
+import * as navigateSagas from './sagas/navigate';
+
+const routesMap = buildRoutesMap(
+  route('EDIT', '/edit', navigateSagas.editNavigate),
+  route('UPLOAD', '/upload', navigateSagas.uploadNavigate),
+);
+
 const sagaMiddleware = createSagaMiddleware();
 const history = createHistory()
-const historyMiddleware = routerMiddleware(history)
 // eslint-disable-next-line
 let composeEnhancers = compose;
 
@@ -26,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-const combinedMiddleware = composeEnhancers(applyMiddleware(sagaMiddleware, historyMiddleware));
+const combinedMiddleware = composeEnhancers(applyMiddleware(sagaMiddleware));
 
 const store = createStore(
   reducers,
@@ -34,10 +41,11 @@ const store = createStore(
 );
 
 sagaMiddleware.run(sagas);
+sagaMiddleware.run(routerSaga, routesMap, history);
 
 ReactDOM.render(
   <Provider store={store}>
-    <AppContainer history={history}/>
+    <AppContainer/>
   </Provider>,
   document.getElementById('root')
 );

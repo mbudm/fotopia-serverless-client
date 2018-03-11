@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { reducer as routerReducer} from 'redux-saga-first-router';
+
 import { config } from './config';
 import { user } from './user';
 

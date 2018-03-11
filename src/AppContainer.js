@@ -22,7 +22,7 @@ class AppContainer extends Component {
   renderApp() {
     return useAuth() ?
       (<AppAuth />):
-      (<App history={this.props.history}/>);
+      (<App/>);
   }
 }
 
