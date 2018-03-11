@@ -7,6 +7,7 @@ import Edit from './components/Edit';
 
 class App extends Component {
   render() {
+    console.log('Yo', this.props);
     return (
       <ConnectedRouter history={this.props.history}>
       <div>
@@ -22,9 +23,9 @@ class App extends Component {
           </li>
         </ul>
         <hr />
-          <Route exact path="/" component={Search} />
-          <Route path="/upload" component={Upload} />
-          <Route path="/edit" component={Edit} />
+        <Route exact path="/" component={Search} />
+        <Route path="/upload" component={Upload} />
+        <Route path="/edit" component={Edit} />
 
         </div>
       </ConnectedRouter>
