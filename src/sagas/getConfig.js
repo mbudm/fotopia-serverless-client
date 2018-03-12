@@ -1,9 +1,12 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
 import Amplify from 'aws-amplify';
-import { GET_CONFIG, RECEIVED_CONFIG, } from '../constants/actions';
+import { GET_CONFIG, RECEIVED_CONFIG, USER_DATA } from '../constants/actions';
 import appConfig from '../appConfig';
-import useAuth from '../util/useAuth'
+import useAuth from '../util/useAuth';
+import checkStatus from '../util/checkStatus';
+import parseJSON from '../util/parseJSON';
+import uuid from 'uuid';
 
 export default function* listenForGetConfig() {
   yield takeLatest(GET_CONFIG, getConfig);
@@ -16,6 +19,12 @@ function* getConfig() {
     yield put({ type: RECEIVED_CONFIG });
   }else{
     yield put({ type: RECEIVED_CONFIG });
+    yield put({
+      type: USER_DATA,
+      payload: {
+        userId: appConfig.userId || uuid.v1()
+      }
+    });
   }
 }
 
@@ -41,17 +50,4 @@ function fetchConfig() {
     .then(checkStatus)
     .then(parseJSON);
 }
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const error = new Error(`HTTP Error ${response.statusText}`);
-  error.status = response.statusText;
-  error.response = response;
-  console.log(error); // eslint-disable-line no-console
-  throw error;
-}
 
-function parseJSON(response) {
-  return response.json();
-}

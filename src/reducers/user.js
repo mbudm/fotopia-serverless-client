@@ -1,7 +1,8 @@
-import { INIT } from '../constants/actions';
+import { INIT, USER_DATA } from '../constants/actions';
 
 const ACTION_HANDLERS = {
-  [INIT]: (state, action) => ({})
+  [INIT]: (state, action) => ({}),
+  [USER_DATA]: (state, action) => ({ ...action.payload})
 };
 
 export const user = (state = {}, action) => {
