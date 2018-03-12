@@ -24,7 +24,7 @@ class Search extends Component {
     (<ul>
       {results.map(result => (
         <li key={result.id}>
-          <img src={result.location} />
+          <img src={result.location} alt=""/>
         </li>
       ))}
     </ul>):
