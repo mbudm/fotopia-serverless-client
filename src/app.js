@@ -5,6 +5,7 @@ import { navigate } from 'redux-saga-first-router';
 
 import Search from './components/Search';
 import Upload from './components/Upload';
+import Create from './components/Create';
 import Edit from './components/Edit';
 
 class App extends Component {
@@ -32,6 +33,7 @@ class App extends Component {
     const {routing: {id}} = this.props;
     const routes = {
       UPLOAD: () => <Upload />,
+      CREATE: () => <Create />,
       EDIT: () => <Edit />,
     }
     return routes[id] ? routes[id]() : (<Search />);

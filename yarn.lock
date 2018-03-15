@@ -393,6 +393,20 @@ aws-sdk@^2.177.0, aws-sdk@^2.7.0:
     xml2js "0.4.17"
     xmlbuilder "4.2.1"
 
+aws-sdk@^2.209.0:
+  version "2.209.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.209.0.tgz#cfe6ca23736f665932b2d14cc8e4e49d7e9d20cc"
+  dependencies:
+    buffer "4.9.1"
+    events "^1.1.1"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.1.0"
+    xml2js "0.4.17"
+    xmlbuilder "4.2.1"
+
 aws-sdk@~2.89.0:
   version "2.89.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.89.0.tgz#dbf46999cbd5e74ce1b06640b07fa8e258ef07bc"

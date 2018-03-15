@@ -7,6 +7,7 @@ import useAuth from '../util/useAuth';
 import checkStatus from '../util/checkStatus';
 import parseJSON from '../util/parseJSON';
 import uuid from 'uuid';
+import AWS from 'aws-sdk';
 
 export default function* listenForGetConfig() {
   yield takeLatest(GET_CONFIG, getConfig);
@@ -16,9 +17,11 @@ function* getConfig() {
   if(useAuth()){
     const payload = yield call(fetchConfig);
     yield call( setupAuth, payload );
+    yield call( configureAWS, payload );
     yield put({ type: RECEIVED_CONFIG });
   }else{
     yield put({ type: RECEIVED_CONFIG });
+    yield call( configureAWS, appConfig.AWSConfig );
     yield put({
       type: USER_DATA,
       payload: {
@@ -26,6 +29,23 @@ function* getConfig() {
       }
     });
   }
+}
+
+function configureAWS(config){
+  return new Promise((resolve) =>{
+    AWS.config.update({
+      region: config.Region,
+      credentials: useAuth() ?
+      new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: config.IdentityPoolId
+      }) :
+      {
+        accessKeyId:'hjkjhkj',
+        secretAccessKey: '68767ytytuy'
+      }
+    });
+    resolve();
+  });
 }
 
 function setupAuth(config){

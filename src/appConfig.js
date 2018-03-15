@@ -4,6 +4,11 @@ const dev = {
     `${process.env.REACT_APP_FOTOPIA_API}foto/config`:
     `${localhost}/foto/config`),
   query: `${localhost}query`,
+  s3Url: `http://localhost:5000/`,
+  s3Bucket: `fotopia-web-app-prod`,
+  AWSConfig: {
+    Region: 'some-place'
+  },
   userId: process.env.REACT_APP_USER_ID
 };
 
