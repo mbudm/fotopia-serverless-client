@@ -11,24 +11,12 @@ class Upload extends Component {
   }
 
   render(){
-    const { image } = this.props;
-    return image ? this.renderCreateForm() : this.renderUploadForm();
-  }
-
-  renderUploadForm(){
     return (<div>
       <h2>Upload</h2>
       <form onSubmit={this.handleSubmit} >
         <input type="file" onChange={this.handleImageChange}/>
         <input type="submit" value="Upload" />
       </form>
-    </div>);
-  }
-  renderCreateForm(){
-    const { image } = this.props;
-    return (<div>
-      <h2>Add metadata</h2>
-      <img src={image.Location} alt="" />
     </div>);
   }
 
@@ -40,12 +28,6 @@ class Upload extends Component {
     this.props.onUpload(
       this.state.image
     )
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    image: state.upload.image
   }
 }
 
@@ -61,6 +43,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Upload);
