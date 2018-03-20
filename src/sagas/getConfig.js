@@ -18,7 +18,7 @@ function* getConfig() {
     const payload = yield call(fetchConfig);
     yield call( setupAuth, payload );
     yield call( configureAWS, payload );
-    yield put({ type: RECEIVED_CONFIG });
+    yield put({ type: RECEIVED_CONFIG, payload });
   }else{
     yield put({ type: RECEIVED_CONFIG });
     yield call( configureAWS, appConfig.AWSConfig );
