@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import App from './App';
-import { withAuthenticator } from 'aws-amplify-react';
+import Login from './components/Login';
 import useAuth from './util/useAuth'
 
-const AppAuth = withAuthenticator(App);
-
 class AppContainer extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      signedIn: false
+    };
+  }
   render() {
     return this.props.config && this.props.config.received ?
       this.renderApp() :
@@ -21,7 +26,7 @@ class AppContainer extends Component {
 
   renderApp() {
     return useAuth() ?
-      (<AppAuth />):
+      (<Login/>):
       (<App/>);
   }
 }

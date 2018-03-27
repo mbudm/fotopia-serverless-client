@@ -13,10 +13,12 @@ export default function* listenForUpload() {
 
 function* upload(action) {
   let creds;
+  let info;
   if(useAuth()){
-    creds =  yield call(getCredentials);
+    creds = yield call(getCredentials);
+    info = yield call(getUserInfo);
   }
-  const image = yield call( uploadFoto, action.payload, creds );
+  const image = yield call( uploadFoto, action.payload, creds, info );
   yield put({ type: UPLOADED_IMAGE,  payload: image});
   yield put(navigate('CREATE'));
 }
@@ -25,12 +27,20 @@ function getCredentials(){
   return Amplify.Auth.currentCredentials();
 }
 
-function uploadFoto(file, credentials){
+function getUserInfo(){
+  const auth = Amplify.Auth;
+  return auth.currentUserInfo();
+}
+
+
+function uploadFoto(file, credentials, info){
   return new Promise((resolve, reject) => {
     const config = {
       s3ForcePathStyle: true,
-      credentials
     };
+    if (credentials){
+      config.credentials = credentials;
+    }
     if (appConfig.s3Url) {
       config.endpoint = new AWS.Endpoint(appConfig.s3Url);
     }
@@ -38,7 +48,7 @@ function uploadFoto(file, credentials){
     const client = new AWS.S3(config);
 
     const params = {
-      Key: file.name,
+      Key: info.username + '/' +file.name,
       Bucket: appConfig.s3Bucket,
       Body: file,
       ContentType: 'image/jpeg',

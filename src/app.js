@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { navigate } from 'redux-saga-first-router';
 
+import { Auth } from 'aws-amplify';
+
 import Search from './components/Search';
 import Upload from './components/Upload';
 import Create from './components/Create';
@@ -22,6 +24,9 @@ class App extends Component {
           <li>
             <a href="/edit" onClick={this.props.onNavigateEdit}>Manage</a>
           </li>
+          <li>
+            <a href="/" onClick={this.handleSignOut}>Sign Out</a>
+          </li>
         </ul>
         <hr />
         {this.renderRoute()}
@@ -37,6 +42,13 @@ class App extends Component {
       EDIT: () => <Edit />,
     }
     return routes[id] ? routes[id]() : (<Search />);
+  }
+
+  handleSignOut(e){
+    e.preventDefault();
+    Auth.signOut()
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
   }
 }
 
