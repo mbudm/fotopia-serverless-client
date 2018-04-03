@@ -7,7 +7,6 @@ export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 export const SEARCH = 'SEARCH';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
-export const USER_DATA = 'USER_DATA';
 export const UPLOAD = 'UPLOAD';
 export const UPLOADED_IMAGE = 'UPLOADED_IMAGE';
 export const CREATE = 'CREATE';

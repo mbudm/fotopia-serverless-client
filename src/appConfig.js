@@ -6,7 +6,7 @@ const dev = {
   AWSConfig: {
     Region: 'some-place'
   },
-  userId: process.env.REACT_APP_USER_ID
+  username: process.env.REACT_APP_USERNAME
 };
 
 const prod = {

@@ -26,5 +26,5 @@ function* logOut(action) {
 }
 
 function amplifySignIn(payload){
-  return Auth.signIn(payload.email, payload.password);
+  return Auth.signIn(payload.username, payload.password);
 }

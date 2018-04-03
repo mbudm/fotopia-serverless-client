@@ -1,12 +1,11 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
 import Amplify from 'aws-amplify';
-import { GET_CONFIG, RECEIVED_CONFIG, USER_DATA } from '../constants/actions';
+import { GET_CONFIG, RECEIVED_CONFIG, LOG_IN_SUCCESS } from '../constants/actions';
 import appConfig from '../appConfig';
 import useAuth from '../util/useAuth';
 import checkStatus from '../util/checkStatus';
 import parseJSON from '../util/parseJSON';
-import uuid from 'uuid';
 import AWS from 'aws-sdk';
 
 export default function* listenForGetConfig() {
@@ -23,9 +22,9 @@ function* getConfig() {
     yield put({ type: RECEIVED_CONFIG });
     yield call( configureAWS, appConfig.AWSConfig );
     yield put({
-      type: USER_DATA,
+      type: LOG_IN_SUCCESS,
       payload: {
-        userId: appConfig.userId || uuid.v1()
+        username: appConfig.username
       }
     });
   }

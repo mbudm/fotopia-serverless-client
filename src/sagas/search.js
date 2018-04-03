@@ -12,14 +12,14 @@ export default function* listenForSearch() {
 }
 
 function* queryFotos() {
-  const userId = yield select(selectUserId);
-  const results = yield call( fetchFotos, userId );
+  const username = yield select(selectUsername);
+  const results = yield call( fetchFotos, username );
   yield put({ type: SEARCH_RESULTS,  payload: results});
 }
 
-function fetchFotos(userid){
+function fetchFotos(username){
   const query = {
-    userid,
+    username,
     criteria: {
       tags: [],
       people: [],
@@ -40,4 +40,4 @@ function fetchFotos(userid){
   }
 }
 
-const selectUserId = (state) => state.user.userId;
+const selectUsername = (state) => state.user.username;

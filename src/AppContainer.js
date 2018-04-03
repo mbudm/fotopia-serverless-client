@@ -5,13 +5,6 @@ import Login from './components/Login';
 import useAuth from './util/useAuth'
 
 class AppContainer extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      signedIn: false
-    };
-  }
   render() {
     return this.props.config && this.props.config.received ?
       this.renderApp() :
@@ -25,7 +18,7 @@ class AppContainer extends Component {
   }
 
   renderApp() {
-    return useAuth() ?
+    return useAuth() && !this.props.signedIn ?
       (<Login/>):
       (<App/>);
   }
@@ -33,6 +26,7 @@ class AppContainer extends Component {
 
 export default connect(state => {
   return {
-    config: state.config
+    config: state.config,
+    signedIn: state.user.username !== null
   };
 })(AppContainer);

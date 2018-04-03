@@ -21,6 +21,5 @@ Environment vars, added to local `.env` file
 ```
 PORT=4000 # create-react-app defaults to 3000 which classhes with serverless-offline
 REACT_APP_FOTOPIA_API=https://[stack-key-here].execute-api.us-east-1.amazonaws.com/prod/ # point to a deployed fotopia-serverless stack
-REACT_APP_USER_ID=[guid] # specify a user id, for working with serverless-offline lambdas that have guid validation
 ```
 
