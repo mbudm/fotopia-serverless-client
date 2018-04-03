@@ -27,6 +27,6 @@ class AppContainer extends Component {
 export default connect(state => {
   return {
     config: state.config,
-    signedIn: state.user.username !== null
+    signedIn: !!state.user.username
   };
 })(AppContainer);

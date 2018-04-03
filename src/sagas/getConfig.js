@@ -18,9 +18,22 @@ function* getConfig() {
     yield call( setupAuth, payload );
     yield call( configureAWS, payload );
     yield put({ type: RECEIVED_CONFIG, payload });
+    try{
+      const user = yield call(getUser);
+      console.log('user', user)
+      if(user){
+        yield put({
+          type: LOG_IN_SUCCESS,
+          payload: user
+        });
+      }
+    } catch(e){
+      console.log(e);
+    }
+
   }else{
     yield put({ type: RECEIVED_CONFIG });
-    yield call( configureAWS, appConfig.AWSConfig );
+    yield call( configureAWSlocal, appConfig.AWSConfig );
     yield put({
       type: LOG_IN_SUCCESS,
       payload: {
@@ -32,13 +45,26 @@ function* getConfig() {
 
 function configureAWS(config){
   return new Promise((resolve) =>{
+    const credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: config.IdentityPoolId
+    });
     AWS.config.update({
       region: config.Region,
-      credentials: useAuth() ?
-      new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: config.IdentityPoolId
-      }) :
-      {
+      credentials,
+    });
+    resolve(credentials);
+  });
+  //return credentials.getPromise();
+}
+function getUser(){
+  const auth = Amplify.Auth;
+  return auth.currentAuthenticatedUser();
+}
+function configureAWSlocal(config){
+  return new Promise((resolve) =>{
+    AWS.config.update({
+      region: config.Region,
+      credentials: {
         accessKeyId:'hjkjhkj',
         secretAccessKey: '68767ytytuy'
       }
@@ -46,7 +72,6 @@ function configureAWS(config){
     resolve();
   });
 }
-
 function setupAuth(config){
   return new Promise((resolve) =>{
     Amplify.configure({
