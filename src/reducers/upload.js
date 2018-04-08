@@ -1,10 +1,10 @@
-import { INIT, UPLOADED_IMAGE } from '../constants/actions';
+import { INIT, CREATED_IMAGE_RECORDS } from '../constants/actions';
 
 const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({}),
-  [UPLOADED_IMAGE]: (state, action) => (
+  [CREATED_IMAGE_RECORDS]: (state, action) => (
     {
-      image: action.payload
+      images: action.payload
     }
   )
 };

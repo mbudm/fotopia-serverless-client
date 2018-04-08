@@ -9,6 +9,7 @@
     "aws-sdk": "^2.209.0",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
+    "joi": "^13.1.2",
     "pre-commit": "^1.2.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",

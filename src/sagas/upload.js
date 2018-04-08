@@ -1,11 +1,14 @@
 
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { UPLOAD, UPLOADED_IMAGE } from '../constants/actions';
-import appConfig from '../appConfig';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import AWS from 'aws-sdk';
 import Amplify from 'aws-amplify';
-import useAuth from '../util/useAuth';
 import { navigate } from 'redux-saga-first-router';
+import { UPLOAD, CREATED_IMAGE_RECORDS } from '../constants/actions';
+import appConfig from '../appConfig';
+import useAuth from '../util/useAuth';
+import * as api from './api';
+import * as schemaKeys from '../constants/schemas';
+import { validate } from './schemas';
 
 export default function* listenForUpload() {
   yield takeLatest(UPLOAD, upload);
@@ -13,14 +16,16 @@ export default function* listenForUpload() {
 
 function* upload(action) {
   let creds;
-  let info;
+  let info = {...appConfig};
   if(useAuth()){
     creds = yield call(getCredentials);
     info = yield call(getUserInfo);
   }
-  const image = yield call( uploadFoto, action.payload, creds, info );
-  yield put({ type: UPLOADED_IMAGE,  payload: image});
-  yield put(navigate('CREATE'));
+
+  const uploadedImages = yield all(action.payload.map(image => call( uploadFoto, image, creds, info )));
+  const createdImages = yield all(uploadedImages.map(image => call( createFoto, image, creds, info )));
+  yield put({ type: CREATED_IMAGE_RECORDS,  payload: createdImages});
+  yield put(navigate('UPDATE'));
 }
 
 function getCredentials(){
@@ -33,7 +38,7 @@ function getUserInfo(){
 }
 
 
-function uploadFoto(file, credentials, info){
+function uploadFoto(imageObject, credentials, info){
   return new Promise((resolve, reject) => {
     const config = {
       s3ForcePathStyle: true,
@@ -48,17 +53,20 @@ function uploadFoto(file, credentials, info){
     const client = new AWS.S3(config);
 
     const params = {
-      Key: info.username + '/' +file.name,
+      Key: `${info.username}/${imageObject.file.name}`,
       Bucket: appConfig.s3Bucket,
-      Body: file,
-      ContentType: 'image/jpeg',
+      Body: imageObject.file,
+      ContentType: imageObject.file.type,
     };
 
-    client.upload(params, (err, data) => {
+    client.upload(params, (err, s3Response) => {
       if (err) {
         reject({ params, err });
       } else {
-        resolve(data);
+        resolve({
+          imageObject,
+          s3: s3Response
+        });
       }
     });
   })
@@ -69,18 +77,32 @@ function uploadFoto(file, credentials, info){
 }
 
 function validateResponse(response){
-  if (response && response.Location) {
+  if (response && response.s3 && response.s3.Location) {
     return response;
   }
   const error = new Error(`HTTP Error with s3 upload`);
-  error.status = response.statusText;
-  error.response = response;
+  error.status = response.s3.statusText;
+  error.response = response.s3;
   throw error;
 }
 
-/*
-{
-  Up to s3 cors error
-  <Error><Code>AccessForbidden</Code><Message>CORSResponse: CORS is not enabled for this bucket.</Message><Method>PUT</Method><ResourceType>BUCKET</ResourceType><RequestId>FBC200BAB51F9D70</RequestId><HostId>FpsAaKetnunw4nCsrfQCjf0r2QOs05Ey7acclubr8+IdB9L8j1kDa+hoaEtRoIZnxy9tc2fiSfg=</HostId></Error>
+
+function createFoto(s3FileObj, credentials, info){
+  const params = {
+    username: info.username,
+    birthtime: s3FileObj.imageObject.file.lastModified,
+    location: s3FileObj.s3.Location,
+    key: s3FileObj.s3.Key,
+    people: [],
+    tags: [],
+    meta: {
+      ...s3FileObj.imageObject.file,
+      width: s3FileObj.imageObject.width,
+      height: s3FileObj.imageObject.height,
+    }
+  };
+  const data = validate(params, schemaKeys.CREATE_REQUEST);
+  return api.post('create', {
+    body: data,
+  });
 }
-*/
