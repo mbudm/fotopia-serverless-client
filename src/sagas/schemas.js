@@ -14,12 +14,12 @@ const schemas = {
   [schemaKeys.CREATE_REQUEST]: Joi.object().keys({
     username: Joi.string().required(),
     birthtime: Joi.date().required(),
-    location: Joi.string().uri({
+    img_location: Joi.string().uri({
       scheme: [
         /https?/,
       ],
     }).required(),
-    key: Joi.string().required(),
+    img_key: Joi.string().required(),
     people: Joi.array().items(Joi.string()).unique(),
     tags: Joi.array().items(Joi.string()).unique(),
     meta: Joi.object(),

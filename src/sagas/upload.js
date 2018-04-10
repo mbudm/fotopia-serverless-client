@@ -91,8 +91,8 @@ function createFoto(s3FileObj, credentials, info){
   const params = {
     username: info.username,
     birthtime: s3FileObj.imageObject.file.lastModified,
-    location: s3FileObj.s3.Location,
-    key: s3FileObj.s3.Key,
+    img_location: s3FileObj.s3.Location,
+    img_key: s3FileObj.s3.Key,
     people: [],
     tags: [],
     meta: {
