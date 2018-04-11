@@ -21,13 +21,13 @@ class Search extends Component {
       results
     } = this.props;
     return results.length > 0 ?
-    (<ul>
+    (<section className="row" >
       {results.map(result => (
-        <li key={result.id}>
-          <img src={result.img_location} alt=""/>
-        </li>
+        <figure key={result.id} className="col-md-2 center-block">
+          <img src={result.img_location} alt="" className="img-responsive"/>
+        </figure>
       ))}
-    </ul>):
+    </section>):
     (<p>There are no results</p>);
   }
 }

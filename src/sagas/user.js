@@ -17,7 +17,7 @@ function* logIn(action) {
     const signedIn = yield call(amplifySignIn, action.payload);
     yield put({ type: LOG_IN_SUCCESS, payload: signedIn });
   } catch(e){
-    yield put({ type: LOG_IN_FAILURE, payload: action.payload });
+    yield put({ type: LOG_IN_FAILURE, payload: { creds: action.payload, error: e }});
   }
 }
 
