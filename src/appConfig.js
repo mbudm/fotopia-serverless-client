@@ -12,7 +12,7 @@ const dev = {
 
 const prod = {
   getConfig: `${process.env.REACT_APP_FOTOPIA_API}foto/config`,
-  query: `${process.env.REACT_APP_FOTOPIA_API}query`,
+  query: '/query',
   api: process.env.REACT_APP_FOTOPIA_API,
 };
 
