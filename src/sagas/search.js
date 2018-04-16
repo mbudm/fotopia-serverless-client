@@ -1,6 +1,6 @@
 
 import { call, put, takeLatest, select } from 'redux-saga/effects';
-import Amplify from 'aws-amplify';
+import Amplify, { Storage } from 'aws-amplify';
 import fetch from 'isomorphic-fetch';
 import { SEARCH, SEARCH_RESULTS } from '../constants/actions';
 import appConfig from '../appConfig';
@@ -19,6 +19,14 @@ function* queryFotos() {
   yield put({ type: SEARCH_RESULTS,  payload: results});
 }
 
+function getImageSource(result){
+  return Storage.get(result.img_key, { level: 'private' })
+    .then((img_location) => ({
+      ...result,
+      img_location
+    }));
+}
+
 function fetchFotos(username){
   const query = {
     username,
@@ -31,7 +39,8 @@ function fetchFotos(username){
   };
 
   if(useAuth()){
-    return Amplify.API.post(ENDPOINT_NAME, appConfig.query, { body: query });
+    return Amplify.API.post(ENDPOINT_NAME, appConfig.query, { body: query })
+      .then(results => Promise.all(results.map(getImageSource)));
   }else{
     return fetch(appConfig.query, {
       method: 'POST',

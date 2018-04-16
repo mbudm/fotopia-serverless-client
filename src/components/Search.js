@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SEARCH } from '../constants/actions';
-import Image from './Image';
 
 class Search extends Component {
   render() {
@@ -25,7 +24,7 @@ class Search extends Component {
     (<section className="row" >
       {results.map(result => (
         <figure key={result.id} className="col-md-2 center-block">
-          <Image imgKey={result.img_key} imgLocation={result.img_location}/>
+          <img src={result.img_location} alt="" className="img-responsive"/>
         </figure>
       ))}
     </section>):
