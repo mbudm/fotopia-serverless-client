@@ -8,6 +8,7 @@ import appConfig from '../appConfig';
 import useAuth from '../util/useAuth';
 import * as api from './api';
 import * as schemaKeys from '../constants/schemas';
+import { CREATE } from '../constants/api';
 import { validate } from './schemas';
 
 export default function* listenForUpload() {
@@ -25,7 +26,7 @@ function* upload(action) {
   const uploadedImages = yield all(action.payload.map(image => call( uploadFoto, image, creds, info )));
   const createdImages = yield all(uploadedImages.map(image => call( createFoto, image, creds, info )));
   yield put({ type: CREATED_IMAGE_RECORDS,  payload: createdImages});
-  yield put(navigate('UPDATE'));
+  yield put(navigate('HOME'));
 }
 
 function getCredentials(){
@@ -102,7 +103,7 @@ function createFoto(s3FileObj, credentials, info){
     }
   };
   const data = validate(params, schemaKeys.CREATE_REQUEST);
-  return api.post('create', {
+  return api.post(CREATE, {
     body: data,
   });
 }

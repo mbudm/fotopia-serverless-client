@@ -7,7 +7,7 @@ import appConfig from '../appConfig';
 import useAuth from '../util/useAuth';
 import checkStatus from '../util/checkStatus';
 import parseJSON from '../util/parseJSON';
-import { ENDPOINT_NAME } from '../constants/api';
+import { CONFIG, ENDPOINT_NAME } from '../constants/api';
 
 export default function* listenForGetConfig() {
   yield takeLatest(GET_CONFIG, getConfig);
@@ -91,7 +91,7 @@ function setupAuth(config){
         endpoints: [
           {
             name: ENDPOINT_NAME,
-            endpoint: config.ServiceEndpoint,
+            endpoint: `${config.ServiceEndpoint}/`,
             region: config.Region,
           },
         ],
@@ -102,7 +102,7 @@ function setupAuth(config){
 }
 
 function fetchConfig() {
-  const endpoint = `${appConfig.api}foto/config`;
+  const endpoint = `${appConfig.api}${CONFIG}`;
   return fetch(endpoint, {
     accept: 'application/json'
   })

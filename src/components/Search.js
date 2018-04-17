@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SEARCH } from '../constants/actions';
 
-class Search extends Component {
+export class Search extends Component {
   render() {
     const {
       results,

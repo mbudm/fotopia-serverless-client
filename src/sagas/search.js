@@ -1,13 +1,12 @@
 
 import { call, put, takeLatest, select } from 'redux-saga/effects';
-import Amplify, { Storage } from 'aws-amplify';
-import fetch from 'isomorphic-fetch';
+import { Storage } from 'aws-amplify';
+import * as api from './api';
 import { SEARCH, SEARCH_RESULTS } from '../constants/actions';
-import appConfig from '../appConfig';
+import { QUERY } from '../constants/api';
 import checkStatus from '../util/checkStatus';
 import parseJSON from '../util/parseJSON';
 import useAuth from '../util/useAuth';
-import { ENDPOINT_NAME } from '../constants/api';
 
 export default function* listenForSearch() {
   yield takeLatest(SEARCH, queryFotos);
@@ -39,13 +38,10 @@ function fetchFotos(username){
   };
 
   if(useAuth()){
-    return Amplify.API.post(ENDPOINT_NAME, appConfig.query, { body: query })
+    return api.post(QUERY, { body: query })
       .then(results => Promise.all(results.map(getImageSource)));
   }else{
-    return fetch(appConfig.query, {
-      method: 'POST',
-      body: JSON.stringify(query)
-    })
+    return api.post(QUERY, { body: query })
     .then(checkStatus)
     .then(parseJSON);
   }

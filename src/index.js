@@ -19,6 +19,7 @@ const routesMap = buildRoutesMap(
   route('EDIT', '/edit', navigateSagas.editNavigate),
   route('UPLOAD', '/upload', navigateSagas.uploadNavigate),
   route('CREATE', '/create', navigateSagas.createNavigate),
+  route('HOME', '/', navigateSagas.homeNavigate),
 );
 
 const sagaMiddleware = createSagaMiddleware();

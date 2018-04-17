@@ -11,6 +11,10 @@ export function* uploadNavigate() {
 
 }
 
+export function homeNavigate(){
+
+}
+
 export function* createNavigate() {
   const image = yield select(selectUploadImage);
   if(!image){
