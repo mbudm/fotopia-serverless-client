@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from 'joi-browser';
 import * as schemaKeys from '../constants/schemas';
 
 export function validate(obj, schemaKey) {
