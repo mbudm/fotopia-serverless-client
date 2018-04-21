@@ -7,6 +7,7 @@ import { QUERY } from '../constants/api';
 import checkStatus from '../util/checkStatus';
 import parseJSON from '../util/parseJSON';
 import useAuth from '../util/useAuth';
+import appConfig from '../appConfig';
 
 export default function* listenForSearch() {
   yield takeLatest(SEARCH, queryFotos);
@@ -43,7 +44,11 @@ function fetchFotos(username){
   }else{
     return api.post(QUERY, { body: query })
     .then(checkStatus)
-    .then(parseJSON);
+    .then(parseJSON)
+    .then((results) => results.map((result) => ({
+        ...result,
+        img_location: `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.img_key}`
+    })));
   }
 }
 

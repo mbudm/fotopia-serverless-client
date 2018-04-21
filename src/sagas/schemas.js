@@ -14,11 +14,6 @@ const schemas = {
   [schemaKeys.CREATE_REQUEST]: Joi.object().keys({
     username: Joi.string().required(),
     birthtime: Joi.date().required(),
-    img_location: Joi.string().uri({
-      scheme: [
-        /https?/,
-      ],
-    }).required(),
     img_key: Joi.string().required(),
     people: Joi.array().items(Joi.string()).unique(),
     tags: Joi.array().items(Joi.string()).unique(),
