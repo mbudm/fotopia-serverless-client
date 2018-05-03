@@ -3,27 +3,18 @@ service: fotopia-client
 frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
-  - serverless-offline
   - serverless-s3-sync
-  - serverless-s3-local
-  - serverless-s3-local-sync
   - serverless-s3-remover
 
 custom:
-  serverless-offline:
-    port: 3001
-  s3:
-    host: 0.0.0.0
-    port: 5002
-    directory: /tmp/s3bucket
-    cors: false
-    # noStart: true
   s3Sync:
-    - bucketName: ${self:provider.environment.S3_CLIENT_BUCKET}
+    - bucketName: ${self:provider.environment.CUSTOM_DOMAIN}
       localDir: build
   remover:
-     buckets:
-       - ${self:provider.environment.S3_CLIENT_BUCKET}
+    buckets:
+      - ${self:provider.environment.CUSTOM_DOMAIN}
+  aliasHostedZoneId: Z3AQBSTGFYJSTF    # us-east-1
+  aliasDNSName: s3-website-us-east-1.amazonaws.com
 
 provider:
   name: aws
@@ -32,16 +23,48 @@ provider:
   region: us-east-1
   profile: default
   environment:
-    S3_CLIENT_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-client
-   
+    CUSTOM_DOMAIN: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.CUSTOM_DOMAIN}
+
 resources:
   Resources:
-    FotopiaClientBucket:
+    FotopiaClient:
       Type: AWS::S3::Bucket
       DeletionPolicy: Delete
       Properties:
-        BucketName: ${self:provider.environment.S3_CLIENT_BUCKET}
+        BucketName: ${self:provider.environment.CUSTOM_DOMAIN}
         AccessControl: PublicRead
         WebsiteConfiguration:
            IndexDocument: index.html
            ErrorDocument: index.html
+    FotopiaClientS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: FotopiaClient
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+                Fn::Join: [
+                  "", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "FotopiaClient"
+                    },
+                    "/*"
+                  ]
+                ]
+    DnsRecord:
+      Type: "AWS::Route53::RecordSet"
+      Properties:
+        AliasTarget:
+          DNSName: ${self:custom.aliasDNSName}
+          HostedZoneId: ${self:custom.aliasHostedZoneId}
+        HostedZoneName: ${self:provider.environment.CUSTOM_DOMAIN}.
+        Name:
+          Ref: FotopiaClient
+        Type: 'A'
