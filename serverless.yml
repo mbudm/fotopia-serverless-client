@@ -58,13 +58,53 @@ resources:
                     "/*"
                   ]
                 ]
+    FotopiaClientCloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: ${self:provider.environment.CUSTOM_DOMAIN}.s3.amazonaws.com
+              Id: FotopiaClient
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            TargetOriginId: FotopiaClient
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: 'true'
     DnsRecord:
       Type: "AWS::Route53::RecordSet"
       Properties:
         AliasTarget:
-          DNSName: ${self:custom.aliasDNSName}
+          DNSName:
+            Fn::GetAtt: [ FotopiaClientCloudFrontDistribution, DomainName ]
           HostedZoneId: ${self:custom.aliasHostedZoneId}
-        HostedZoneName: ${self:provider.environment.CUSTOM_DOMAIN}.
+        HostedZoneName: ${self:provider.environment.CUSTOM_DOMAIN}
         Name:
           Ref: FotopiaClient
         Type: 'A'
+  Outputs:
+    FotopiaClientCloudFrontDistributionOutput:
+      Value:
+        'Fn::GetAtt': [ FotopiaClientCloudFrontDistribution, DomainName ]
+
