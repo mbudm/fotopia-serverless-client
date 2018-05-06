@@ -14,12 +14,10 @@ custom:
     buckets:
       - ${self:provider.environment.CUSTOM_DOMAIN}
   aliasHostedZoneId: Z3AQBSTGFYJSTF    # us-east-1
-  aliasDNSName: s3-website-us-east-1.amazonaws.com
 
 provider:
   name: aws
   runtime: nodejs6.10
-  stage: prod
   region: us-east-1
   profile: default
   environment:
