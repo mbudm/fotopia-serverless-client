@@ -93,7 +93,7 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
             AcmCertificateArn: ${self:provider.environment.ACM_CERT_ARN}
-            SSLSupportMethod: 'sni-only'
+            SslSupportMethod: sni-only
     DnsRecord:
       Type: "AWS::Route53::RecordSet"
       Properties:
