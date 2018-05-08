@@ -60,6 +60,8 @@ resources:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
+          Aliases:
+            - ${self:provider.environment.CUSTOM_DOMAIN}
           Origins:
             - DomainName: ${self:provider.environment.BUCKET_NAME}.s3.amazonaws.com
               Id: FotopiaClient
