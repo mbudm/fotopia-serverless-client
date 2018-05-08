@@ -23,6 +23,7 @@ provider:
     CUSTOM_DOMAIN: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.CUSTOM_DOMAIN}
     BUCKET_NAME: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.BUCKET_NAME}
     HOSTED_ZONE_NAME: ${file(./serverless.env.yml):HOSTED_ZONE_NAME}
+    ACM_CERT_ARN: ${file(./serverless.env.yml):ACM_CERT_ARN}
 resources:
   Resources:
     FotopiaClient:
@@ -91,7 +92,8 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            CloudFrontDefaultCertificate: 'true'
+            AcmCertificateArn: ${self:provider.environment.ACM_CERT_ARN}
+            SSLSupportMethod: 'sni-only'
     DnsRecord:
       Type: "AWS::Route53::RecordSet"
       Properties:
