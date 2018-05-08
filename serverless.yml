@@ -8,12 +8,11 @@ plugins:
 
 custom:
   s3Sync:
-    - bucketName: ${self:provider.environment.CUSTOM_DOMAIN}
+    - bucketName: ${self:provider.environment.BUCKET_NAME}
       localDir: build
   remover:
     buckets:
-      - ${self:provider.environment.CUSTOM_DOMAIN}
-  aliasHostedZoneId: Z3AQBSTGFYJSTF    # us-east-1
+      - ${self:provider.environment.BUCKET_NAME}
 
 provider:
   name: aws
@@ -22,14 +21,15 @@ provider:
   profile: default
   environment:
     CUSTOM_DOMAIN: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.CUSTOM_DOMAIN}
-
+    BUCKET_NAME: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.BUCKET_NAME}
+    HOSTED_ZONE_NAME: ${file(./serverless.env.yml):HOSTED_ZONE_NAME}
 resources:
   Resources:
     FotopiaClient:
       Type: AWS::S3::Bucket
       DeletionPolicy: Delete
       Properties:
-        BucketName: ${self:provider.environment.CUSTOM_DOMAIN}
+        BucketName: ${self:provider.environment.BUCKET_NAME}
         AccessControl: PublicRead
         WebsiteConfiguration:
            IndexDocument: index.html
@@ -61,7 +61,7 @@ resources:
       Properties:
         DistributionConfig:
           Origins:
-            - DomainName: ${self:provider.environment.CUSTOM_DOMAIN}.s3.amazonaws.com
+            - DomainName: ${self:provider.environment.BUCKET_NAME}.s3.amazonaws.com
               Id: FotopiaClient
               CustomOriginConfig:
                 HTTPPort: 80
@@ -96,10 +96,9 @@ resources:
         AliasTarget:
           DNSName:
             Fn::GetAtt: [ FotopiaClientCloudFrontDistribution, DomainName ]
-          HostedZoneId: ${self:custom.aliasHostedZoneId}
-        HostedZoneName: ${self:provider.environment.CUSTOM_DOMAIN}
-        Name:
-          Ref: FotopiaClient
+          HostedZoneId: 'Z2FDTNDATAQYW2' # cloudfront specific
+        HostedZoneName: ${self:provider.environment.HOSTED_ZONE_NAME}
+        Name: ${self:provider.environment.CUSTOM_DOMAIN}.
         Type: 'A'
   Outputs:
     FotopiaClientCloudFrontDistributionOutput:
