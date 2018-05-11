@@ -23,7 +23,7 @@ provider:
     CUSTOM_DOMAIN: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.CUSTOM_DOMAIN}
     BUCKET_NAME: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.BUCKET_NAME}
     HOSTED_ZONE_NAME: ${file(./serverless.env.yml):HOSTED_ZONE_NAME}
-    ACM_CERT_ARN: ${file(./serverless.env.yml):ACM_CERT_ARN}
+    ACM_CERT_ARN: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.ACM_CERT_ARN}
 resources:
   Resources:
     FotopiaClient:
@@ -109,3 +109,6 @@ resources:
       Value:
         'Fn::GetAtt': [ FotopiaClientCloudFrontDistribution, DomainName ]
 
+# todo - build the right version and deploy (in travis?)
+# fix the application id bug in client
+# work out a good functional test that can be run in CI - maybe chrme driver puppet...?
