@@ -5,8 +5,11 @@ cache:
   yarn: true
   directories:
     - node_modules
+before_script:
+  - sh serverless.env.sh
 script:
-    - yarn lint
-    - yarn test-once
-    - yarn build
-
+  - yarn lint
+  - yarn test-once
+  - yarn build
+  - sls deploy -s dev
+  - sls deploy -s prod
