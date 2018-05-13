@@ -11,5 +11,6 @@ script:
   - yarn lint
   - yarn test-once
   - yarn build
+  - npm install -g serverless
   - sls deploy -s dev
   - sls deploy -s prod
