@@ -96,6 +96,9 @@ function setupAuth(config){
           },
         ],
       },
+      Analytics: {
+        disabled: true
+      }
     });
     resolve();
   });
