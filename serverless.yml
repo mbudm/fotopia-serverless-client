@@ -107,7 +107,3 @@ resources:
     FotopiaClientCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ FotopiaClientCloudFrontDistribution, DomainName ]
-
-# todo - build the right version and deploy (in travis?)
-# fix the application id bug in client
-# work out a good functional test that can be run in CI - maybe chrme driver puppet...?
