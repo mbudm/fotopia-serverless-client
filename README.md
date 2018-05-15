@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mbudm/fotopia-serverless-client.svg?branch=master)](https://travis-ci.org/mbudm/fotopia-serverless-client)
 # Fotopia Serverless client
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
