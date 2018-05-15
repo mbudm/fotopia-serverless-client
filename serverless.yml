@@ -18,7 +18,6 @@ provider:
   name: aws
   runtime: nodejs6.10
   region: us-east-1
-  profile: default
   environment:
     CUSTOM_DOMAIN: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.CUSTOM_DOMAIN}
     BUCKET_NAME: ${file(./serverless.env.yml):${opt:stage, self:provider.stage}.BUCKET_NAME}
