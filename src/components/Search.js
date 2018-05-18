@@ -20,7 +20,7 @@ export class Search extends Component {
     const {
       results
     } = this.props;
-    return results.length > 0 ?
+    return Array.isArray(results)?
     (<section className="row" >
       {results.map(result => (
         <figure key={result.id} className="col-md-2 center-block">
@@ -28,7 +28,7 @@ export class Search extends Component {
         </figure>
       ))}
     </section>):
-    (<p>There are no results</p>);
+    (<p>{results}</p>);
   }
 }
 const mapStateToProps = state => {

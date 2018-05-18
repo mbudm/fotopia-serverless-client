@@ -10,9 +10,9 @@ exports[`Search with 0 results 1`] = `
   >
     Get latest photos
   </button>
-  <p>
-    There are no results
-  </p>
+  <section
+    className="row"
+  />
 </div>
 `;
 

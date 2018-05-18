@@ -2,7 +2,7 @@ import { INIT, LOG_IN_SUCCESS } from '../constants/actions';
 
 const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({}),
-  [LOG_IN_SUCCESS]: (state, action) => ({ ...action.payload})
+  [LOG_IN_SUCCESS]: (state, action) => ({ ...action.payload, cognitoUser: action.payload})
 };
 
 export const user = (state = {}, action) => {

@@ -4,7 +4,7 @@ const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({}),
   [SEARCH_RESULTS]: (state, action) => (
     {
-      results: action.payload instanceof Array ? action.payload : []
+      results: action.payload
     }
   )
 };

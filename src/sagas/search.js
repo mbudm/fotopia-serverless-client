@@ -40,7 +40,9 @@ function fetchFotos(username){
 
   if(useAuth()){
     return api.post(QUERY, { body: query })
-      .then(results => Promise.all(results.map(getImageSource)));
+      .then(results => {
+        return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
+      });
   }else{
     return api.post(QUERY, { body: query })
     .then(checkStatus)
