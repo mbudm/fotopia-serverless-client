@@ -10,7 +10,8 @@ before_script:
 script:
   - yarn lint
   - yarn test-once
-  - yarn build
+  - REACT_APP_FOTOPIA_API=$FOTOPIA_API_DEV yarn build
   - npm install -g serverless
   - sls deploy -s dev
+  - REACT_APP_FOTOPIA_API=$FOTOPIA_API_PROD yarn build
   - sls deploy -s prod
