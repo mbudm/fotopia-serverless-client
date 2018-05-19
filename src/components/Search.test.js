@@ -3,7 +3,7 @@ import React from 'react';
 import { Search } from './Search';
 import renderer from 'react-test-renderer';
 
-test('Search with no results', () => {
+test('Search with no result array', () => {
   const component = renderer.create(
     <Search />
   );
