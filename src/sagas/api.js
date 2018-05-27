@@ -13,9 +13,10 @@ const delRemote  = (route) => API.del(ENDPOINT_NAME, route);
 const uploadRemote = (imageObject, username) => {
   const key = createKey(username, imageObject.file.name);
   const options = {
-    contentType: imageObject.file.type
+    contentType: imageObject.file.type,
+    level: 'protected'
   };
-  return Storage.vault.put(key, imageObject.file, options)
+  return Storage.put(key, imageObject.file, options)
   .then((s3Response) => ({
     imageObject,
     s3: s3Response

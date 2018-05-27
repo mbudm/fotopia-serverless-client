@@ -1,5 +1,5 @@
 
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { Storage } from 'aws-amplify';
 import * as api from './api';
 import { SEARCH, SEARCH_RESULTS } from '../constants/actions';
@@ -14,22 +14,20 @@ export default function* listenForSearch() {
 }
 
 function* queryFotos() {
-  const username = yield select(selectUsername);
-  const results = yield call( fetchFotos, username );
+  const results = yield call( fetchFotos );
   yield put({ type: SEARCH_RESULTS,  payload: results});
 }
 
 function getImageSource(result){
-  return Storage.get(result.img_key, { level: 'private' })
+  return Storage.get(result.img_key, { level: 'protected' })
     .then((img_location) => ({
       ...result,
       img_location
     }));
 }
 
-function fetchFotos(username){
+function fetchFotos(){
   const query = {
-    username,
     criteria: {
       tags: [],
       people: [],
@@ -54,4 +52,3 @@ function fetchFotos(username){
   }
 }
 
-const selectUsername = (state) => state.user.username;
