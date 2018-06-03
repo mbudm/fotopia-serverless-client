@@ -36,7 +36,7 @@ class Upload extends Component {
                 <tbody>
                   <tr>
                     <th>Birthtime</th>
-                    <td>{image.file.lastModifiedDate.toString()}</td>
+                    <td>{image.file.lastModified}</td>
                   </tr>
                   <tr>
                     <th>File size</th>
