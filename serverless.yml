@@ -5,6 +5,7 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 plugins:
   - serverless-s3-sync
   - serverless-s3-remover
+  - serverless-cloudfront-invalidate
 
 custom:
   s3Sync:
@@ -13,7 +14,10 @@ custom:
   remover:
     buckets:
       - ${self:provider.environment.BUCKET_NAME}
-
+  cloudfrontInvalidate:
+    distributionIdKey: 'FotopiaClientCloudFrontDistributionId'
+    items:
+      - '/index.html'
 provider:
   name: aws
   runtime: nodejs6.10
@@ -107,3 +111,7 @@ resources:
     FotopiaClientCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ FotopiaClientCloudFrontDistribution, DomainName ]
+    FotopiaClientCloudFrontDistributionId:
+      Description: FotopiaClientCloudFrontDistribution distribution id.
+      Value:
+        Ref: FotopiaClientCloudFrontDistribution

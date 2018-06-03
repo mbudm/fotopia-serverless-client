@@ -19,6 +19,7 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
     "redux-saga-first-router": "^0.0.13",
+    "serverless-cloudfront-invalidate": "^1.2.0",
     "uuid": "^3.2.1"
   },
   "scripts": {
