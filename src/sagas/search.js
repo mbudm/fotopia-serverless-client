@@ -19,7 +19,10 @@ function* queryFotos() {
 }
 
 function getImageSource(result){
-  return Storage.get(result.img_key, { level: 'protected' })
+  return Storage.get(result.img_key, {
+    level: 'protected',
+    identityId: result.userIdentityId
+  })
     .then((img_location) => ({
       ...result,
       img_location

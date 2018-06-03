@@ -16,13 +16,17 @@ export default function* listenForUpload() {
 
 function* upload(action) {
 
-  let { username } = appConfig;
+  let info;
   if(useAuth()){
-    const info = yield call(getUserInfo);
-    username = info.username;
+    info = yield call(getUserInfo);
+  }else{
+    info = {
+      username: appConfig.username,
+      id: appConfig.username //something in place of cognito user id
+    }
   }
-  const uploadedImages = yield all(action.payload.map(image => call( api.upload, image, username )));
-  const createdImages = yield all(uploadedImages.map(s3ResponseAndImage => call( createFoto, s3ResponseAndImage, username )));
+  const uploadedImages = yield all(action.payload.map(image => call( api.upload, image, info.username )));
+  const createdImages = yield all(uploadedImages.map(s3ResponseAndImage => call( createFoto, s3ResponseAndImage, info )));
   yield put({ type: CREATED_IMAGE_RECORDS,  payload: createdImages});
   yield put(navigate('HOME'));
 }
@@ -35,9 +39,10 @@ function resolveKey(s3ResponseAndImage){
   return s3ResponseAndImage.s3.key || s3ResponseAndImage.s3.Key;
 }
 
-function createFoto(s3ResponseAndImage, username){
+function createFoto(s3ResponseAndImage, info){
   const params = {
-    username,
+    username: info.username,
+    userIdentityId: info.id,
     birthtime: s3ResponseAndImage.imageObject.file.lastModified,
     img_key: resolveKey(s3ResponseAndImage),
     people: [],
