@@ -1,7 +1,19 @@
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { Auth } from "aws-amplify";
-import { LOG_IN, LOG_OUT, LOG_IN_SUCCESS, LOG_IN_FAILURE, CHANGE_PASSWORD } from '../constants/actions';
+import { navigate } from 'redux-saga-first-router';
+import {
+  LOG_IN,
+  LOG_OUT,
+  LOG_IN_SUCCESS,
+  LOG_IN_FAILURE,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILURE,
+  CHANGE_PASSWORD
+} from '../constants/actions';
+import {
+  HOME
+} from '../constants/routes';
 
 const getCognitoUser = (state) => state.user.cognitoUser;
 
@@ -37,8 +49,19 @@ function* changePassword(action) {
 }
 
 function* logOut(action) {
-  // temp fake logout - put empty user into state
-  yield put({ type: LOG_IN_SUCCESS, payload: {} });
+  try {
+    yield call(amplifyLogOut);
+    yield put({ type: LOG_OUT_SUCCESS});
+    yield put(navigate(HOME));
+  } catch(e){
+    yield put({ type: LOG_OUT_FAILURE, payload: { error: e }});
+  }
+}
+
+function amplifyLogOut(){
+  Auth.signOut()
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
 }
 
 function amplifySignIn(payload){
