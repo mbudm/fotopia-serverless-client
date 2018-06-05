@@ -3,7 +3,12 @@ import { INIT, GET_CONFIG } from '../constants/actions';
 import listenForGetConfig from './getConfig';
 import listenForSearch from './search';
 import listenForUpload from './upload';
-import {listenForLogIn, listenForChangePassword, listenForLogOut} from './user';
+import {
+  listenForLogIn,
+  listenForChangePassword,
+  listenForLogOut,
+  listenForLoginSuccess
+} from './user';
 
 export default function* root() {
   yield all([
@@ -11,6 +16,7 @@ export default function* root() {
     fork(listenForSearch),
     fork(listenForUpload),
     fork(listenForLogIn),
+    fork(listenForLoginSuccess),
     fork(listenForChangePassword),
     fork(listenForLogOut)
   ]);

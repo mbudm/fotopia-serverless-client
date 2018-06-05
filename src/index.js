@@ -11,15 +11,18 @@ import AppContainer from './AppContainer';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 import sagas from './sagas';
-
+import {
+  HOME,
+  UPLOAD,
+  EDIT
+} from './constants/routes';
 
 import * as navigateSagas from './sagas/navigate';
 
 const routesMap = buildRoutesMap(
-  route('EDIT', '/edit', navigateSagas.editNavigate),
-  route('UPLOAD', '/upload', navigateSagas.uploadNavigate),
-  route('CREATE', '/create', navigateSagas.createNavigate),
-  route('HOME', '/', navigateSagas.homeNavigate),
+  route(EDIT, '/edit', navigateSagas.editNavigate),
+  route(UPLOAD, '/upload', navigateSagas.uploadNavigate),
+  route(HOME, '/', navigateSagas.homeNavigate),
 );
 
 const sagaMiddleware = createSagaMiddleware();

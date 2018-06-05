@@ -14,6 +14,8 @@ import {
 import {
   HOME
 } from '../constants/routes';
+import selectRoute from '../selectors/route';
+
 
 const getCognitoUser = (state) => state.user.cognitoUser;
 
@@ -27,6 +29,10 @@ export function* listenForLogOut() {
 
 export function* listenForChangePassword(){
   yield takeLatest(CHANGE_PASSWORD, changePassword);
+}
+
+export function* listenForLoginSuccess(){
+  yield takeLatest(LOG_IN_SUCCESS, onLoginSuccess);
 }
 
 function* logIn(action) {
@@ -56,6 +62,11 @@ function* logOut(action) {
   } catch(e){
     yield put({ type: LOG_OUT_FAILURE, payload: { error: e }});
   }
+}
+
+function* onLoginSuccess(action){
+  const route = yield select(selectRoute);
+  yield put(navigate(route));
 }
 
 function amplifyLogOut(){

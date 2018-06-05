@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 
 import Search from './components/Search';
 import Upload from './components/Upload';
-import Create from './components/Create';
 import Edit from './components/Edit';
 import Header from './components/Header';
+import {
+  HOME,
+  UPLOAD,
+  EDIT
+} from './constants/routes';
 
 class App extends Component {
   render() {
@@ -20,10 +24,9 @@ class App extends Component {
   renderRoute(){
     const {routing: {id}} = this.props;
     const routes = {
-      UPLOAD: () => <Upload />,
-      CREATE: () => <Create />,
-      EDIT: () => <Edit />,
-      HOME: () => <Search />,
+      [UPLOAD]: () => <Upload />,
+      [EDIT]: () => <Edit />,
+      [HOME]: () => <Search />,
     }
     return routes[id] ? routes[id]() : (<Search />);
   }
