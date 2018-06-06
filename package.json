@@ -13,6 +13,7 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-loader": "^2.4.5",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.1",
     "react-test-renderer": "^16.3.2",
@@ -28,6 +29,7 @@
     "start-auth-remote": "REACT_APP_USE_API_CONFIG=1 REACT_APP_USE_AUTH=1 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "test-update": "CI=true react-scripts test -u --env=jsdom",
     "test-once": "CI=true npm test",
     "lint": "eslint ./src",
     "eject": "react-scripts eject"

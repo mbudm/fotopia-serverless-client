@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { SEARCH } from '../constants/actions';
 
 export class Search extends Component {
@@ -12,10 +13,11 @@ export class Search extends Component {
       <div>
         <h2>Search</h2>
         <button onClick={onGetLatest}>Get latest photos</button>
-        {results && this.renderResults()}
+        {results ? this.renderResults() : this.renderLoader() }
       </div>
     );
   }
+  renderLoader = () => (<p>Loadin'</p>);
   renderResults(){
     const {
       results
