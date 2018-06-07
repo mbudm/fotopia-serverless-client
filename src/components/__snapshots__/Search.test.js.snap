@@ -87,8 +87,9 @@ exports[`Search with no result array 1`] = `
   >
     Get latest photos
   </button>
-  <p>
-    Loadin'
-  </p>
+  <img
+    alt="searching"
+    src="loader.svg"
+  />
 </div>
 `;

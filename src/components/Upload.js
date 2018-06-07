@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Loader from 'react-loader';
 
 import { UPLOAD } from '../constants/actions';
 
@@ -12,12 +11,21 @@ class Upload extends Component {
       nonImages: []
     };
   }
-
   render(){
+    return this.state.uploading ? this.renderLoader() : this.renderForm();
+  }
+
+  renderLoader = () => (<img src="loader.svg" alt="uploading"/>);
+
+  renderForm(){
     const {
       images,
       nonImages
     } = this.state;
+    const submitOpts = {};
+    if(images.length === 0){
+      submitOpts.disabled = "disabled"
+    };
     return (<div>
       <h2>Upload</h2>
       <form onSubmit={this.handleSubmit} >
@@ -34,40 +42,38 @@ class Upload extends Component {
                 data-filename={image.file.name}
                 className="img-thumbnail img-responsive"
                 onLoad={this.handleImageLoad}/>
-              <Loader loaded={image.loaded} >
-                <table>
-                  <tbody>
-                    <tr>
-                      <th>Birthtime</th>
-                      <td>{image.file.lastModified}</td>
-                    </tr>
-                    <tr>
-                      <th>File size</th>
-                      <td>{image.file.size}</td>
-                    </tr>
-                    <tr>
-                      <th>Name</th>
-                      <td>{image.file.name}</td>
-                    </tr>
-                    <tr>
-                      <th>Type</th>
-                      <td>{image.file.type}</td>
-                    </tr>
-                    <tr>
-                      <th>Width</th>
-                      <td>{image.width}</td>
-                    </tr>
-                    <tr>
-                      <th>Height</th>
-                      <td>{image.height}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Loader>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Birthtime</th>
+                    <td>{image.file.lastModified}</td>
+                  </tr>
+                  <tr>
+                    <th>File size</th>
+                    <td>{image.file.size}</td>
+                  </tr>
+                  <tr>
+                    <th>Name</th>
+                    <td>{image.file.name}</td>
+                  </tr>
+                  <tr>
+                    <th>Type</th>
+                    <td>{image.file.type}</td>
+                  </tr>
+                  <tr>
+                    <th>Width</th>
+                    <td>{image.width}</td>
+                  </tr>
+                  <tr>
+                    <th>Height</th>
+                    <td>{image.height}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           ))}
         </div>
-        <input type="submit" value="Upload" />
+        <input type="submit" value="Upload" {...submitOpts} />
       </form>
     </div>);
   }
@@ -77,7 +83,6 @@ class Upload extends Component {
     const filename = img.dataset.filename;
     const newImagesState = this.state.images.map((imgObject) => {
       return {
-        loaded: true,
         ...imgObject,
         width: imgObject.file.name === filename ? img.naturalWidth : imgObject.width,
         height: imgObject.file.name === filename ? img.naturalHeight : imgObject.height,
@@ -86,6 +91,7 @@ class Upload extends Component {
     this.setState({
       images: newImagesState
     });
+
   }
 
   handleImagesChange = (e) => {
@@ -120,6 +126,9 @@ class Upload extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({
+      uploading: true
+    });
     this.props.onUpload(
       this.state.images
     )

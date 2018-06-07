@@ -17,7 +17,7 @@ export class Search extends Component {
       </div>
     );
   }
-  renderLoader = () => (<p>Loadin'</p>);
+  renderLoader = () => (<img src="loader.svg" alt="searching"/>);
   renderResults(){
     const {
       results
