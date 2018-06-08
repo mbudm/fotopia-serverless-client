@@ -4,8 +4,6 @@ import { Storage } from 'aws-amplify';
 import * as api from './api';
 import { SEARCH, SEARCH_RESULTS } from '../constants/actions';
 import { QUERY } from '../constants/api';
-import checkStatus from '../util/checkStatus';
-import parseJSON from '../util/parseJSON';
 import useAuth from '../util/useAuth';
 import appConfig from '../appConfig';
 
@@ -14,8 +12,13 @@ export default function* listenForSearch() {
 }
 
 function* queryFotos() {
-  const results = yield call( fetchFotos );
-  yield put({ type: SEARCH_RESULTS,  payload: results});
+  try {
+    const results = yield call( fetchFotos );
+    yield put({ type: SEARCH_RESULTS,  payload: results});
+  } catch(e) {
+    console.error(e)
+  }
+
 }
 
 function getImageSource(result){
@@ -46,12 +49,13 @@ function fetchFotos(){
       });
   }else{
     return api.post(QUERY, { body: query })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then((results) => results.map((result) => ({
+    .then((results) => {
+      console.log(results);
+      return results.map((result) => ({
         ...result,
         img_location: `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.img_key}`
-    })));
+      }));
+    });
   }
 }
 

@@ -1,7 +1,7 @@
 const localhost = 'http://localhost:3000/';
 const dev = {
   api: localhost,
-  s3Url: `http://localhost:5000/`,
+  s3Url: `http://localhost:5000`,
   AWSConfig: {
     Region: 'some-place'
   },
@@ -13,7 +13,7 @@ const prod = {
 };
 
 const common = {
-  s3Bucket: `fotopia-web-app-prod`,
+  s3Bucket: `fotopia-web-app-dev`,
 }
 
 const config = process.env.NODE_ENV === 'production' || process.env.REACT_APP_USE_API_CONFIG ?
