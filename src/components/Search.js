@@ -26,7 +26,7 @@ export class Search extends Component {
     (<section className="row" >
       {results.map(result => (
         <figure key={result.id} className="col-md-2 center-block">
-          <img src={result.img_location} alt="" className="img-responsive"/>
+          <img src={result.img_thumb_location} alt="" className="img-responsive"/>
         </figure>
       ))}
     </section>):

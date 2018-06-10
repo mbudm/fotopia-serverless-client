@@ -35,7 +35,7 @@ exports[`Search with 1 result 1`] = `
       <img
         alt=""
         className="img-responsive"
-        src="myImg.jpg"
+        src={undefined}
       />
     </figure>
   </section>
@@ -61,7 +61,7 @@ exports[`Search with multiple results 1`] = `
       <img
         alt=""
         className="img-responsive"
-        src="myImg.jpg"
+        src={undefined}
       />
     </figure>
     <figure
@@ -70,7 +70,7 @@ exports[`Search with multiple results 1`] = `
       <img
         alt=""
         className="img-responsive"
-        src="myImg2.jpg"
+        src={undefined}
       />
     </figure>
   </section>

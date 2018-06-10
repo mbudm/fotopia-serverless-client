@@ -21,6 +21,10 @@ function* queryFotos() {
 
 }
 
+function getThumbLocation(img_location, img_key, img_thumb_key){
+ return img_location.replace(img_key, img_thumb_key);
+}
+
 function getImageSource(result){
   return Storage.get(result.img_key, {
     level: 'protected',
@@ -28,7 +32,8 @@ function getImageSource(result){
   })
     .then((img_location) => ({
       ...result,
-      img_location
+      img_location,
+      img_thumb_location: getThumbLocation(img_location, result.img_key, result.img_thumb_key)
     }));
 }
 
@@ -51,10 +56,15 @@ function fetchFotos(){
     return api.post(QUERY, { body: query })
     .then((results) => {
       console.log(results);
-      return results.map((result) => ({
-        ...result,
-        img_location: `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.img_key}`
-      }));
+      return Array.isArray(results) ? results.map((result) => {
+        const img_location = `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.img_key}`
+        const img_thumb_location = getThumbLocation(img_location, result.img_key, result.img_thumb_key)
+        return {
+          ...result,
+          img_location,
+          img_thumb_location,
+        }
+      }): results;
     });
   }
 }
