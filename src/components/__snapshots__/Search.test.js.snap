@@ -1,107 +1,150 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Search with 0 results 1`] = `
-<div>
-  <h2>
-    Search
-  </h2>
-  <button
-    onClick={undefined}
+<div
+  className="container"
+>
+  <div
+    className="row"
   >
-    Get latest photos
-  </button>
-  <section
+    <div
+      className="col-xs-12"
+    >
+      <h2>
+        Search
+        <button
+          className="pull-right btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Get latest photos
+        </button>
+      </h2>
+    </div>
+  </div>
+  <div
     className="row"
   />
 </div>
 `;
 
 exports[`Search with 1 result 1`] = `
-<div>
-  <h2>
-    Search
-  </h2>
-  <button
-    onClick={undefined}
-  >
-    Get latest photos
-  </button>
-  <section
+<div
+  className="container"
+>
+  <div
     className="row"
   >
-    <figure
-      className="col-md-2 center-block"
+    <div
+      className="col-xs-12"
+    >
+      <h2>
+        Search
+        <button
+          className="pull-right btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Get latest photos
+        </button>
+      </h2>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-1 col-sm-2 col-xs-3"
     >
       <img
         alt=""
         className="img-responsive"
+        data-id="image_guid"
+        onClick={undefined}
         src="myImg-thumb.jpg"
       />
-      <img
-        alt=""
-        className="img-responsive"
-        src="myImg.jpg"
-      />
-    </figure>
-  </section>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`Search with multiple results 1`] = `
-<div>
-  <h2>
-    Search
-  </h2>
-  <button
-    onClick={undefined}
-  >
-    Get latest photos
-  </button>
-  <section
+<div
+  className="container"
+>
+  <div
     className="row"
   >
-    <figure
-      className="col-md-2 center-block"
+    <div
+      className="col-xs-12"
+    >
+      <h2>
+        Search
+        <button
+          className="pull-right btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Get latest photos
+        </button>
+      </h2>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-1 col-sm-2 col-xs-3"
     >
       <img
         alt=""
         className="img-responsive"
+        data-id="image_guid"
+        onClick={undefined}
         src="myImg-thumb.jpg"
       />
-      <img
-        alt=""
-        className="img-responsive"
-        src="myImg.jpg"
-      />
-    </figure>
-    <figure
-      className="col-md-2 center-block"
+    </div>
+    <div
+      className="col-md-1 col-sm-2 col-xs-3"
     >
       <img
         alt=""
         className="img-responsive"
+        data-id="image_2_guid"
+        onClick={undefined}
         src="myImg2-thumb.jpg"
       />
-      <img
-        alt=""
-        className="img-responsive"
-        src="myImg2.jpg"
-      />
-    </figure>
-  </section>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`Search with no result array 1`] = `
-<div>
-  <h2>
-    Search
-  </h2>
-  <button
-    onClick={undefined}
+<div
+  className="container"
+>
+  <div
+    className="row"
   >
-    Get latest photos
-  </button>
+    <div
+      className="col-xs-12"
+    >
+      <h2>
+        Search
+        <button
+          className="pull-right btn btn-default"
+          disabled={false}
+          onClick={undefined}
+          type="button"
+        >
+          Get latest photos
+        </button>
+      </h2>
+    </div>
+  </div>
   <img
     alt="searching"
     src="loader.svg"

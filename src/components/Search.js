@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Grid, Row, Col, Button } from "react-bootstrap";
+import { navigate } from 'redux-saga-first-router';
 
 import { SEARCH } from '../constants/actions';
+import {
+  DETAIL
+} from '../constants/routes';
 
 export class Search extends Component {
   render() {
@@ -10,28 +15,39 @@ export class Search extends Component {
       onGetLatest
     } = this.props;
     return (
-      <div>
-        <h2>Search</h2>
-        <button onClick={onGetLatest}>Get latest photos</button>
+      <Grid>
+        <Row>
+          <Col xs={12}>
+            <h2>Search
+              <Button onClick={onGetLatest} className="pull-right">Get latest photos</Button>
+            </h2>
+          </Col>
+        </Row>
         {results ? this.renderResults() : this.renderLoader() }
-      </div>
+      </Grid>
     );
   }
   renderLoader = () => (<img src="loader.svg" alt="searching"/>);
   renderResults(){
     const {
-      results
+      results,
+      onNavigateDetail
     } = this.props;
     return Array.isArray(results)?
-    (<section className="row" >
+    (<Row>
       {results.map(result => (
-        <figure key={result.id} className="col-md-2 center-block">
-          <img src={result.img_thumb_location} alt="" className="img-responsive"/>
-          <img src={result.img_location} alt="" className="img-responsive"/>
-        </figure>
+        <Col key={result.id} xs={3} sm={2} md={1}>
+          <img
+            src={result.img_thumb_location}
+            alt=""
+            className="img-responsive"
+            onClick={onNavigateDetail}
+            data-id={result.id}
+          />
+        </Col>
       ))}
-    </section>):
-    (<p>{results}</p>);
+    </Row>):
+    (<Row><p>{results}</p></Row>);
   }
 }
 const mapStateToProps = state => {
@@ -47,6 +63,11 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: SEARCH
       });
+    },
+    onNavigateDetail(e){
+      e.preventDefault();
+      const fotoid = e.target.dataset.id;
+      dispatch(navigate(DETAIL, {fotoid}));
     }
   }
 }

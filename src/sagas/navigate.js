@@ -24,6 +24,10 @@ export function* uploadNavigate() {
 
 }
 
+export function detailNavigate() {
+
+}
+
 export function* homeNavigate(){
   const signedIn = yield select(signedInStatus);
   const results = yield select(selectSearchResults);
