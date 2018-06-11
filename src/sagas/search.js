@@ -26,15 +26,17 @@ function getThumbLocation(img_location, img_key, img_thumb_key){
 }
 
 function getImageSource(result){
-  return Storage.get(result.img_key, {
+  return Promise.all([
+    result.img_key,
+    result.img_thumb_key
+  ].map((key) => Storage.get(key, {
     level: 'protected',
     identityId: result.userIdentityId
-  })
-    .then((img_location) => ({
-      ...result,
-      img_location,
-      img_thumb_location: getThumbLocation(img_location, result.img_key, result.img_thumb_key)
-    }));
+  }))).then(locations => ({
+    ...result,
+    img_location: locations[0],
+    img_thumb_location: locations[1],
+  }));
 }
 
 function fetchFotos(){

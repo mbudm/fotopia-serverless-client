@@ -23,7 +23,8 @@ test('Search with 1 result', () => {
   const component = renderer.create(
     <Search results={[{
       id: 'image_guid',
-      img_location: 'myImg.jpg'
+      img_location: 'myImg.jpg',
+      img_thumb_location: 'myImg-thumb.jpg'
     }]}/>
   );
   let tree = component.toJSON();
@@ -34,11 +35,13 @@ test('Search with multiple results', () => {
   const component = renderer.create(
     <Search results={[{
       id: 'image_guid',
-      img_location: 'myImg.jpg'
+      img_location: 'myImg.jpg',
+      img_thumb_location: 'myImg-thumb.jpg'
     },
     {
       id: 'image_2_guid',
-      img_location: 'myImg2.jpg'
+      img_location: 'myImg2.jpg',
+      img_thumb_location: 'myImg2-thumb.jpg'
     }]}/>
   );
   let tree = component.toJSON();
