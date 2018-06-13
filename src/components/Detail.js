@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Hammer from 'react-hammerjs';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export class Detail extends Component {
   render() {
     const {
-      handleSwipe,
-      results
+      results,
+      fotoid
     } = this.props;
 
+    const atts = {
+      showArrows: false,
+      showThumbs: false,
+      infiniteLoop: true,
+      selectedItem: Array.isArray(results) ? results.findIndex((res => res.id === fotoid)) : 0
+    }
+
     return (
-      <div className="carousel" >
-      <Hammer onSwipe={handleSwipe} className="carousel-inner">
-        <div>
+      <Carousel {...atts} >
         {Array.isArray(results) && results.map(this.renderResult)}
-        </div>
-      </Hammer>
-      </div>
+      </Carousel>
     );
   }
 
@@ -39,7 +43,16 @@ const mapStateToProps = (state) => {
     results: state.search.results
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onPan(e) {
+      console.log('swipe', e)
+    }
+  }
+}
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Detail);
