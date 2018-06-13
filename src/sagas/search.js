@@ -21,11 +21,11 @@ function* queryFotos() {
 
 }
 
-function getThumbLocation(img_location, img_key, img_thumb_key){
+export function getThumbLocation(img_location, img_key, img_thumb_key){
  return img_location.replace(img_key, img_thumb_key);
 }
 
-function getImageSource(result){
+export function getImageSource(result){
   return Promise.all([
     result.img_key,
     result.img_thumb_key

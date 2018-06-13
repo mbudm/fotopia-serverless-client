@@ -1,20 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Hammer from 'react-hammerjs';
 
-import selectResult from '../selectors/searchResult';
+export class Detail extends Component {
+  render() {
+    const {
+      handleSwipe,
+      results
+    } = this.props;
 
-const Detail = props => {
-  return (
-    <div>
-      <h2>Detail</h2>
-      <img src={props.result.img_location} alt=""/>
-    </div>
-  );
-};
+    return (
+      <div className="carousel" >
+      <Hammer onSwipe={handleSwipe} className="carousel-inner">
+        <div>
+        {Array.isArray(results) && results.map(this.renderResult)}
+        </div>
+      </Hammer>
+      </div>
+    );
+  }
 
-const mapStateToProps = (state, ownProps) => {
+  renderResult = (result) => {
+    const classNames = result.id === this.props.fotoid ? 'item active' : 'item';
+    return (
+      <figure key={result.id} className={classNames}>
+        <img
+          src={result.img_location}
+          className="img-responsive center-block"
+          alt=""
+        />
+      </figure>
+    )
+  }
+}
+
+const mapStateToProps = (state) => {
   return {
-    result: selectResult(state, ownProps.fotoid)
+    results: state.search.results
   }
 }
 export default connect(

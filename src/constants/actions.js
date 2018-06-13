@@ -13,3 +13,4 @@ export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 export const UPLOAD = 'UPLOAD';
 export const CREATED_IMAGE_RECORDS = 'CREATED_IMAGE_RECORDS';
 export const CREATE = 'CREATE';
+export const GET_FOTO = 'GET_FOTO';

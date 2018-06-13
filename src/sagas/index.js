@@ -1,20 +1,20 @@
-import { all, fork, put } from 'redux-saga/effects';
-import { INIT, GET_CONFIG } from '../constants/actions';
+import { all, fork, put, select, takeLatest } from 'redux-saga/effects';
+import { navigate } from 'redux-saga-first-router';
+import { INIT, GET_CONFIG, LOG_IN_SUCCESS } from '../constants/actions';
 import listenForGetConfig from './getConfig';
 import listenForSearch from './search';
 import listenForUpload from './upload';
+import listenForGetFoto from './get';
 import {
   listenForLogIn,
   listenForChangePassword,
-  listenForLogOut,
-  listenForLoginSuccess
+  listenForLogOut
 } from './user';
+import selectRoute from '../selectors/route';
 
 export default function* root() {
   yield all([
     fork(listenForGetConfig),
-    fork(listenForSearch),
-    fork(listenForUpload),
     fork(listenForLogIn),
     fork(listenForLoginSuccess),
     fork(listenForChangePassword),
@@ -22,4 +22,18 @@ export default function* root() {
   ]);
   yield put({ type: INIT });
   yield put({ type: GET_CONFIG });
+}
+
+export function* listenForLoginSuccess(){
+  yield takeLatest(LOG_IN_SUCCESS, onLoginSuccess);
+}
+
+function* onLoginSuccess(){
+  yield all([
+    fork(listenForSearch),
+    fork(listenForUpload),
+    fork(listenForGetFoto)
+  ]);
+  const route = yield select(selectRoute);
+  yield put(navigate(route.id, route.params));
 }

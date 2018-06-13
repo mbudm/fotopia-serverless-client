@@ -3,7 +3,8 @@ import { navigate } from 'redux-saga-first-router';
 
 import {
   SEARCH,
-  SEARCH_RESULTS
+  SEARCH_RESULTS,
+  GET_FOTO
 } from '../constants/actions';
 import {
   UPLOAD
@@ -14,6 +15,7 @@ import {
 
 import selectUploadImage from '../selectors/uploadImage';
 import selectSearchResults from '../selectors/searchResults';
+import selectSearchResult from '../selectors/searchResult';
 import signedInStatus from '../selectors/signedInStatus';
 
 export function* editNavigate() {
@@ -24,8 +26,11 @@ export function* uploadNavigate() {
 
 }
 
-export function detailNavigate() {
-
+export function* detailNavigate({fotoid}) {
+  const imageRecord = yield select(selectSearchResult, fotoid);
+  if(!imageRecord){
+    yield put({type: GET_FOTO, payload: fotoid});
+  }
 }
 
 export function* homeNavigate(){
