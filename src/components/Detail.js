@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import ReactSwipe from 'react-swipe';
 
 export class Detail extends Component {
   render() {
@@ -11,23 +10,21 @@ export class Detail extends Component {
     } = this.props;
 
     const atts = {
-      showArrows: false,
-      showThumbs: false,
-      infiniteLoop: true,
-      selectedItem: Array.isArray(results) ? results.findIndex((res => res.id === fotoid)) : 0
+      continuous: true,
+      startSlide: Array.isArray(results) ? results.findIndex((res => res.id === fotoid)) : 0
     }
 
     return (
-      <Carousel {...atts} >
+      <ReactSwipe swipeOptions={atts} >
         {Array.isArray(results) && results.map(this.renderResult)}
-      </Carousel>
+      </ReactSwipe>
     );
   }
 
   renderResult = (result) => {
-    const classNames = result.id === this.props.fotoid ? 'item active' : 'item';
+
     return (
-      <figure key={result.id} className={classNames}>
+      <figure key={result.id}>
         <img
           src={result.img_location}
           className="img-responsive center-block"
