@@ -1,55 +1,66 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactSwipe from 'react-swipe';
+import SwipeableViews from 'react-swipeable-views';
+import { virtualize } from 'react-swipeable-views-utils';
+import { mod } from 'react-swipeable-views-core';
+
+import selectSearchResults from '../selectors/searchResults';
+
+const VirtualizeSwipeableViews = virtualize(SwipeableViews);
 
 export class Detail extends Component {
   render() {
     const {
-      results,
-      fotoid
+      results
     } = this.props;
 
-    const atts = {
-      continuous: true,
-      startSlide: Array.isArray(results) ? results.findIndex((res => res.id === fotoid)) : 0
+    if(Array.isArray(results)){
+      return results.length > 1 ? (
+        <div>
+          <VirtualizeSwipeableViews slideRenderer={this.renderResult} />
+        </div>
+      ): this.renderResult({
+        index: 0
+      });
+    }else{
+      return (<p> No results </p>);
     }
-
-    return (
-      <ReactSwipe swipeOptions={atts} >
-        {Array.isArray(results) && results.map(this.renderResult)}
-      </ReactSwipe>
-    );
   }
 
-  renderResult = (result) => {
+  renderResult = (params) => {
+    const {
+      results,
+    } = this.props;
 
-    return (
+    const {
+      index
+    } = params;
+    const idx = mod(index, results.length)
+    const result = results[idx];
+
+    return result ? (
       <figure key={result.id}>
         <img
           src={result.img_location}
           className="img-responsive center-block"
           alt=""
         />
+        <p>Slide {idx}</p>
       </figure>
-    )
+    ) : null;
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  const results = selectSearchResults(state);
+  const index = results.findIndex((res => res.id === ownProps.fotoid)) || 0;
+  const resultsResetToIndex = results.length === 0 ? results : results.slice(index).concat(results.slice(0, index));
   return {
-    results: state.search.results
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onPan(e) {
-      console.log('swipe', e)
-    }
+    results: resultsResetToIndex
   }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Detail);
