@@ -2,11 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col, Button } from "react-bootstrap";
 import { navigate } from 'redux-saga-first-router';
+import styled from 'styled-components';
 
 import { SEARCH } from '../constants/actions';
 import {
   DETAIL
 } from '../constants/routes';
+
+const Tile = styled(Col).attrs({
+  xs:3,
+  sm:2,
+  md:1,
+})`
+  padding-left: 0;
+  padding-right: 0;
+`;
 
 export class Search extends Component {
   render() {
@@ -36,7 +46,7 @@ export class Search extends Component {
     return Array.isArray(results)?
     (<Row>
       {results.map(result => (
-        <Col key={result.id} xs={3} sm={2} md={1}>
+        <Tile key={result.id}>
           <img
             src={result.img_thumb_location}
             alt=""
@@ -44,7 +54,7 @@ export class Search extends Component {
             onClick={onNavigateDetail}
             data-id={result.id}
           />
-        </Col>
+        </Tile>
       ))}
     </Row>):
     (<Row><p>{results}</p></Row>);
