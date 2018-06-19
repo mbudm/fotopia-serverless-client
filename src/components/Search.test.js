@@ -1,7 +1,9 @@
 // Link.react.test.js
 import React from 'react';
-import { Search } from './Search';
 import renderer from 'react-test-renderer';
+import 'jest-styled-components'
+
+import { Search } from './Search';
 
 test('Search with no result array', () => {
   const component = renderer.create(
