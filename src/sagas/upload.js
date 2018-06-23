@@ -2,7 +2,8 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import Amplify from 'aws-amplify';
 import { navigate } from 'redux-saga-first-router';
-import { UPLOAD, CREATED_IMAGE_RECORDS } from '../constants/actions';
+import { UPLOAD, CREATED_IMAGE_RECORDS, SEARCH } from '../constants/actions';
+import { HOME } from '../constants/routes';
 import appConfig from '../appConfig';
 import useAuth from '../util/useAuth';
 import * as api from './api';
@@ -28,7 +29,8 @@ function* upload(action) {
   const uploadedImages = yield all(action.payload.map(image => call( api.upload, image, info.username )));
   const createdImages = yield all(uploadedImages.map(s3ResponseAndImage => call( createFoto, s3ResponseAndImage, info )));
   yield put({ type: CREATED_IMAGE_RECORDS,  payload: createdImages});
-  yield put(navigate('HOME'));
+  yield put({type: SEARCH});
+  yield put(navigate(HOME));
 }
 
 function getUserInfo(){
