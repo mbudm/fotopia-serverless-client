@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Button } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import { navigate } from 'redux-saga-first-router';
 import styled from 'styled-components';
 
-import { SEARCH } from '../constants/actions';
+import SearchHeader from './SearchHeader';
+import Loader from './Loader';
 import {
   DETAIL
 } from '../constants/routes';
@@ -21,23 +22,15 @@ const Tile = styled(Col).attrs({
 export class Search extends Component {
   render() {
     const {
-      results,
-      onGetLatest
+      results
     } = this.props;
     return (
       <Grid>
-        <Row>
-          <Col xs={12}>
-            <h2>Search
-              <Button onClick={onGetLatest} className="pull-right">Get latest photos</Button>
-            </h2>
-          </Col>
-        </Row>
-        {results ? this.renderResults() : this.renderLoader() }
+        <SearchHeader />
+        {results ? this.renderResults() : <Loader alt="Searching" /> }
       </Grid>
     );
   }
-  renderLoader = () => (<img src="loader.svg" alt="searching"/>);
   renderResults(){
     const {
       results,
@@ -68,12 +61,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetLatest(e) {
-      e.preventDefault();
-      dispatch({
-        type: SEARCH
-      });
-    },
     onNavigateDetail(e){
       e.preventDefault();
       const fotoid = e.target.dataset.id;

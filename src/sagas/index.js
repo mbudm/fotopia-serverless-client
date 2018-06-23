@@ -5,6 +5,7 @@ import listenForGetConfig from './getConfig';
 import listenForSearch from './search';
 import listenForUpload from './upload';
 import listenForGetFoto from './get';
+import listenForGetIndexes from './indexes';
 import {
   listenForLogIn,
   listenForChangePassword,
@@ -32,7 +33,8 @@ function* onLoginSuccess(){
   yield all([
     fork(listenForSearch),
     fork(listenForUpload),
-    fork(listenForGetFoto)
+    fork(listenForGetFoto),
+    fork(listenForGetIndexes)
   ]);
   const route = yield select(selectRoute);
   yield put(navigate(route.id, route.params));

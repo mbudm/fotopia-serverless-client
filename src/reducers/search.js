@@ -1,12 +1,23 @@
-import { INIT, SEARCH_RESULTS } from '../constants/actions';
+import {
+  INIT,
+  SEARCH_RESULTS,
+  INDEXES_RESULT
+} from '../constants/actions';
 
 const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({}),
   [SEARCH_RESULTS]: (state, action) => (
     {
+      ...state,
       results: action.payload
     }
-  )
+  ),
+  [INDEXES_RESULT]: (state, action) => (
+    {
+      ...state,
+      indexes: action.payload
+    }
+  ),
 };
 
 export const search = (state = {}, action) => {

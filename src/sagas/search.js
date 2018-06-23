@@ -11,9 +11,9 @@ export default function* listenForSearch() {
   yield takeLatest(SEARCH, queryFotos);
 }
 
-function* queryFotos() {
+function* queryFotos(action) {
   try {
-    const results = yield call( fetchFotos );
+    const results = yield call( fetchFotos, action.payload);
     yield put({ type: SEARCH_RESULTS,  payload: results});
   } catch(e) {
     console.error(e)
@@ -39,12 +39,12 @@ export function getImageSource(result){
   }));
 }
 
-function fetchFotos(){
+function fetchFotos(criteria = {
+  tags: [],
+  people: [],
+}){
   const query = {
-    criteria: {
-      tags: [],
-      people: [],
-    },
+    criteria,
     from: '2004-04-04',
     to: Date.now(),
   };
