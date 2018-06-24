@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { UPLOAD } from '../constants/actions';
 
+import Tags from './Tags';
+
 class Upload extends Component {
   constructor(props) {
     super(props);
@@ -70,6 +72,8 @@ class Upload extends Component {
                   </tr>
                 </tbody>
               </table>
+              <Tags id={image.file.name} title="Tags" placeholder="Add tags to this image" tagKey="tags" onTagUpdate={this.handleTagUpdate}/>
+              <Tags id={image.file.name} title="People" placeholder="Add people to this image" tagKey="people" onTagUpdate={this.handleTagUpdate}/>
             </div>
           ))}
         </div>
@@ -122,6 +126,17 @@ class Upload extends Component {
           nonImages: nonImageFiles,
         });
       });
+  }
+
+  handleTagUpdate = (id, key, tags) => {
+    const images = this.state.images.map((img) => {
+      return img.file.name === id ?
+        { ...img, [key]: tags} :
+        { ...img};
+    });
+    this.setState({
+      images,
+    });
   }
 
   handleSubmit = (e) => {

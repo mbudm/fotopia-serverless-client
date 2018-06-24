@@ -4,7 +4,8 @@ import { navigate } from 'redux-saga-first-router';
 import {
   SEARCH,
   SEARCH_RESULTS,
-  GET_FOTO
+  GET_FOTO,
+  GET_INDEXES
 } from '../constants/actions';
 import {
   UPLOAD
@@ -23,6 +24,7 @@ export function* editNavigate() {
 }
 
 export function* uploadNavigate() {
+  yield put({type: GET_INDEXES });
 
 }
 

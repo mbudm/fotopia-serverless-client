@@ -47,8 +47,8 @@ function createFoto(s3ResponseAndImage, info){
     userIdentityId: info.id,
     birthtime: s3ResponseAndImage.imageObject.file.lastModified,
     img_key: resolveKey(s3ResponseAndImage),
-    people: [],
-    tags: [],
+    people: s3ResponseAndImage.imageObject.people || [],
+    tags: s3ResponseAndImage.imageObject.tags || [],
     meta: {
       ...s3ResponseAndImage.imageObject.file,
       width: s3ResponseAndImage.imageObject.width,
