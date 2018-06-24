@@ -16,3 +16,4 @@ export const CREATE = 'CREATE';
 export const GET_FOTO = 'GET_FOTO';
 export const GET_INDEXES = 'GET_INDEXES';
 export const INDEXES_RESULT = 'INDEXES_RESULT';
+export const SEARCH_FILTERS = 'SEARCH_FILTERS';

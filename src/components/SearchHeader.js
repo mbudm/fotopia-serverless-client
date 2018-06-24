@@ -2,16 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Button, FormGroup, ControlLabel, Checkbox} from "react-bootstrap";
 
-import { SEARCH, GET_INDEXES } from '../constants/actions';
+import { SEARCH, GET_INDEXES, SEARCH_FILTERS } from '../constants/actions';
 import Loader from './Loader';
+import { selectIndexCounts } from '../selectors/indexes';
+import selectFilters from '../selectors/filters';
 
 export class SearchHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
       filterOpen: false,
-      tags: [],
-      people: [],
+      checked: {
+        tags: props.filters.tags,
+        people: props.filters.people,
+      }
     };
   }
 
@@ -30,19 +34,17 @@ export class SearchHeader extends Component {
   }
   renderFilter(){
     const {
-      indexes
+      tags,
+      people
     } = this.props;
-    if(indexes){
-      const showTags = Object.keys(indexes.tags).length > 0;
-      const showPeople = Object.keys(indexes.people).length > 0;
-      return (<form>
-        { showTags && this.renderFilterGroup('Tags', 'tags', indexes.tags) }
-        { showPeople && this.renderFilterGroup('People', 'people', indexes.people) }
-        <Button onClick={this.handleUpdate} >Update</Button>
-      </form>);
-    } else {
-      return (<Loader alt="Getting filters"/>);
-    }
+
+    const showTags = tags.length > 0;
+    const showPeople = people.length > 0;
+    return showTags || showPeople ? (<form>
+      { showTags && this.renderFilterGroup('Tags', 'tags', tags) }
+      { showPeople && this.renderFilterGroup('People', 'people', people) }
+      <Button onClick={this.handleUpdate} >Update</Button>
+    </form>) : (<Loader alt="Getting filters"/>);
   }
 
   renderFilterGroup(label, group, filters){
@@ -52,15 +54,15 @@ export class SearchHeader extends Component {
           {label}
         </Col>
         <Col sm={10}>
-        {Object.keys(filters).map(key => (
+        {filters.map(filter => (
           <Checkbox
             inline
-            key={key}
-            checked={this.state[group].includes(key)}
+            key={filter.name}
+            checked={this.state.checked[group].includes(filter.name)}
             data-group={group}
-            data-key={key}
+            data-key={filter.name}
             onChange={this.onFilterChange}
-            >{key} ({filters[key]})</Checkbox>
+            >{filter.name} ({filter.count})</Checkbox>
         ))}
         </Col>
       </FormGroup>
@@ -73,14 +75,18 @@ export class SearchHeader extends Component {
       group,
       key
     } = e.target.dataset;
+    const existingGroup = this.state.checked[group];
     let updatedGroup = [];
     if(e.target.checked){
-      updatedGroup = this.state[group].includes(key) ? this.state[group] : this.state[group].concat(key)
+      updatedGroup = existingGroup.includes(key) ? existingGroup : existingGroup.concat(key)
     }else{
-      updatedGroup =this.state[group].includes(key) ? this.state[group].filter(k => k !== key) : this.state[group];
+      updatedGroup = existingGroup.includes(key) ? existingGroup.filter(k => k !== key) : existingGroup;
     }
     this.setState({
-      [group]: updatedGroup
+      checked: {
+        ...this.state.checked,
+        [group]: updatedGroup
+      }
     })
   }
 
@@ -96,21 +102,27 @@ export class SearchHeader extends Component {
   handleUpdate = (e) => {
     e.preventDefault();
     this.props.onSearch({
-      tags: this.state.tags,
-      people: this.state.people,
+      tags: this.state.checked.tags,
+      people: this.state.checked.people,
     });
   }
 }
 
 const mapStateToProps = state => {
   return {
-    indexes: state.search.indexes
+    tags: selectIndexCounts(state, 'tags'),
+    people: selectIndexCounts(state, 'people'),
+    filters: selectFilters(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onSearch(payload) {
+      dispatch({
+        type: SEARCH_FILTERS,
+        payload
+      });
       dispatch({
         type: SEARCH,
         payload

@@ -1,7 +1,8 @@
 import {
   INIT,
   SEARCH_RESULTS,
-  INDEXES_RESULT
+  INDEXES_RESULT,
+  SEARCH_FILTERS
 } from '../constants/actions';
 
 const ACTION_HANDLERS = {
@@ -16,6 +17,12 @@ const ACTION_HANDLERS = {
     {
       ...state,
       indexes: action.payload
+    }
+  ),
+  [SEARCH_FILTERS]: (state, action) => (
+    {
+      ...state,
+      filters: action.payload
     }
   ),
 };
