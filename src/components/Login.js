@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, Alert } from "react-bootstrap";
 import { LOG_IN } from '../constants/actions';
 import CenterView from './CenterView';
 
@@ -57,9 +57,18 @@ class Login extends Component {
           >
             Login
           </Button>
+          {this.props.loginError && <Alert bsStyle="warning">
+            {`${this.props.loginError.code}: ${this.props.loginError.message}`}
+          </Alert>}
         </form>
       </CenterView>
     );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    loginError: state.user.error
   }
 }
 
@@ -75,6 +84,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login)

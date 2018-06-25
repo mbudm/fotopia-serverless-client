@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Alert } from "react-bootstrap";
 import { navigate } from 'redux-saga-first-router';
 import styled from 'styled-components';
 
@@ -22,12 +22,16 @@ const Tile = styled(Col).attrs({
 export class Search extends Component {
   render() {
     const {
-      results
+      results,
+      searchError
     } = this.props;
     return (
       <Grid>
         <SearchHeader />
         {results ? this.renderResults() : <Loader alt="Searching" /> }
+        {searchError && <Alert bsStyle="warning">
+          {searchError}
+        </Alert>}
       </Grid>
     );
   }
@@ -55,7 +59,8 @@ export class Search extends Component {
 }
 const mapStateToProps = state => {
   return {
-    results: state.search.results
+    results: state.search.results,
+    searchError: state.search.error
   }
 }
 

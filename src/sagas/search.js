@@ -2,7 +2,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Storage } from 'aws-amplify';
 import * as api from './api';
-import { SEARCH, SEARCH_RESULTS } from '../constants/actions';
+import {
+  SEARCH,
+  SEARCH_RESULTS,
+  SEARCH_FAILURE
+} from '../constants/actions';
 import { QUERY } from '../constants/api';
 import useAuth from '../util/useAuth';
 import appConfig from '../appConfig';
@@ -16,7 +20,11 @@ function* queryFotos(action) {
     const results = yield call( fetchFotos, action.payload);
     yield put({ type: SEARCH_RESULTS,  payload: results});
   } catch(e) {
-    console.error(e)
+    yield put({ type: SEARCH_FAILURE,  payload: {
+      params: action.payload,
+      error: e && e.response && e.response.data ? JSON.stringify(e.response.data ) : JSON.stringify(e)
+    }
+  });
   }
 
 }
