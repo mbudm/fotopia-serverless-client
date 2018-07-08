@@ -89,6 +89,7 @@ resources:
               - POST
               - PUT
             TargetOriginId: FotopiaClient
+            Compress: 'true'
             ForwardedValues:
               QueryString: 'false'
               Cookies:
