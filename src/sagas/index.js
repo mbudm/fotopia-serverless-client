@@ -6,6 +6,8 @@ import listenForSearch from './search';
 import listenForUpload from './upload';
 import listenForGetFoto from './get';
 import listenForGetIndexes from './indexes';
+import listenForCachedLoad from './cache';
+
 import {
   listenForLogIn,
   listenForChangePassword,
@@ -15,6 +17,7 @@ import selectRoute from '../selectors/route';
 
 export default function* root() {
   yield all([
+    fork(listenForCachedLoad),
     fork(listenForGetConfig),
     fork(listenForLogIn),
     fork(listenForLoginSuccess),
