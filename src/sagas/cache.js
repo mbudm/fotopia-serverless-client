@@ -1,7 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { select, put, takeLatest } from 'redux-saga/effects';
 import {
   SEARCH,
-  CACHED_LOAD
+  CACHED_LOAD,
+  CACHED_LOAD_FAILURE
 } from '../constants/actions';
 import selectSearchResults from '../selectors/searchResults'
 import selectRoute from '../selectors/route';
