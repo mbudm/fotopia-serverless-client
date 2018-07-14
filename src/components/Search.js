@@ -39,6 +39,12 @@ export class Search extends Component {
           {searchError}
         </Alert>}
         {!isLoading && !results && this.renderSearchPrompt()}
+        <pre>
+          isLoading: {isLoading ? isLoading.toString() : 'false'}<br />
+          results isArray: {Array.isArray(results).toString()}<br />
+          results length: {results && results.length}<br />
+          searchError: {searchError}
+        </pre>
       </Grid>
     );
   }
