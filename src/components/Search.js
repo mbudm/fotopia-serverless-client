@@ -61,11 +61,13 @@ export class Search extends Component {
     (<Row><p>{results}</p></Row>);
   }
 }
+
+const getServiceWorkerUpdated = (state) => state.cache && state.cache.serviceWorkerUpdated
 const mapStateToProps = state => {
   return {
     results: state.search.results,
     searchError: state.search.error,
-    serviceWorkerUpdated: state.cache.serviceWorkerUpdated
+    serviceWorkerUpdated: getServiceWorkerUpdated(state)
   }
 }
 
