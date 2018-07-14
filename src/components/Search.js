@@ -9,6 +9,9 @@ import Loader from './Loader';
 import {
   DETAIL
 } from '../constants/routes';
+import {
+  SEARCH
+} from '../constants/actions';
 
 const Tile = styled(Col).attrs({
   xs:3,
@@ -35,6 +38,7 @@ export class Search extends Component {
         {searchError && <Alert bsStyle="warning">
           {searchError}
         </Alert>}
+        {!isLoading && !results && this.renderSearchPrompt}
       </Grid>
     );
   }
@@ -59,6 +63,12 @@ export class Search extends Component {
     </Row>):
     (<Row><p>{results}</p></Row>);
   }
+
+  renderSearchPrompt(){
+    return (<Alert bsStyle="info">
+    Load <a onClick={this.props.onSearch} >latest photos</a>
+  </Alert>);
+  }
 }
 
 const mapStateToProps = state => {
@@ -75,6 +85,10 @@ const mapDispatchToProps = dispatch => {
       e.preventDefault();
       const fotoid = e.target.dataset.id;
       dispatch(navigate(DETAIL, {fotoid}));
+    },
+    onSearch(e){
+      e.preventDefault();
+      dispatch({type: SEARCH});
     }
   }
 }
