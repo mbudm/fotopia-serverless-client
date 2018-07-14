@@ -1,5 +1,6 @@
 import {
   INIT,
+  SEARCH,
   SEARCH_RESULTS,
   INDEXES_RESULT,
   SEARCH_FAILURE,
@@ -8,15 +9,19 @@ import {
 
 const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({}),
+  [SEARCH]: (state, action) => ({isLoading: true}),
   [SEARCH_RESULTS]: (state, action) => (
     {
       ...state,
-      results: action.payload
+      results: action.payload,
+      isLoading: false
     }
   ),
   [SEARCH_FAILURE]: (state, action) => (
     {
-      ...action.payload
+      ...state,
+      ...action.payload,
+      isLoading: false
     }
   ),
   [INDEXES_RESULT]: (state, action) => (

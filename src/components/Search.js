@@ -22,19 +22,18 @@ const Tile = styled(Col).attrs({
 export class Search extends Component {
   render() {
     const {
+      isLoading,
       results,
-      searchError,
-      serviceWorkerUpdated
+      searchError
     } = this.props;
+
     return (
       <Grid>
         <SearchHeader />
-        {results ? this.renderResults() : <Loader alt="Searching" /> }
+        {isLoading &&  <Loader alt="Searching" />}
+        {results && this.renderResults()}
         {searchError && <Alert bsStyle="warning">
           {searchError}
-        </Alert>}
-        {serviceWorkerUpdated && <Alert bsStyle="info">
-          Service worker updated
         </Alert>}
       </Grid>
     );
@@ -62,12 +61,11 @@ export class Search extends Component {
   }
 }
 
-const getServiceWorkerUpdated = (state) => state.cache && state.cache.serviceWorkerUpdated
 const mapStateToProps = state => {
   return {
+    isLoading: state.search.isLoading,
     results: state.search.results,
-    searchError: state.search.error,
-    serviceWorkerUpdated: getServiceWorkerUpdated(state)
+    searchError: state.search.error
   }
 }
 
