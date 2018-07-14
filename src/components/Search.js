@@ -33,12 +33,12 @@ export class Search extends Component {
     return (
       <Grid>
         <SearchHeader />
-        {isLoading &&  <Loader alt="Searching" />}
+        {isLoading && <Loader alt="Searching" />}
         {results && this.renderResults()}
         {searchError && <Alert bsStyle="warning">
           {searchError}
         </Alert>}
-        {!isLoading && !results && this.renderSearchPrompt}
+        {!isLoading && !results && this.renderSearchPrompt()}
       </Grid>
     );
   }
@@ -66,8 +66,8 @@ export class Search extends Component {
 
   renderSearchPrompt(){
     return (<Alert bsStyle="info">
-    Load <a onClick={this.props.onSearch} >latest photos</a>
-  </Alert>);
+      Load <a onClick={this.props.onSearch} >latest photos</a>
+    </Alert>);
   }
 }
 
