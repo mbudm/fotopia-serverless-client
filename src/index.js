@@ -17,6 +17,9 @@ import {
   DETAIL,
   EDIT
 } from './constants/routes';
+import {
+  CACHED_LOAD
+} from './constants/actions';
 
 import * as navigateSagas from './sagas/navigate';
 
@@ -56,4 +59,10 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-registerServiceWorker();
+
+const onUpdate = () => {
+  store.dispatch({
+    type: CACHED_LOAD
+  });
+}
+registerServiceWorker(onUpdate);

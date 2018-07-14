@@ -23,7 +23,8 @@ export class Search extends Component {
   render() {
     const {
       results,
-      searchError
+      searchError,
+      serviceWorkerUpdated
     } = this.props;
     return (
       <Grid>
@@ -31,6 +32,9 @@ export class Search extends Component {
         {results ? this.renderResults() : <Loader alt="Searching" /> }
         {searchError && <Alert bsStyle="warning">
           {searchError}
+        </Alert>}
+        {serviceWorkerUpdated && <Alert bsStyle="info">
+          Service worker updated
         </Alert>}
       </Grid>
     );
@@ -60,7 +64,8 @@ export class Search extends Component {
 const mapStateToProps = state => {
   return {
     results: state.search.results,
-    searchError: state.search.error
+    searchError: state.search.error,
+    serviceWorkerUpdated: state.cache.serviceWorkerUpdated
   }
 }
 

@@ -18,7 +18,7 @@ const isLocalhost = Boolean(
     )
 );
 
-export default function register() {
+export default function register(onCacheNotify) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
@@ -46,13 +46,13 @@ export default function register() {
         });
       } else {
         // Is not local host. Just register service worker
-        registerValidSW(swUrl);
+        registerValidSW(swUrl, onCacheNotify);
       }
     });
   }
 }
 
-function registerValidSW(swUrl) {
+function registerValidSW(swUrl, onCacheNotify) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -71,6 +71,9 @@ function registerValidSW(swUrl) {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.');
+              if(onCacheNotify && onCacheNotify.call){
+                onCacheNotify.call();
+              }
             }
           }
         };
