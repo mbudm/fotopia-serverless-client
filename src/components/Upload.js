@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { Grid, Row, Col, Table, Button, FormGroup, FormControl, Alert } from "react-bootstrap";
 import { UPLOAD } from '../constants/actions';
 
 import Tags from './Tags';
@@ -19,6 +19,10 @@ class Upload extends Component {
 
   renderLoader = () => (<img src="loader.svg" alt="uploading"/>);
 
+  validateForm = () => {
+    return this.state.images.length > 0;
+  }
+
   renderForm(){
     const {
       images,
@@ -28,58 +32,78 @@ class Upload extends Component {
     if(images.length === 0){
       submitOpts.disabled = "disabled"
     };
-    return (<div>
+    return (<Grid>
       <h2>Upload</h2>
       <form onSubmit={this.handleSubmit} >
-        <input type="file" onChange={this.handleImagesChange} multiple/>
-        {nonImages.length > 0 &&
-          <p>You uploaded {nonImages.length} file(s) that are not images</p>
-        }
-        <div className="row" >
+        <FormGroup bsSize="large">
+          <FormControl
+            autoFocus
+            type="file"
+            value={this.state.username}
+            onChange={this.handleImagesChange}
+            multiple
+          />
+          {nonImages.length > 0 &&
+            <Alert bsStyle="warning">You selected {nonImages.length} file(s) that are not images</Alert>
+          }
+        </FormGroup>
+        <Row>
           {images.map(image => (
-            <div className="col-md-2 center-block" key={image.file.name}>
+            <Col xs={12} key={image.file.name}>
               <img
                 src={image.src}
                 alt=" "
                 data-filename={image.file.name}
                 className="img-thumbnail img-responsive"
                 onLoad={this.handleImageLoad}/>
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Birthtime</th>
-                    <td>{image.file.lastModified}</td>
-                  </tr>
-                  <tr>
-                    <th>File size</th>
-                    <td>{image.file.size}</td>
-                  </tr>
-                  <tr>
-                    <th>Name</th>
-                    <td>{image.file.name}</td>
-                  </tr>
-                  <tr>
-                    <th>Type</th>
-                    <td>{image.file.type}</td>
-                  </tr>
-                  <tr>
-                    <th>Width</th>
-                    <td>{image.width}</td>
-                  </tr>
-                  <tr>
-                    <th>Height</th>
-                    <td>{image.height}</td>
-                  </tr>
-                </tbody>
-              </table>
               <Tags id={image.file.name} title="Tags" placeholder="Add tags to this image" tagKey="tags" onTagUpdate={this.handleTagUpdate}/>
-              <Tags id={image.file.name} title="People" placeholder="Add people to this image" tagKey="people" onTagUpdate={this.handleTagUpdate}/>
-            </div>
+              {this.renderDetails(image)}
+            </Col>
           ))}
-        </div>
-        <input type="submit" value="Upload" {...submitOpts} />
+        </Row>
+        <FormGroup >
+          <Button
+              block
+              bsSize="large"
+              disabled={!this.validateForm()}
+              type="submit"
+            >
+            Upload
+          </Button>
+        </FormGroup>
       </form>
-    </div>);
+    </Grid>);
+  }
+
+  renderDetails(image){
+    return (<Table striped>
+      <tbody>
+        <tr>
+          <th>Birthtime</th>
+          <td>{image.file.lastModified}</td>
+        </tr>
+        <tr>
+          <th>File size</th>
+          <td>{image.file.size}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{image.file.name}</td>
+        </tr>
+        <tr>
+          <th>Type</th>
+          <td>{image.file.type}</td>
+        </tr>
+        <tr>
+          <th>Width</th>
+          <td>{image.width}</td>
+        </tr>
+        <tr>
+          <th>Height</th>
+          <td>{image.height}</td>
+        </tr>
+      </tbody>
+    </Table>)
   }
 
   handleImageLoad = (e) => {

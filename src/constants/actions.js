@@ -16,6 +16,7 @@ export const CREATE = 'CREATE';
 export const GET_FOTO = 'GET_FOTO';
 export const GET_INDEXES = 'GET_INDEXES';
 export const INDEXES_RESULT = 'INDEXES_RESULT';
+export const INDEXES_FAILURE = 'INDEXES_FAILURE'
 export const SEARCH_FILTERS = 'SEARCH_FILTERS';
 export const SEARCH_FAILURE = 'SEARCH_FAILURE';
 export const CACHED_LOAD = 'CACHED_LOAD';

@@ -6,6 +6,8 @@ import { mod } from 'react-swipeable-views-core';
 
 import selectSearchResults from '../selectors/searchResults';
 
+import './detail.css';
+
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);
 
 export class Detail extends Component {
@@ -39,13 +41,12 @@ export class Detail extends Component {
     const result = results[idx];
 
     return result ? (
-      <figure key={result.id}>
+      <figure key={result.id} className="detail-image">
         <img
           src={result.img_location}
           className="img-responsive center-block"
           alt=""
         />
-        <p>Slide {idx}</p>
       </figure>
     ) : null;
   }
