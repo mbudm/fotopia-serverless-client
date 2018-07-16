@@ -1,7 +1,7 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
 import * as api from './api';
-import { GET_INDEXES, INDEXES_RESULT } from '../constants/actions';
+import { GET_INDEXES, INDEXES_RESULT, INDEXES_FAILURE } from '../constants/actions';
 import { INDEXES_PATH } from '../constants/api';
 
 export default function* listenForGetIndexes() {
@@ -13,7 +13,7 @@ function* getIndexes(action) {
     const result = yield call( fetchIndexes);
     yield put({ type: INDEXES_RESULT,  payload: result});
   } catch(e) {
-    console.error(e)
+    yield put({ type: INDEXES_FAILURE,  payload: e});
   }
 }
 

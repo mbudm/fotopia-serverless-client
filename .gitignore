@@ -60,3 +60,4 @@ serverless.env.yml
 
 .serverless
 
+.vscode

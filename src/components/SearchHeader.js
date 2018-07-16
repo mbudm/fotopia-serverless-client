@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Alert,
   Row,
   Col,
   ButtonToolbar,
@@ -15,7 +16,11 @@ import {
 
 import { SEARCH, GET_INDEXES, SEARCH_FILTERS } from '../constants/actions';
 import Loader from './Loader';
-import { selectIndexCounts } from '../selectors/indexes';
+import {
+  selectIndexCounts,
+  selectIndexError,
+  selectIndexIsLoading
+} from '../selectors/indexes';
 import selectFilters from '../selectors/filters';
 
 export class SearchHeader extends Component {
@@ -63,22 +68,32 @@ export class SearchHeader extends Component {
 
   renderFilter(){
     const {
+      indexesError,
+      indexesLoading
+    } = this.props;
+
+    return (
+      <Panel>
+        { indexesLoading && <Loader alt="Getting filters"/> }
+        { indexesError && <Alert bsStyle="warning">{indexesError}</Alert> }
+        { !indexesError && !indexesLoading && this.renderFilterForm() }
+      </Panel>);
+  }
+
+  renderFilterForm(){
+    const {
       tags,
       people
     } = this.props;
-
     const showTags = tags.length > 0;
     const showPeople = people.length > 0;
     const countFilterGroups = [showTags, showPeople].reduce((accum, current) => current ? ++accum : accum, 0)
     const cols = Math.floor(12 / countFilterGroups);
-    return showTags || showPeople ? (
-      <Panel>
-        <Form horizontal className="panel-body">
-          { showTags && this.renderFilterGroupOuter('Tags', 'tags', tags, cols) }
-          { showPeople && this.renderFilterGroupOuter('People', 'people', people, cols)  }
-          <Button onClick={this.handleUpdate} className="pull-right" >Update</Button>
-        </Form>
-      </Panel>) : (<Loader alt="Getting filters"/>);
+    return (<Form horizontal className="panel-body">
+      { showTags && this.renderFilterGroupOuter('Tags', 'tags', tags, cols) }
+      { showPeople && this.renderFilterGroupOuter('People', 'people', people, cols)  }
+      <Button onClick={this.handleUpdate} className="pull-right" >Update</Button>
+    </Form>);
   }
 
   renderFilterGroupOuter(label, group, checkboxes, cols){
@@ -185,6 +200,8 @@ const mapStateToProps = state => {
   return {
     tags: selectIndexCounts(state, 'tags'),
     people: selectIndexCounts(state, 'people'),
+    indexesError: selectIndexError(state),
+    indexesLoading: selectIndexIsLoading(state),
     currentFilters: selectFilters(state),
   }
 }
