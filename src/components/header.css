@@ -5,3 +5,4 @@
 .navbar-nav, .navbar-brand, .navbar-toggle{
   pointer-events: auto;
 }
+.screen-readers{ display:none;}

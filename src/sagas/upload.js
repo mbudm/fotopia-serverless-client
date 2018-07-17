@@ -1,5 +1,5 @@
 
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest, select } from 'redux-saga/effects';
 import Amplify from 'aws-amplify';
 import { navigate } from 'redux-saga-first-router';
 import { UPLOAD, CREATED_IMAGE_RECORDS, SEARCH } from '../constants/actions';
@@ -10,6 +10,7 @@ import * as api from './api';
 import * as schemaKeys from '../constants/schemas';
 import { CREATE } from '../constants/api';
 import { validate } from './schemas';
+import selectFilters from '../selectors/filters';
 
 export default function* listenForUpload() {
   yield takeLatest(UPLOAD, upload);
@@ -29,7 +30,8 @@ function* upload(action) {
   const uploadedImages = yield all(action.payload.map(image => call( api.upload, image, info.username )));
   const createdImages = yield all(uploadedImages.map(s3ResponseAndImage => call( createFoto, s3ResponseAndImage, info )));
   yield put({ type: CREATED_IMAGE_RECORDS,  payload: createdImages});
-  yield put({type: SEARCH});
+  const filters = yield select(selectFilters);
+  yield put({type: SEARCH, payload: {...filters}});
   yield put(navigate(HOME));
 }
 

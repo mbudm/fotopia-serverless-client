@@ -20,7 +20,7 @@ export class Detail extends Component {
       return (
         <div className="detail-container">
           { results.length > 1 && <VirtualizeSwipeableViews slideRenderer={this.renderResult} /> }
-          { results.length === 1 && this.renderResult({ index: 0 }) }
+          { results.length === 1 && <div> {this.renderResult({ index: 0 })}</div> }
         </div>
       );
     }else{

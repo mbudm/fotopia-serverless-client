@@ -20,7 +20,7 @@ export class Header extends Component {
     <div>
       <a
       className="navbar navbar-fixed-bottom"
-      onClick={this.onNavToggleClick} ></a>
+      onClick={this.onNavToggleClick} ><span className="screen-readers" >Toggle Nav</span></a>
       {menuOpen && <Navbar inverse collapseOnSelect fixedBottom >
         <Navbar.Header>
           <Navbar.Brand>

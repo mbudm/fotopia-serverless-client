@@ -23,6 +23,8 @@ import {
 
 import * as navigateSagas from './sagas/navigate';
 
+import './index.css';
+
 const routesMap = buildRoutesMap(
   route(EDIT, '/edit', navigateSagas.editNavigate),
   route(UPLOAD, '/upload', navigateSagas.uploadNavigate),

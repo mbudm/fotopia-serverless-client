@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Alert,
-  Row,
   Col,
   ButtonToolbar,
   Button,
@@ -38,21 +37,15 @@ export class SearchHeader extends Component {
   render() {
     const filterLabel = this.state.filterOpen ? 'Close Filter' : 'Filter';
     const currentFilterLabels = getFiltersByGroupAndKey(this.props.currentFilters);
-    return (<Row>
-        <Col xs={12}>
-          <h2>
-            Search
-            <Button
-              onClick={this.toggleFilter}
-              className="pull-right">
-              {filterLabel}
-            </Button>
-            {!this.state.filterOpen && currentFilterLabels.length > 0 && this.renderFilterLabels(currentFilterLabels)}
-          </h2>
-          {this.state.filterOpen && this.renderFilter()}
-        </Col>
-      </Row>
-    );
+    return (<div className="navbar navbar-fixed-top" >
+        <Button
+          onClick={this.toggleFilter}
+          className="pull-right">
+          {filterLabel}
+        </Button>
+        {!this.state.filterOpen && currentFilterLabels.length > 0 && this.renderFilterLabels(currentFilterLabels)}
+      {this.state.filterOpen && this.renderFilter()}
+    </div>);
   }
 
   renderFilterLabels = (filters) => (<ButtonToolbar >
