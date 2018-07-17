@@ -1,4 +1,16 @@
-.detail-image{
-  height: 100%;
-  vertical-align: middle;
+
+.detail-container{
+  display: grid;
+  position:fixed;
+  height:100%;
+  background-color: #000;
+}
+.detail-container > div{
+  margin:auto;
+}
+.detail-image > .img-responsive{
+  width:100%;
+  height:100%;
+  height:auto;
+  width:auto;
 }

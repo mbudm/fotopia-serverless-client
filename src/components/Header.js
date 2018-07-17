@@ -5,31 +5,47 @@ import { Auth } from 'aws-amplify';
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 
 import { LOG_OUT } from '../constants/actions';
+import './header.css';
 
 export class Header extends Component {
-  render= () => (<Navbar inverse collapseOnSelect>
-      <Navbar.Header>
-        <Navbar.Brand>
-          <a href="/" onClick={this.props.onNavigateHome}>Fotopia</a>
-        </Navbar.Brand>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        <Nav>
-          <NavItem eventKey={1} href="/" onClick={this.props.onNavigateHome}>
-            Home
-          </NavItem>
-          <NavItem eventKey={2} href="/upload" onClick={this.props.onNavigateUpload} >
-            Upload
-          </NavItem>
-        </Nav>
-        <Nav pullRight>
-          <NavItem href="/" onClick={this.props.onLogOut}>
-            Sign out
-          </NavItem>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>);
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuOpen: false,
+    };
+  }
+  render(){
+    const {menuOpen} = this.state;
+    return (
+    <div>
+      <a
+      className="navbar navbar-fixed-bottom"
+      onClick={this.onNavToggleClick} ></a>
+      {menuOpen && <Navbar inverse collapseOnSelect fixedBottom >
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/" onClick={this.props.onNavigateHome}>Fotopia</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse >
+          <Nav>
+            <NavItem eventKey={1} href="/" onClick={this.props.onNavigateHome}>
+              Home
+            </NavItem>
+            <NavItem eventKey={2} href="/upload" onClick={this.props.onNavigateUpload} >
+              Upload
+            </NavItem>
+          </Nav>
+          <Nav pullRight>
+            <NavItem href="/" onClick={this.props.onLogOut}>
+              Sign out
+            </NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>}
+    </div>);
+  }
 
   handleSignOut(e){
     e.preventDefault();
@@ -37,6 +53,14 @@ export class Header extends Component {
       .then(data => console.log(data))
       .catch(err => console.log(err));
   }
+
+  onNavToggleClick = (e) => {
+    const { menuOpen } = this.state;
+    this.setState({
+      menuOpen: !menuOpen
+    })
+  }
+
 }
 
 const mapDispatchToProps = dispatch => {

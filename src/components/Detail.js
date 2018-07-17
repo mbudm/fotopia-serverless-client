@@ -17,13 +17,12 @@ export class Detail extends Component {
     } = this.props;
 
     if(Array.isArray(results)){
-      return results.length > 1 ? (
-        <div>
-          <VirtualizeSwipeableViews slideRenderer={this.renderResult} />
+      return (
+        <div className="detail-container">
+          { results.length > 1 && <VirtualizeSwipeableViews slideRenderer={this.renderResult} /> }
+          { results.length === 1 && this.renderResult({ index: 0 }) }
         </div>
-      ): this.renderResult({
-        index: 0
-      });
+      );
     }else{
       return (<p> No results </p>);
     }
@@ -37,11 +36,12 @@ export class Detail extends Component {
     const {
       index
     } = params;
-    const idx = mod(index, results.length)
+    const idx = mod(index, results.length);
     const result = results[idx];
+    const key = `${result.id}-${index}`;
 
     return result ? (
-      <figure key={result.id} className="detail-image">
+      <figure key={key} className="detail-image">
         <img
           src={result.img_location}
           className="img-responsive center-block"

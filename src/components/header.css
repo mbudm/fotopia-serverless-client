@@ -1,0 +1,7 @@
+
+.navbar-inverse, .navbar-inverse > container .navbar-header{
+  pointer-events: none;
+}
+.navbar-nav, .navbar-brand, .navbar-toggle{
+  pointer-events: auto;
+}
