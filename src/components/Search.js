@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Alert } from "react-bootstrap";
+import { Grid, Row, Col, Alert, Button } from "react-bootstrap";
 import { navigate } from 'redux-saga-first-router';
 import styled from 'styled-components';
 
@@ -33,7 +33,7 @@ export class Search extends Component {
     return (
       <Grid>
         <SearchHeader />
-        {isLoading && <Loader alt="Searching" />}
+        {isLoading && <Loader alt="Searching" className="center-stage" />}
         {results && this.renderResults()}
         {searchError && <Alert bsStyle="warning">
           {searchError}
@@ -61,12 +61,12 @@ export class Search extends Component {
         </Tile>
       ))}
     </Row>):
-    (<Row><Col xs={12}><Alert bsStyle="info">{results}</Alert></Col></Row>);
+    (<Alert bsStyle="info" className="center-stage">{results}</Alert>);
   }
 
   renderSearchPrompt(){
-    return (<Alert bsStyle="info">
-      Load <a onClick={this.props.onSearch} >latest photos</a>
+    return (<Alert bsStyle="info" className="center-stage">
+      <p>Get latest photos <Button onClick={this.props.onSearch} >Refresh</Button></p>
     </Alert>);
   }
 }

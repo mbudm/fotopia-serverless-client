@@ -52,6 +52,14 @@ CUSTOM_DOMAIN_DEV='test.my-domain.com' # cloudfront
 CUSTOM_DOMAIN_PROD='my-domain.com'  # cloudfront
 HOSTED_ZONE_NAME='my-domain.com.' # <- the dot is intentional, a route53 requirement
 ```
+## Device testing
+
+For iOS devices I've had some success with [remotedebug_ios_webkit_adapter](https://github.com/RemoteDebug/remotedebug-ios-webkit-adapter) and `yarn start-auth-remote`. This is the best setup I've found for device testing.
+
+```sh
+remotedebug_ios_webkit_adapter --port=9000
+```
+Load up http://[your computer ip]:[env.PORT] in mobile safari (and save to home screen) then also add this URL to launch.json (VS Code). Then start debugging. It occasionally detaches, but its a lot more reliable than Safari's device devtools.
 
 ## Todo
 - Work out a good functional test that can be run in CI - maybe chrome driver & puppeteer.

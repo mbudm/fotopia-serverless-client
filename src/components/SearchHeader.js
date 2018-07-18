@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Alert,
+  Row,
   Col,
   ButtonToolbar,
   Button,
@@ -22,6 +23,8 @@ import {
 } from '../selectors/indexes';
 import selectFilters from '../selectors/filters';
 
+import './searchHeader.css';
+
 export class SearchHeader extends Component {
   constructor(props) {
     super(props);
@@ -35,16 +38,25 @@ export class SearchHeader extends Component {
   }
 
   render() {
-    const filterLabel = this.state.filterOpen ? 'Close Filter' : 'Filter';
+    return (<Row>
+        <Col xs={12} className="filter-tools">
+          {!this.state.filterOpen && this.renderFilterClosed()}
+          {this.state.filterOpen && this.renderFilterOpen()}
+        </Col>
+      </Row>
+    );
+  }
+
+  renderFilterClosed(){
     const currentFilterLabels = getFiltersByGroupAndKey(this.props.currentFilters);
-    return (<div className="navbar navbar-fixed-top" >
-        <Button
-          onClick={this.toggleFilter}
-          className="pull-right">
-          {filterLabel}
-        </Button>
-        {!this.state.filterOpen && currentFilterLabels.length > 0 && this.renderFilterLabels(currentFilterLabels)}
-      {this.state.filterOpen && this.renderFilter()}
+    return (
+    <div>
+       <Button
+        onClick={this.toggleFilter}
+        className="pull-right">
+        Filter
+      </Button>
+      { currentFilterLabels.length > 0 && this.renderFilterLabels(currentFilterLabels)}
     </div>);
   }
 
@@ -59,7 +71,7 @@ export class SearchHeader extends Component {
       </Button>))}
   </ButtonToolbar>);
 
-  renderFilter(){
+  renderFilterOpen(){
     const {
       indexesError,
       indexesLoading
@@ -83,9 +95,17 @@ export class SearchHeader extends Component {
     const countFilterGroups = [showTags, showPeople].reduce((accum, current) => current ? ++accum : accum, 0)
     const cols = Math.floor(12 / countFilterGroups);
     return (<Form horizontal className="panel-body">
+      <ButtonToolbar>
+          <Glyphicon glyph="remove" onClick={this.toggleFilter} className="pull-right"/>
+      </ButtonToolbar>
+      <Row>
       { showTags && this.renderFilterGroupOuter('Tags', 'tags', tags, cols) }
       { showPeople && this.renderFilterGroupOuter('People', 'people', people, cols)  }
-      <Button onClick={this.handleUpdate} className="pull-right" >Update</Button>
+      </Row>
+      <ButtonToolbar className="pull-right">
+        <Button onClick={this.toggleFilter} > Close</Button>
+        <Button onClick={this.handleUpdate} bsStyle="primary"> Search</Button>
+      </ButtonToolbar>
     </Form>);
   }
 
@@ -99,10 +119,10 @@ export class SearchHeader extends Component {
   renderFilterGroup(label, group, checkboxes){
     return (
       <FormGroup>
-        <Col componentClass={ControlLabel} xs={2}>
+        <Col componentClass={ControlLabel} xs={3}>
           {label}
         </Col>
-        <Col xs={10}>
+        <Col xs={9}>
         {checkboxes.map(cb => (
           <Checkbox
             key={cb.name}
@@ -151,7 +171,7 @@ export class SearchHeader extends Component {
     }
     this.setState({
       filterOpen: !this.state.filterOpen,
-    })
+    });
   }
 
   handleFilterButtonClick =(e) => {
@@ -176,6 +196,7 @@ export class SearchHeader extends Component {
       tags: this.state.checked.tags,
       people: this.state.checked.people,
     });
+    this.toggleFilter();
   }
 }
 
