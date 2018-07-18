@@ -4,8 +4,7 @@
 }
 .detail-container > div, .react-swipeable-view-container{
   height:100%;
-}
-
-.react-swipeable-view-container{
+  display:flex;
   align-items: center;
 }
+
