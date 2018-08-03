@@ -2,38 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { saga as routerSaga, buildRoutesMap, route } from 'redux-saga-first-router';
 import createSagaMiddleware from 'redux-saga';
-import createHistory from 'history/createBrowserHistory'
 
 import './index.css';
 import AppContainer from './AppContainer';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 import sagas from './sagas';
-import {
-  HOME,
-  UPLOAD,
-  DETAIL,
-  EDIT
-} from './constants/routes';
+
+import setUpRoutes from  './routes';
+
 import {
   CACHED_LOAD
 } from './constants/actions';
 
-import * as navigateSagas from './sagas/navigate';
-
 import './index.css';
 
-const routesMap = buildRoutesMap(
-  route(EDIT, '/edit', navigateSagas.editNavigate),
-  route(UPLOAD, '/upload', navigateSagas.uploadNavigate),
-  route(DETAIL, '/detail/:fotoid', navigateSagas.detailNavigate),
-  route(HOME, '/', navigateSagas.homeNavigate),
-);
 
 const sagaMiddleware = createSagaMiddleware();
-const history = createHistory()
 // eslint-disable-next-line
 let composeEnhancers = compose;
 
@@ -53,7 +39,8 @@ const store = createStore(
 );
 
 sagaMiddleware.run(sagas);
-sagaMiddleware.run(routerSaga, routesMap, history);
+
+setUpRoutes(sagaMiddleware);
 
 ReactDOM.render(
   <Provider store={store}>
