@@ -6,6 +6,7 @@ import {
   UPLOAD,
   DETAIL,
   EDIT,
+  PEOPLE,
 } from './constants/routes';
 import * as navigateSagas from './sagas/navigate';
 
@@ -17,6 +18,7 @@ export default function setUpRoutes(sagaMiddleware){
     route(UPLOAD, '/upload', navigateSagas.uploadNavigate),
     route(DETAIL, '/detail/:fotoid', navigateSagas.detailNavigate),
     route(HOME, '/', navigateSagas.homeNavigate),
+    route(PEOPLE, '/people', navigateSagas.peopleNavigate),
   );
 
   sagaMiddleware.run(routerSaga, routesMap, history);

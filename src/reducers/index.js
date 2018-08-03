@@ -7,6 +7,7 @@ import { search } from './search';
 import { upload } from './upload';
 import { cache } from './cache';
 import { indexes } from './indexes';
+import { people } from './people';
 
 const reducers = combineReducers({
   config,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   upload,
   cache,
   indexes,
+  people,
   router: routerReducer
 });
 

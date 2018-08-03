@@ -5,6 +5,12 @@ import { Auth } from 'aws-amplify';
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 
 import { LOG_OUT } from '../constants/actions';
+import {
+  HOME,
+  UPLOAD,
+  EDIT,
+  PEOPLE,
+} from '../constants/routes';
 import './header.css';
 
 export class Header extends Component {
@@ -35,6 +41,9 @@ export class Header extends Component {
             </NavItem>
             <NavItem eventKey={2} href="/upload" onClick={this.props.onNavigateUpload} >
               Upload
+            </NavItem>
+            <NavItem eventKey={2} href="/people" onClick={this.props.onNavigatePeople} >
+              People
             </NavItem>
           </Nav>
           <Nav pullRight>
@@ -73,15 +82,19 @@ const mapDispatchToProps = dispatch => {
     },
     onNavigateHome(e) {
       e.preventDefault();
-      dispatch(navigate('HOME', {}));
+      dispatch(navigate(HOME, {}));
     },
     onNavigateUpload(e) {
       e.preventDefault();
-      dispatch(navigate('UPLOAD', {}, { replace: true }));
+      dispatch(navigate(UPLOAD, {}, { replace: true }));
     },
     onNavigateEdit(e) {
       e.preventDefault();
-      dispatch(navigate('EDIT', {}, { replace: true }));
+      dispatch(navigate(EDIT, {}, { replace: true }));
+    },
+    onNavigatePeople(e) {
+      e.preventDefault();
+      dispatch(navigate(PEOPLE, {}, { replace: true }));
     },
   }
 }

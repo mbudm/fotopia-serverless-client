@@ -5,7 +5,8 @@ import {
   SEARCH,
   SEARCH_RESULTS,
   GET_FOTO,
-  GET_INDEXES
+  GET_INDEXES,
+  GET_PEOPLE
 } from '../constants/actions';
 import {
   UPLOAD
@@ -33,6 +34,10 @@ export function* detailNavigate({fotoid}) {
   if(!imageRecord){
     yield put({type: GET_FOTO, payload: fotoid});
   }
+}
+
+export function* peopleNavigate(){
+  yield put({type: GET_PEOPLE});
 }
 
 export function* homeNavigate(){

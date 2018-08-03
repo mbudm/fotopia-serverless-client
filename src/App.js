@@ -5,12 +5,14 @@ import Search from './components/Search';
 import Upload from './components/Upload';
 import Edit from './components/Edit';
 import Detail from './components/Detail';
+import People from './components/People';
 import Header from './components/Header';
 import {
   HOME,
   UPLOAD,
   DETAIL,
-  EDIT
+  EDIT,
+  PEOPLE
 } from './constants/routes';
 
 class App extends Component {
@@ -29,6 +31,7 @@ class App extends Component {
       [UPLOAD]: () => <Upload />,
       [EDIT]: () => <Edit />,
       [DETAIL]: () => <Detail fotoid={params.fotoid}/>,
+      [PEOPLE]: () => <People />,
       [HOME]: () => <Search />,
     }
     return routes[id] ? routes[id]() : (<Search />);
