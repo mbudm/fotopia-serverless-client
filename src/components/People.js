@@ -21,7 +21,7 @@ export class People extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!Array.isArray(this.props.results) && Array.isArray(nextProps.results)) {
+    if (this.props.isLoading === true && nextProps.isLoading === false && Array.isArray(nextProps.results)) {
       this.setPeopleNamesState(nextProps);
     }
   }
