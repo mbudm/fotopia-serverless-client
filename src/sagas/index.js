@@ -6,7 +6,10 @@ import listenForSearch from './search';
 import listenForUpload from './upload';
 import listenForGetFoto from './get';
 import listenForGetIndexes from './indexes';
-import listenForGetPeople from './people';
+import {
+  listenForGetPeople,
+  listenForUpdatePerson
+} from './people';
 import listenForCachedLoad from './cache';
 
 import {
@@ -39,7 +42,8 @@ function* onLoginSuccess(){
     fork(listenForUpload),
     fork(listenForGetFoto),
     fork(listenForGetIndexes),
-    fork(listenForGetPeople)
+    fork(listenForGetPeople),
+    fork(listenForUpdatePerson)
   ]);
   const route = yield select(selectRoute);
   yield put(navigate(route.id, route.params));

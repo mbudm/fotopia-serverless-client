@@ -57,8 +57,7 @@ export class People extends Component {
   renderResults(){
     const {
       results,
-      onSearchPerson,
-      onEditPerson
+      onSearchPerson
     } = this.props;
     return Array.isArray(results)?
       (<Grid>
@@ -75,11 +74,12 @@ export class People extends Component {
             <FormControl
               autoFocus
               type="text"
-              value={this.state.peopleNames[result.name]}
+              value={this.state.peopleNames[result.id]}
               onChange={this.handleChange}
-              onBlur={onEditPerson}
+              onBlur={this.handleBlur}
               data-id={result.id}
             />
+            <span>({result.faces.length})</span>
           </FormGroup>
         </Col>
       ))}
@@ -97,6 +97,18 @@ export class People extends Component {
       peopleNames
     });
   }
+
+  handleBlur = e => {
+    e.preventDefault();
+    const result = findResult(e.target.dataset.id, this.props.results);
+    if (result && (e.target.value !== result.name)) {
+      const payload = {
+        id: e.target.dataset.id,
+        name: e.target.value
+      }
+      this.props.onEditPerson(payload);
+    }
+  }
 }
 
 const mapStateToProps = state => {
@@ -107,14 +119,13 @@ const mapStateToProps = state => {
   }
 }
 
+const findResult = (id, results) => {
+  return Array.isArray(results)? results.find(result => result.id === id) : undefined ;
+}
+
 const mapDispatchToProps = dispatch => {
   return {
-    onEditPerson(e){
-      e.preventDefault();
-      const payload = {
-        id: e.target.dataset.id,
-        name: e.target.value
-      }
+    onEditPerson(payload){
       dispatch({type: UPDATE_PERSON, payload});
     },
     onSearchPerson(e){

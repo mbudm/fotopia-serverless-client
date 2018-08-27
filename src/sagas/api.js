@@ -8,6 +8,7 @@ import appConfig from '../appConfig';
 const createKey = (username, filename) => `${username}/${filename}`;
 
 const postRemote = (route, params) => API.post(ENDPOINT_NAME, route, params);
+const putRemote = (route, params) => API.put(ENDPOINT_NAME, route, params);
 const getRemote  = (route) => API.get(ENDPOINT_NAME, route);
 const delRemote  = (route) => API.del(ENDPOINT_NAME, route);
 const uploadRemote = (imageObject, username) => {
@@ -75,6 +76,15 @@ function postLocal(route, params) {
     .catch(handleError);
 }
 
+function putLocal(route, params) {
+  return fetch(`${appConfig.api}${route}`, {
+    method: 'PUT',
+    body: JSON.stringify(params.body),
+  })
+    .then(response => response.json())
+    .catch(handleError);
+}
+
 function getLocal(route) {
   return fetch(`${appConfig.api}${route}`)
     .then(response => response.json())
@@ -90,6 +100,7 @@ function delLocal(route) {
 }
 
 export const post = useRemoteApi() ? postRemote : postLocal ;
+export const put = useRemoteApi() ? putRemote : putLocal ;
 export const get = useRemoteApi() ? getRemote : getLocal ;
 export const del = useRemoteApi() ? delRemote : delLocal ;
 export const upload = useRemoteApi() ? uploadRemote : uploadLocal ;
