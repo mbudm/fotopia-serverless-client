@@ -91,7 +91,7 @@ function setupAuth(config){
         endpoints: [
           {
             name: ENDPOINT_NAME,
-            endpoint: `${config.ServiceEndpoint}/`,
+            endpoint: appConfig.api,
             region: config.Region,
           },
         ],
