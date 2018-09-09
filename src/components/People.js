@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { navigate } from 'redux-saga-first-router';
+import { HOME } from '../constants/routes';
 import { Grid, Row, Col, Alert, FormGroup, FormControl } from 'react-bootstrap';
 
 import Loader from './Loader';
 
 import {
   UPDATE_PERSON,
-  SEARCH
+  SEARCH,
+  SEARCH_FILTERS
 } from '../constants/actions';
+
+import './people.css';
 
 const getPeopleNamesFromProps = (props) => {
   const peopleNames = {};
@@ -66,7 +70,7 @@ export class People extends Component {
           <img
             src={result.thumbnail_location}
             alt=""
-            className="img-responsive"
+            className="img-responsive search-tile"
             onClick={onSearchPerson}
             data-id={result.id}
           />
@@ -129,14 +133,20 @@ const mapDispatchToProps = dispatch => {
       dispatch({type: UPDATE_PERSON, payload});
     },
     onSearchPerson(e){
+      // nneds to navigate also, plus making the img have pointer cursor would be nice
       e.preventDefault();
-      const personid = e.target.dataset.id;
+      const payload = {
+        people: [ e.target.dataset.id ]
+      };
+      dispatch({
+        type: SEARCH_FILTERS,
+        payload
+      });
       dispatch({
         type: SEARCH,
-        payload: {
-          people: [ personid ]
-        }
+        payload,
       });
+      dispatch(navigate(HOME));
     }
   }
 }

@@ -1,6 +1,6 @@
 import { all, fork, put, select, takeLatest } from 'redux-saga/effects';
 import { navigate } from 'redux-saga-first-router';
-import { INIT, GET_CONFIG, LOG_IN_SUCCESS } from '../constants/actions';
+import { INIT, GET_CONFIG, LOG_IN_SUCCESS, GET_INDEXES, GET_PEOPLE } from '../constants/actions';
 import listenForGetConfig from './getConfig';
 import listenForSearch from './search';
 import listenForUpload from './upload';
@@ -47,4 +47,10 @@ function* onLoginSuccess(){
   ]);
   const route = yield select(selectRoute);
   yield put(navigate(route.id, route.params));
+
+  //lazy load handy data
+  yield all([
+    put({ type: GET_INDEXES }),
+    put({ type: GET_PEOPLE })
+  ]);
 }

@@ -25,6 +25,11 @@ import selectFilters from '../selectors/filters';
 
 import './searchHeader.css';
 
+const hasIndexes = ({tags, people}) => {
+  return (Array.isArray(tags) && tags.length > 0) ||
+    (Array.isArray(people) && people.length > 0);
+}
+
 export class SearchHeader extends Component {
   constructor(props) {
     super(props);
@@ -166,7 +171,7 @@ export class SearchHeader extends Component {
   }
 
   toggleFilter = () => {
-    if(!this.state.filterOpen){
+    if(!this.state.filterOpen && !this.props.indexesLoading && !hasIndexes(this.props)){
       this.props.getIndexes();
     }
     this.setState({
