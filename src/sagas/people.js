@@ -78,7 +78,9 @@ function* updatePerson(action) {
 
 function putPerson(payload){
   if(useAuth()){
-    return api.put(PERSON_PATH(payload.id))
+    return api.put(PERSON_PATH(payload.id), {
+      body: payload,
+    })
       .then(results => {
         return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
       });

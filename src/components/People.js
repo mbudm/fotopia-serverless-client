@@ -10,32 +10,30 @@ import {
   SEARCH
 } from '../constants/actions';
 
+const getPeopleNamesFromProps = (props) => {
+  const peopleNames = {};
+  if(Array.isArray(props.results)){
+    props.results.forEach(res => {
+      peopleNames[res.id] = res.name;
+    });
+  }
+  return peopleNames;
+}
 
 export class People extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      peopleNames: {}
+      peopleNames: getPeopleNamesFromProps(props),
     };
-    if(Array.isArray(props.results)){
-      this.setPeopleNamesState(props);
-    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isLoading === true && nextProps.isLoading === false && Array.isArray(nextProps.results)) {
-      this.setPeopleNamesState(nextProps);
+      this.setState({
+        peopleNames: getPeopleNamesFromProps(nextProps)
+      });
     }
-  }
-
-  setPeopleNamesState(props){
-    const peopleNames = {};
-    props.results.forEach(res => {
-      peopleNames[res.id] = res.name;
-    })
-    this.setState({
-      peopleNames,
-    });
   }
 
   render() {
