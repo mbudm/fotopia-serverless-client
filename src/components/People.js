@@ -14,7 +14,9 @@ import {
 export class People extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      peopleNames: {}
+    };
     if(Array.isArray(props.results)){
       this.setPeopleNamesState(props);
     }
