@@ -21,6 +21,7 @@ import {
   selectIndexError,
   selectIndexIsLoading
 } from '../selectors/indexes';
+import selectPeople from '../selectors/people';
 import selectFilters from '../selectors/filters';
 
 import './searchHeader.css';
@@ -130,10 +131,10 @@ export class SearchHeader extends Component {
         <Col xs={9}>
         {checkboxes.map(cb => (
           <Checkbox
-            key={cb.name}
-            checked={this.state.checked[group].includes(cb.name)}
+            key={cb.id}
+            checked={this.state.checked[group].includes(cb.id)}
             data-group={group}
-            data-key={cb.name}
+            data-key={cb.id}
             onChange={this.onCheckboxChange}
             >{cb.name} ({cb.count})</Checkbox>
         ))}
@@ -215,10 +216,20 @@ export const getFiltersByGroupAndKey = (currentFilters) => {
     }, []);
 }
 
+const hydratePeopleNames = ( peopleIndexes, peopleData) => {
+  return peopleIndexes.map((person) => {
+    const personData = peopleData.find(data => data.id === person.name);
+    return {
+      ...person,
+      name: personData && personData.name
+    }
+  })
+}
+
 const mapStateToProps = state => {
   return {
     tags: selectIndexCounts(state, 'tags'),
-    people: selectIndexCounts(state, 'people'),
+    people: hydratePeopleNames(selectIndexCounts(state, 'people'), selectPeople(state) ),
     indexesError: selectIndexError(state),
     indexesLoading: selectIndexIsLoading(state),
     currentFilters: selectFilters(state),
