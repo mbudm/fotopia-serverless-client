@@ -24,6 +24,13 @@ const uploadRemote = (imageObject, username) => {
   }));
 }
 
+const listRemote = (path, username) => {
+  const options = {
+    level: 'protected'
+  };
+  return Storage.list(path, options);
+}
+
 const handleError = e => console.error(e);
 
 function uploadLocal(imageObject, username){
@@ -104,3 +111,4 @@ export const put = useRemoteApi() ? putRemote : putLocal ;
 export const get = useRemoteApi() ? getRemote : getLocal ;
 export const del = useRemoteApi() ? delRemote : delLocal ;
 export const upload = useRemoteApi() ? uploadRemote : uploadLocal ;
+export const list = useRemoteApi() ? listRemote : null ;
