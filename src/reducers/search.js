@@ -29,7 +29,11 @@ const ACTION_HANDLERS = {
   [SEARCH_FILTERS]: (state, action) => (
     {
       ...state,
-      filters: action.payload
+      filters: {
+        tags: [],
+        people: [],
+        ...action.payload
+      }
     }
   ),
 };

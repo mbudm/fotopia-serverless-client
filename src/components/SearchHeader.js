@@ -54,7 +54,7 @@ export class SearchHeader extends Component {
   }
 
   renderFilterClosed(){
-    const currentFilterLabels = getFiltersByGroupAndKey(this.props.currentFilters);
+    const { currentFilterLabels } = this.props;
     return (
     <div>
        <Button
@@ -73,7 +73,7 @@ export class SearchHeader extends Component {
       data-group={filter.group}
       data-key={filter.key}
       onClick={this.handleFilterButtonClick}>
-        {filter.key} <Glyphicon glyph="remove" />
+        {filter.label} <Glyphicon glyph="remove" />
       </Button>))}
   </ButtonToolbar>);
 
@@ -206,11 +206,16 @@ export class SearchHeader extends Component {
   }
 }
 
-export const getFiltersByGroupAndKey = (currentFilters) => {
+export const getPeopleFilterLabel = (key, people) => {
+  const person = people.find(person => person.id === key)
+  return person ? person.name : key ;
+}
+
+export const getFiltersByGroupAndKey = (currentFilters, people) => {
   return Object.keys(currentFilters)
     .reduce((accum, currentGroup) => {
       const groupAsObjects = currentFilters[currentGroup].map(key =>
-        ({group: currentGroup, key})
+        ({group: currentGroup, key, label: getPeopleFilterLabel(key, people)})
       );
       return accum.concat(groupAsObjects);
     }, []);
@@ -227,12 +232,15 @@ const hydratePeopleNames = ( peopleIndexes, peopleData) => {
 }
 
 const mapStateToProps = state => {
+  const currentFilters = selectFilters(state);
+  const people = hydratePeopleNames(selectIndexCounts(state, 'people'), selectPeople(state));
   return {
     tags: selectIndexCounts(state, 'tags'),
-    people: hydratePeopleNames(selectIndexCounts(state, 'people'), selectPeople(state) ),
+    people,
     indexesError: selectIndexError(state),
     indexesLoading: selectIndexIsLoading(state),
-    currentFilters: selectFilters(state),
+    currentFilters,
+    currentFilterLabels: getFiltersByGroupAndKey(currentFilters, people)
   }
 }
 

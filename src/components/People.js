@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { navigate } from 'redux-saga-first-router';
 import { HOME } from '../constants/routes';
 import { Grid, Row, Col, Alert, FormGroup, FormControl } from 'react-bootstrap';
+import styled from 'styled-components';
 
 import Loader from './Loader';
 
@@ -13,6 +14,15 @@ import {
 } from '../constants/actions';
 
 import './people.css';
+
+const Tile = styled(Col).attrs({
+  xs:4,
+  sm:3,
+  md:2,
+})`
+  padding-left: 0;
+  padding-right: 0;
+`;
 
 const getPeopleNamesFromProps = (props) => {
   const peopleNames = {};
@@ -66,7 +76,7 @@ export class People extends Component {
     return Array.isArray(results)?
       (<Grid>
         <Row>
-        {results.map(result => (<Col key={result.id}>
+        {results.map(result => (<Tile key={result.id}>
           <img
             src={result.thumbnail_location}
             alt=""
@@ -85,7 +95,7 @@ export class People extends Component {
             />
             <span>({result.faces.length})</span>
           </FormGroup>
-        </Col>
+        </Tile>
       ))}
       </Row>
       </Grid>):
