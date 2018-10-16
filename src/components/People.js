@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { navigate } from 'redux-saga-first-router';
 import { HOME } from '../constants/routes';
-import { Grid, Row, Col, Alert, FormGroup, FormControl } from 'react-bootstrap';
+import { Grid, Row, Col, Alert, FormGroup, FormControl, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import Loader from './Loader';
 
 import {
   UPDATE_PERSON,
+  MERGE_PEOPLE,
   SEARCH,
   SEARCH_FILTERS
 } from '../constants/actions';
@@ -39,6 +40,7 @@ export class People extends Component {
     super(props);
     this.state = {
       peopleNames: getPeopleNamesFromProps(props),
+      peopleSelected: {}
     };
   }
 
@@ -58,7 +60,13 @@ export class People extends Component {
     } = this.props;
     return (
       <div>
-        <h2>People</h2>
+        <h2>People
+        <Button
+          onClick={this.mergeSelected}
+          className="pull-right">
+          Merge Selected
+        </Button>
+        </h2>
         {isLoading && <Loader alt="Getting list of people" className="center-stage" />}
         {results && this.renderResults()}
         {peopleError && <Alert bsStyle="warning">
@@ -77,29 +85,49 @@ export class People extends Component {
       (<Grid>
         <Row>
         {results.map(result => (<Tile key={result.id}>
-          <img
-            src={result.thumbnail_location}
-            alt=""
-            className="img-responsive search-tile"
-            onClick={onSearchPerson}
-            data-id={result.id}
-          />
-          <FormGroup bsSize="large">
-            <FormControl
-              autoFocus
-              type="text"
-              value={this.state.peopleNames[result.id]}
-              onChange={this.handleChange}
-              onBlur={this.handleBlur}
+          <figure className="search-tile-wrapper">
+            <img
+              src={result.thumbnail_location}
+              alt=""
+              className="img-responsive search-tile"
+              onClick={onSearchPerson}
               data-id={result.id}
             />
-            <span>({result.faces.length})</span>
-          </FormGroup>
+            <FormGroup bsSize="large">
+              <FormControl
+                type="checkbox"
+                value={this.state.peopleSelected[result.id]}
+                onChange={this.handleCheckboxChange}
+                data-id={result.id}
+                className="search-tile-cb"
+              />
+              <FormControl
+                autoFocus
+                type="text"
+                value={this.state.peopleNames[result.id]}
+                onChange={this.handleChange}
+                onBlur={this.handleBlur}
+                data-id={result.id}
+                className="search-tile-text"
+              />
+              <span className="search-tile-count">({result.faces.length})</span>
+            </FormGroup>
+          </figure>
         </Tile>
       ))}
       </Row>
       </Grid>):
       (<Alert bsStyle="info" className="center-stage">{results}</Alert>);
+  }
+
+  handleCheckboxChange = event => {
+    const peopleSelected = {
+      ...this.state.peopleSelected,
+      [event.target.dataset.id]: event.target.checked
+    };
+    this.setState({
+      peopleSelected
+    });
   }
 
   handleChange = event => {
@@ -123,6 +151,12 @@ export class People extends Component {
       this.props.onEditPerson(payload);
     }
   }
+
+  mergeSelected = e => {
+    e.preventDefault();
+    const payload = Object.keys(this.state.peopleSelected).filter(key => this.state.peopleSelected[key]);
+    this.props.onMergePeople(payload);
+  }
 }
 
 const mapStateToProps = state => {
@@ -142,8 +176,10 @@ const mapDispatchToProps = dispatch => {
     onEditPerson(payload){
       dispatch({type: UPDATE_PERSON, payload});
     },
+    onMergePeople(payload){
+      dispatch({type: MERGE_PEOPLE, payload});
+    },
     onSearchPerson(e){
-      // nneds to navigate also, plus making the img have pointer cursor would be nice
       e.preventDefault();
       const payload = {
         people: [ e.target.dataset.id ]

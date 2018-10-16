@@ -8,11 +8,15 @@ import {
   GET_PEOPLE_FAILURE,
   UPDATE_PERSON,
   UPDATE_PERSON_SUCCESS,
-  UPDATE_PERSON_FAILURE
+  UPDATE_PERSON_FAILURE,
+  MERGE_PEOPLE,
+  MERGE_PEOPLE_SUCCESS,
+  MERGE_PEOPLE_FAILURE,
 } from '../constants/actions';
 import {
   PEOPLE_PATH,
-  PERSON_PATH
+  PERSON_PATH,
+  PERSON_MERGE_PATH
 } from '../constants/api';
 import useAuth from '../util/useAuth';
 import appConfig from '../appConfig';
@@ -23,6 +27,10 @@ export function* listenForGetPeople() {
 
 export function* listenForUpdatePerson() {
   yield takeLatest(UPDATE_PERSON, updatePerson);
+}
+
+export function* listenForMergePeople() {
+  yield takeLatest(MERGE_PEOPLE, mergePeople);
 }
 
 function* getPeople(action) {
@@ -99,4 +107,19 @@ function putPerson(payload){
         }): results;
     });
   }
+}
+
+function* mergePeople(action){
+  try {
+    const result = yield call( peopleMerger, action.payload);
+    yield put({ type: MERGE_PEOPLE_SUCCESS,  payload: result});
+  } catch(e) {
+    yield put({ type: MERGE_PEOPLE_FAILURE,  payload: e});
+  }
+}
+
+function peopleMerger(payload){
+  return api.post(PERSON_MERGE_PATH, {
+    body: payload,
+  });
 }

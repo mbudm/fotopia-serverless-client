@@ -8,7 +8,8 @@ import listenForGetFoto from './get';
 import listenForGetIndexes from './indexes';
 import {
   listenForGetPeople,
-  listenForUpdatePerson
+  listenForUpdatePerson,
+  listenForMergePeople
 } from './people';
 import listenForCachedLoad from './cache';
 
@@ -43,7 +44,8 @@ function* onLoginSuccess(){
     fork(listenForGetFoto),
     fork(listenForGetIndexes),
     fork(listenForGetPeople),
-    fork(listenForUpdatePerson)
+    fork(listenForUpdatePerson),
+    fork(listenForMergePeople)
   ]);
   const route = yield select(selectRoute);
   yield put(navigate(route.id, route.params));
