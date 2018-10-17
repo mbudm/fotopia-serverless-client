@@ -51,10 +51,15 @@ export function* peopleNavigate(){
   yield put({type: GET_PEOPLE});
 }
 
+export function shouldPerformSearch(state){
+  const signedIn = signedInStatus(state)
+  const results = selectSearchResults(state)
+  return signedIn === SIGNED_IN && results.length === 0 && !state.search.isLoading;
+}
+
 export function* homeNavigate(){
-  const signedIn = yield select(signedInStatus);
-  const results = yield select(selectSearchResults);
-  if(signedIn === SIGNED_IN && results.length === 0){
+  const shouldSearch = yield select(shouldPerformSearch)
+  if(shouldSearch){
     yield put({type: SEARCH });
     yield take(SEARCH_RESULTS);
   }
