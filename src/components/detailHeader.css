@@ -1,0 +1,9 @@
+.detail-tools {
+  position:absolute;
+  top: 0;
+  right: 0;
+  padding: 2.5vh;
+}
+.detail-tools .panel {
+  margin:2.5vh;
+}

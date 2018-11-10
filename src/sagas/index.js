@@ -5,6 +5,7 @@ import listenForGetConfig from './getConfig';
 import listenForSearch from './search';
 import listenForUpload from './upload';
 import listenForGetFoto from './get';
+import listenForDeleteFoto from './del';
 import listenForGetIndexes from './indexes';
 import {
   listenForGetPeople,
@@ -42,6 +43,7 @@ function* onLoginSuccess(){
     fork(listenForSearch),
     fork(listenForUpload),
     fork(listenForGetFoto),
+    fork(listenForDeleteFoto),
     fork(listenForGetIndexes),
     fork(listenForGetPeople),
     fork(listenForUpdatePerson),

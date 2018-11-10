@@ -35,7 +35,7 @@ function* upload(action) {
   yield put(navigate(HOME));
 }
 
-function getUserInfo(){
+export function getUserInfo(){
   const auth = Amplify.Auth;
   return auth.currentUserInfo();
 }

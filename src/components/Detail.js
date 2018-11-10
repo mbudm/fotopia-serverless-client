@@ -4,6 +4,7 @@ import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 
+import DetailHeader from './DetailHeader';
 import selectSearchResults from '../selectors/searchResults';
 
 import './detail.css';
@@ -31,6 +32,7 @@ export class Detail extends Component {
   renderResult = (params) => {
     const {
       results,
+      fotoid,
     } = this.props;
 
     const {
@@ -42,6 +44,7 @@ export class Detail extends Component {
 
     return result ? (
       <figure key={key} className="detail-image">
+        <DetailHeader fotoid={fotoid} />
         <img
           src={result.img_location}
           className="img-responsive center-block"
