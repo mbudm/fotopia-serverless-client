@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import Search from './components/Search';
 import Upload from './components/Upload';
-import Edit from './components/Edit';
 import Detail from './components/Detail';
 import People from './components/People';
 import Header from './components/Header';
@@ -11,7 +10,6 @@ import {
   HOME,
   UPLOAD,
   DETAIL,
-  EDIT,
   PEOPLE
 } from './constants/routes';
 
@@ -29,7 +27,6 @@ class App extends Component {
     const {routing: {id, params}} = this.props;
     const routes = {
       [UPLOAD]: () => <Upload />,
-      [EDIT]: () => <Edit />,
       [DETAIL]: () => <Detail fotoid={params.fotoid}/>,
       [PEOPLE]: () => <People />,
       [HOME]: () => <Search />,

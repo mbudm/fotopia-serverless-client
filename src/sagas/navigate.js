@@ -24,9 +24,6 @@ import selectSearchResult from '../selectors/searchResult';
 import signedInStatus from '../selectors/signedInStatus';
 import selectUsername from '../selectors/username';
 
-export function* editNavigate() {
-
-}
 
 export function* uploadNavigate() {
   yield put({type: GET_INDEXES });

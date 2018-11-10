@@ -8,7 +8,6 @@ import { LOG_OUT } from '../constants/actions';
 import {
   HOME,
   UPLOAD,
-  EDIT,
   PEOPLE,
 } from '../constants/routes';
 import './header.css';
@@ -87,10 +86,6 @@ const mapDispatchToProps = dispatch => {
     onNavigateUpload(e) {
       e.preventDefault();
       dispatch(navigate(UPLOAD, {}, { replace: true }));
-    },
-    onNavigateEdit(e) {
-      e.preventDefault();
-      dispatch(navigate(EDIT, {}, { replace: true }));
     },
     onNavigatePeople(e) {
       e.preventDefault();
