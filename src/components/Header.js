@@ -23,9 +23,10 @@ export class Header extends Component {
     const {menuOpen} = this.state;
     return (
     <div>
-      <a
-      className="navbar navbar-fixed-bottom"
-      onClick={this.onNavToggleClick} ><span className="screen-readers" >Toggle Nav</span></a>
+      <div
+        className="navbar navbar-fixed-bottom"
+        onClick={this.onNavToggleClick} ><span className="screen-readers" >Toggle Nav</span>
+      </div>
       {menuOpen && <Navbar inverse collapseOnSelect fixedBottom >
         <Navbar.Header>
           <Navbar.Brand>

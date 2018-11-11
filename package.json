@@ -15,7 +15,7 @@
     "react-dom": "^16.4.1",
     "react-hammerjs": "^1.0.1",
     "react-redux": "^5.0.7",
-    "react-scripts": "1.1.4",
+    "react-scripts": "2.1.1",
     "react-swipeable-views": "^0.12.14",
     "react-tag-autocomplete": "^5.5.1",
     "react-test-renderer": "^16.4.1",
@@ -42,9 +42,14 @@
     "test-once"
   ],
   "devDependencies": {
-    "eslint": "^5.1.0",
     "eslint-config-prettier": "^2.9.0",
     "serverless-s3-remover": "^0.5.0",
     "serverless-s3-sync": "^1.6.1"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
