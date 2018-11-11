@@ -5,6 +5,8 @@ import { UPLOAD } from '../constants/actions';
 
 import Tags from './Tags';
 
+import './upload.css';
+
 class Upload extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +36,7 @@ class Upload extends Component {
     };
     return (<Grid>
       <h2>Upload</h2>
-      <form onSubmit={this.handleSubmit} >
+      <form onSubmit={this.handleSubmit} className="upload-form">
         <FormGroup bsSize="large">
           <FormControl
             autoFocus

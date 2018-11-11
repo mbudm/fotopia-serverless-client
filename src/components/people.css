@@ -1,5 +1,9 @@
 .search-tile-wrapper{
   position:relative;
+  min-height: 16em;
+}
+.search-tile-wrapper .form-group{
+  margin-bottom:0;
 }
 .search-tile:hover {
   cursor: pointer;
@@ -13,4 +17,32 @@
   position:absolute;
   top:5px;
   right:5px;
+}
+.search-tile-text{
+  position:absolute;
+  bottom:5%;
+  left:5%;
+  width:90%;
+}
+.people-grid .col-xs-4:nth-child(2n+1){
+  clear:left;
+}
+
+
+@media (min-width: 768px){
+  .people-grid .col-xs-4:nth-child(2n+1){
+    clear:none;
+  }
+  .people-grid .col-sm-3:nth-child(3n+1){
+    clear:left;
+  }
+}
+
+@media (min-width: 992px){
+  .people-grid .col-sm-3:nth-child(3n+1){
+    clear:none;
+  }
+  .people-grid .col-md-2:nth-child(5n+1){
+    clear:left;
+  }
 }

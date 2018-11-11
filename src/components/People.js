@@ -76,13 +76,18 @@ export class People extends Component {
     );
   }
 
+  getImageFilename(key){
+    const filePath = key.split('/');
+    return filePath[filePath.length - 1];
+  }
   renderResults(){
     const {
       results,
       onSearchPerson
     } = this.props;
+
     return Array.isArray(results)?
-      (<Grid>
+      (<Grid className="people-grid">
         <Row>
         {results.map(result => (<Tile key={result.id}>
           <figure className="search-tile-wrapper">
@@ -110,7 +115,10 @@ export class People extends Component {
                 data-id={result.id}
                 className="search-tile-text"
               />
-              <span className="search-tile-count">({result.faces.length})</span>
+              <span className="search-tile-count">
+              ({result.faces.length})
+              <br />{this.getImageFilename(result.img_key)}
+              </span>
             </FormGroup>
           </figure>
         </Tile>
