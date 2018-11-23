@@ -1,8 +1,8 @@
-import { INIT, CACHED_LOAD } from '../constants/actions';
+import { INIT, SW_UPDATE } from '../constants/actions';
 
 const ACTION_HANDLERS = {
   [INIT]: (state, action) => ({  serviceWorkerUpdated: false }),
-  [CACHED_LOAD]: (state, action) => {
+  [SW_UPDATE]: (state, action) => {
     return { ...state,
       serviceWorkerUpdated: true };
   }

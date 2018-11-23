@@ -1,7 +1,7 @@
 import { select, put, takeLatest } from 'redux-saga/effects';
 import {
   SEARCH,
-  CACHED_LOAD,
+  SW_UPDATE,
   CACHED_LOAD_FAILURE
 } from '../constants/actions';
 import selectSearchResults from '../selectors/searchResults'
@@ -11,7 +11,7 @@ import {
 } from '../constants/routes';
 
 export default function* listenForCachedLoad() {
-  yield takeLatest(CACHED_LOAD, handleCachedLoad);
+  yield takeLatest(SW_UPDATE, handleCachedLoad);
 }
 
 const getRefreshSearch = (state) => {

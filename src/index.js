@@ -6,14 +6,15 @@ import createSagaMiddleware from 'redux-saga';
 
 import './index.css';
 import AppContainer from './AppContainer';
-import registerServiceWorker from './registerServiceWorker';
+import { register as registerServiceWorker } from './registerServiceWorker';
 import reducers from './reducers';
 import sagas from './sagas';
 
 import setUpRoutes from  './routes';
 
 import {
-  CACHED_LOAD
+  SW_UPDATE,
+  SW_SUCCESS,
 } from './constants/actions';
 
 import './index.css';
@@ -49,9 +50,17 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-const onUpdate = () => {
+const onUpdate = (registration) => {
   store.dispatch({
-    type: CACHED_LOAD
+    type: SW_UPDATE,
+    payload: registration,
   });
 }
-registerServiceWorker(onUpdate);
+
+const onSuccess = (registration) => {
+  store.dispatch({
+    type: SW_SUCCESS,
+    payload: registration
+  });
+}
+registerServiceWorker({ onUpdate, onSuccess });
