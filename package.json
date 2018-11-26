@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aws-amplify": "~0.4.8",
+    "aws-amplify": "^1.1.10",
     "aws-sdk": "^2.274.1",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",

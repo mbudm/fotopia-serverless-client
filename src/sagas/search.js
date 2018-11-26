@@ -1,6 +1,6 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { Storage } from 'aws-amplify';
+import Storage from '@aws-amplify/storage';
 import * as api from './api';
 import {
   SEARCH,
@@ -20,6 +20,7 @@ function* queryFotos(action) {
     const results = yield call( fetchFotos, action.payload);
     yield put({ type: SEARCH_RESULTS,  payload: results});
   } catch(e) {
+    console.error(e);
     yield put({ type: SEARCH_FAILURE,  payload: {
       params: action.payload,
       error: e && e.response && e.response.data ? JSON.stringify(e.response.data ) : JSON.stringify(e)
@@ -40,11 +41,14 @@ export function getImageSource(result){
   ].map((key) => Storage.get(key, {
     level: 'protected',
     identityId: result.userIdentityId
-  }))).then(locations => ({
-    ...result,
-    img_location: locations[0],
-    img_thumb_location: locations[1],
-  }));
+  }))).then((locations) => {
+    console.log("locations", locations);
+    return {
+      ...result,
+      img_location: locations[0],
+      img_thumb_location: locations[1],
+    }
+  });
 }
 
 function fetchFotos(criteria = {

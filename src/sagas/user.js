@@ -1,6 +1,6 @@
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { Auth } from "aws-amplify";
+import Auth from '@aws-amplify/auth';
 import { navigate } from 'redux-saga-first-router';
 import {
   LOG_IN,

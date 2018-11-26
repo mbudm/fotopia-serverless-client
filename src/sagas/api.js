@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import AWS from 'aws-sdk';
-import { API, Storage } from 'aws-amplify';
+import API from '@aws-amplify/api';
+import Storage from '@aws-amplify/storage';
 import useRemoteApi from '../util/useRemoteApi';
 import { ENDPOINT_NAME } from '../constants/api';
 import appConfig from '../appConfig';

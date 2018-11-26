@@ -19,6 +19,10 @@ const common = {
 const config = process.env.NODE_ENV === 'production' || process.env.REACT_APP_USE_API_CONFIG ?
 { ...prod, ...common } : { ...dev, ...common } ;
 
+if(process.env.NODE_ENV !== 'production'){
+  window.LOG_LEVEL = 'DEBUG';
+}
+
 export default {
   ...config
 };

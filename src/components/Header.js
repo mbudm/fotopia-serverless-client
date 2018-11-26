@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { navigate } from 'redux-saga-first-router';
-import { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 
 import { LOG_OUT } from '../constants/actions';

@@ -1,6 +1,6 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { Storage } from 'aws-amplify';
+import Storage from '@aws-amplify/storage';
 import * as api from './api';
 import {
   GET_PEOPLE,

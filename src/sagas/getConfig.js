@@ -1,6 +1,7 @@
 
 import { call, put, takeLatest } from 'redux-saga/effects';
-import Amplify from 'aws-amplify';
+import Amplify from '@aws-amplify/core';
+import Auth from '@aws-amplify/auth';
 import AWS from 'aws-sdk';
 import { GET_CONFIG, RECEIVED_CONFIG, LOG_IN_SUCCESS } from '../constants/actions';
 import appConfig from '../appConfig';
@@ -58,8 +59,7 @@ function configureAWS(config){
   //return credentials.getPromise();
 }
 function getUser(){
-  const auth = Amplify.Auth;
-  return auth.currentAuthenticatedUser();
+  return Auth.currentAuthenticatedUser();
 }
 function configureAWSlocal(config){
   return new Promise((resolve) =>{

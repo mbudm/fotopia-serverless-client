@@ -1,6 +1,6 @@
 
 import { all, call, put, takeLatest, select } from 'redux-saga/effects';
-import Amplify from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 import { navigate } from 'redux-saga-first-router';
 import { UPLOAD, CREATED_IMAGE_RECORDS, SEARCH } from '../constants/actions';
 import { HOME } from '../constants/routes';
@@ -36,8 +36,7 @@ function* upload(action) {
 }
 
 export function getUserInfo(){
-  const auth = Amplify.Auth;
-  return auth.currentUserInfo();
+  return Auth.currentUserInfo();
 }
 function resolveKey(s3ResponseAndImage){
   return s3ResponseAndImage.s3.key || s3ResponseAndImage.s3.Key;
