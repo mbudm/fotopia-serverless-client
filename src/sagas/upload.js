@@ -28,7 +28,10 @@ function* upload(action) {
 }
 
 export function getUserInfo(state){
-  return useAuth() ? state.cognitoUser : {
+  return useAuth() ? {
+    username: state.user.username,
+    id: state.creds.params.IdentityId
+  } : {
     username: appConfig.username,
     id: appConfig.username //something in place of cognito user id
   };

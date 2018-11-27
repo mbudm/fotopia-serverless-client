@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { reducer as routerReducer} from 'redux-saga-first-router';
 
 import { config } from './config';
+import { creds } from './creds';
 import { user } from './user';
 import { search } from './search';
 import { upload } from './upload';
@@ -11,6 +12,7 @@ import { people } from './people';
 
 const reducers = combineReducers({
   config,
+  creds,
   user,
   search,
   upload,
