@@ -16,13 +16,12 @@ export default function* listenForGetConfig() {
 
 function* getConfig() {
   if(useAuth()){
-    const payload = yield call(fetchConfig);
-    yield call( setupAuth, payload );
-    yield call( configureAWS, payload );
-    yield put({ type: RECEIVED_CONFIG, payload });
     try{
+      const payload = yield call(fetchConfig);
+      yield call( setupAuth, payload );
+      yield put({ type: RECEIVED_CONFIG, payload });
+
       const user = yield call(getUser);
-      console.log('user', user)
       if(user){
         yield put({
           type: LOG_IN_SUCCESS,
@@ -45,22 +44,10 @@ function* getConfig() {
   }
 }
 
-function configureAWS(config){
-  return new Promise((resolve) =>{
-    const credentials = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: config.IdentityPoolId
-    });
-    AWS.config.update({
-      region: config.Region,
-      credentials,
-    });
-    resolve(credentials);
-  });
-  //return credentials.getPromise();
-}
 function getUser(){
   return Auth.currentAuthenticatedUser();
 }
+
 function configureAWSlocal(config){
   return new Promise((resolve) =>{
     AWS.config.update({

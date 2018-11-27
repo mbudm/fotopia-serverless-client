@@ -15,7 +15,6 @@ import {
   HOME
 } from '../constants/routes';
 
-
 const getCognitoUser = (state) => state.user.cognitoUser;
 
 export function* listenForLogIn() {
@@ -30,14 +29,20 @@ export function* listenForChangePassword(){
   yield takeLatest(CHANGE_PASSWORD, changePassword);
 }
 
+
 function* logIn(action) {
   try {
     const signedIn = yield call(amplifySignIn, action.payload);
-    yield put({ type: LOG_IN_SUCCESS, payload: signedIn });
+    if(signedIn){
+      yield put({ type: LOG_IN_SUCCESS, payload: signedIn });
+    }else{
+      yield put({ type: LOG_IN_FAILURE, payload: { creds: signedIn }});
+    }
   } catch(e){
     yield put({ type: LOG_IN_FAILURE, payload: { creds: action.payload, error: e }});
   }
 }
+
 
 function* changePassword(action) {
   try {
