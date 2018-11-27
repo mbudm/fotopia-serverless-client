@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { navigate } from 'redux-saga-first-router';
-import Auth from '@aws-amplify/auth';
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 
 import { LOG_OUT } from '../constants/actions';
@@ -58,9 +57,6 @@ export class Header extends Component {
 
   handleSignOut(e){
     e.preventDefault();
-    Auth.signOut()
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
   }
 
   onNavToggleClick = (e) => {

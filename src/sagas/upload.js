@@ -1,6 +1,5 @@
 
 import { all, call, put, takeLatest, select } from 'redux-saga/effects';
-import Auth from '@aws-amplify/auth';
 import { navigate } from 'redux-saga-first-router';
 import { UPLOAD, CREATED_IMAGE_RECORDS, SEARCH } from '../constants/actions';
 import { HOME } from '../constants/routes';
@@ -18,15 +17,8 @@ export default function* listenForUpload() {
 
 function* upload(action) {
 
-  let info;
-  if(useAuth()){
-    info = yield call(getUserInfo);
-  }else{
-    info = {
-      username: appConfig.username,
-      id: appConfig.username //something in place of cognito user id
-    }
-  }
+  const info = yield select(getUserInfo);
+
   const uploadedImages = yield all(action.payload.map(image => call( api.upload, image, info.username )));
   const createdImages = yield all(uploadedImages.map(s3ResponseAndImage => call( createFoto, s3ResponseAndImage, info )));
   yield put({ type: CREATED_IMAGE_RECORDS,  payload: createdImages});
@@ -35,8 +27,11 @@ function* upload(action) {
   yield put(navigate(HOME));
 }
 
-export function getUserInfo(){
-  return Auth.currentUserInfo();
+export function getUserInfo(state){
+  return useAuth() ? state.cognitoUser : {
+    username: appConfig.username,
+    id: appConfig.username //something in place of cognito user id
+  };
 }
 function resolveKey(s3ResponseAndImage){
   return s3ResponseAndImage.s3.key || s3ResponseAndImage.s3.Key;
