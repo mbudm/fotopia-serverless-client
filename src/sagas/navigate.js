@@ -1,4 +1,4 @@
-import { take, select, put, call} from 'redux-saga/effects';
+import { take, select, put} from 'redux-saga/effects';
 import { navigate } from 'redux-saga-first-router';
 
 import {
@@ -7,8 +7,6 @@ import {
   GET_FOTO,
   GET_INDEXES,
   GET_PEOPLE,
-  EXISTING_KEYS_SUCCESS,
-  EXISTING_KEYS_FAILURE
 } from '../constants/actions';
 import {
   UPLOAD
@@ -17,12 +15,10 @@ import {
   SIGNED_IN
 } from '../constants/user'
 
-import * as api from './api';
 import selectUploadImage from '../selectors/uploadImage';
 import selectSearchResults from '../selectors/searchResults';
 import selectSearchResult from '../selectors/searchResult';
 import signedInStatus from '../selectors/signedInStatus';
-import selectUsername from '../selectors/username';
 
 
 export function* uploadNavigate() {
