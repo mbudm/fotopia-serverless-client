@@ -27,14 +27,6 @@ import selectUsername from '../selectors/username';
 
 export function* uploadNavigate() {
   yield put({type: GET_INDEXES });
-
-  try {
-    const username = yield select(selectUsername);
-    const existingKeys = yield call(api.list, username);
-    yield put({ type: EXISTING_KEYS_SUCCESS, payload: existingKeys });
-  } catch(e) {
-    yield put({ type: EXISTING_KEYS_FAILURE,  payload: e});
-  }
 }
 
 export function* detailNavigate({fotoid}) {
