@@ -23,7 +23,7 @@ function* deleteFoto(action) {
 
   let info;
   if(useAuth()){
-    info = yield call(getUserInfo);
+    info = yield select(getUserInfo);
   }else{
     info = {
       username: appConfig.username,
