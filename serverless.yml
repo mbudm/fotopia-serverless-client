@@ -18,6 +18,8 @@ custom:
     distributionIdKey: 'FotopiaClientCloudFrontDistributionId'
     items:
       - '/index.html'
+      - '/service-worker.js'
+      - '/static/*'
 provider:
   name: aws
   runtime: nodejs6.10

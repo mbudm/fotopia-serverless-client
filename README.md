@@ -3,7 +3,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-It is a rudimentary work in progress client for the [fotopia-serverless](https://travis-ci.org/mbudm/fotopia-serverless) api
+It is a work in progress client for the [fotopia-serverless](https://travis-ci.org/mbudm/fotopia-serverless) api. Check out the [issues](https://github.com/mbudm/fotopia-serverless-client/issues) to see what enhancements are likely.
 
 ## Local development
 ### Setup
