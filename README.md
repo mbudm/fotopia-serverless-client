@@ -3,7 +3,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-It is a rudimentary work in progress client for the [fotopia-serverless](https://github.com/facebookincubator/create-react-app) api
+It is a rudimentary work in progress client for the [fotopia-serverless](https://travis-ci.org/mbudm/fotopia-serverless) api
 
 ## Local development
 ### Setup
@@ -60,6 +60,3 @@ For iOS devices I've had some success with [remotedebug_ios_webkit_adapter](http
 remotedebug_ios_webkit_adapter --port=9000
 ```
 Load up http://[your computer ip]:[env.PORT] in mobile safari (and save to home screen) then also add this URL to launch.json (VS Code). Then start debugging. It occasionally detaches, but its a lot more reliable than Safari's device devtools.
-
-## Todo
-- Work out a good functional test that can be run in CI - maybe chrome driver & puppeteer.
