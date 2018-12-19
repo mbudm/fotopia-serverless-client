@@ -7,19 +7,24 @@ import {
   CONFIGURE_AWS_FAILURE
 } from '../constants/actions';
 import selectConfig from '../selectors/config';
+import useAuth from '../util/useAuth';
 
 export function* listenForConfigureAWS() {
   yield takeLatest(CONFIGURE_AWS, configure);
 }
 
 export default function* configure(action) {
-  try {
-    const config = yield select(selectConfig);
-    const creds = yield call(getUserCreds);
-    yield call(configureAWS, config, creds);
-    yield put({ type: CONFIGURE_AWS_SUCCESS, payload: creds });
-  } catch(e){
-    yield put({ type: CONFIGURE_AWS_FAILURE, payload: { payload: action.payload, error: e }});
+  if(useAuth()){
+    try {
+      const config = yield select(selectConfig);
+      const creds = yield call(getUserCreds);
+      yield call(configureAWS, config, creds);
+      yield put({ type: CONFIGURE_AWS_SUCCESS, payload: creds });
+    } catch(e){
+      yield put({ type: CONFIGURE_AWS_FAILURE, payload: { payload: action.payload, error: e }});
+    }
+  }else{
+    yield put({ type: CONFIGURE_AWS_SUCCESS, payload: {} });
   }
 }
 

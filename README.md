@@ -27,6 +27,7 @@ PORT=4000 # create-react-app defaults to 3000 which clashes with serverless-offl
 REACT_APP_FOTOPIA_API=https://[stack-key-here].execute-api.us-east-1.amazonaws.com/prod/ # point to a deployed fotopia-serverless stack
 REACT_APP_USE_API_CONFIG=1 #use the api specified by config
 REACT_APP_USE_AUTH=1 #use authentication as specified by config
+REACT_APP_S3_BUCKET=bucket-name-used-in-local # defaults to 'fotopia-web-app-none-dev' - so if you are using defaults in fotopia-serverless sls offline bucket this is not needed, 
 ```
 
 ## CI/CD
