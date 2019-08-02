@@ -64,7 +64,9 @@ function fetchFotos(criteria = {
   if(useAuth()){
     return api.post(QUERY, { body: query })
       .then(results => {
-        return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
+        return Array.isArray(results.items) && results.items.length > 0 ?
+          Promise.all(results.items.map(getImageSource)) :
+          results.message ;
       });
   }else{
     return api.post(QUERY, { body: query })
