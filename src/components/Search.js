@@ -47,9 +47,9 @@ export class Search extends Component {
       results,
       onNavigateDetail
     } = this.props;
-    return Array.isArray(results)?
+    return results.items.length > 0?
     (<Row>
-      {results.map(result => (
+      {results.items.map(result => (
         <Tile key={result.id}>
           <img
             src={result.img_thumb_location}
@@ -61,7 +61,7 @@ export class Search extends Component {
         </Tile>
       ))}
     </Row>):
-    (<Alert bsStyle="info" className="center-stage">{results}</Alert>);
+    (<Alert bsStyle="info" className="center-stage">{results.message}</Alert>);
   }
 
   renderSearchPrompt(){

@@ -7,6 +7,9 @@ import {
   SEARCH_RESULTS,
   SEARCH_FAILURE
 } from '../constants/actions';
+import {
+  MAX_SEARCH_DURATION_MS
+} from '../constants/search';
 import { QUERY } from '../constants/api';
 import useAuth from '../util/useAuth';
 import appConfig from '../appConfig';
@@ -51,21 +54,31 @@ export function getImageSource(result){
   });
 }
 
+function addLocations(results) {
+  return Promise.all(results.items.map(getImageSource))
+    .then((updatedItems) => {
+      return {
+        ...results,
+        items: updatedItems,
+      }
+    })
+}
+
 function fetchFotos(criteria = {
   tags: [],
   people: [],
 }){
+  const to =  Date.now()
+  const from = to - MAX_SEARCH_DURATION_MS;
   const query = {
     criteria,
-    from: '2004-04-04',
-    to: Date.now(),
+    from,
+    to,
   };
 
   if(useAuth()){
     return api.post(QUERY, { body: query })
-      .then(results => {
-        return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
-      });
+      .then(addLocations);
   }else{
     return api.post(QUERY, { body: query })
     .then((results) => {
