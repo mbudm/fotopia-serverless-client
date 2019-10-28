@@ -49,7 +49,7 @@ export class Search extends Component {
     } = this.props;
     return results.items.length > 0?
     (<Row>
-      {results.items.map(result => (
+      {results.items.map((result) => (
         <Tile key={result.id}>
           <img
             src={result.img_thumb_location}
