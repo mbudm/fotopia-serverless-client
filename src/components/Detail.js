@@ -57,8 +57,8 @@ export class Detail extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const results = selectSearchResults(state);
-  const index = results.findIndex((res => res.id === ownProps.fotoid)) || 0;
-  const resultsResetToIndex = results.length === 0 ? results : results.slice(index).concat(results.slice(0, index));
+  const index = results.items.findIndex((res => res.id === ownProps.fotoid)) || 0;
+  const resultsResetToIndex = results.items.length === 0 ? results.items : results.items.slice(index).concat(results.items.slice(0, index));
   return {
     results: resultsResetToIndex
   }
