@@ -1,5 +1,5 @@
 
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import Storage from '@aws-amplify/storage';
 import * as api from './api';
 import {
@@ -13,6 +13,7 @@ import {
 import { QUERY } from '../constants/api';
 import useAuth from '../util/useAuth';
 import appConfig from '../appConfig';
+import selectFilters from '../selectors/filters';
 
 export default function* listenForSearch() {
   yield takeLatest(SEARCH, queryFotos);
@@ -20,7 +21,11 @@ export default function* listenForSearch() {
 
 function* queryFotos(action) {
   try {
-    const results = yield call( fetchFotos, action.payload);
+    let searchFilters = action.payload;
+    if(!action.payload){
+      searchFilters = yield select(selectFilters);
+    }
+    const results = yield call(fetchFotos, searchFilters);
     yield put({ type: SEARCH_RESULTS,  payload: results});
   } catch(e) {
     console.error(e);
@@ -64,12 +69,14 @@ function addLocations(results) {
     })
 }
 
-function fetchFotos(criteria = {
-  tags: [],
-  people: [],
-}){
-  const to =  Date.now()
-  const from = to - MAX_SEARCH_DURATION_MS;
+function fetchFotos(payload){
+  const criteria = payload.criteria ||
+    {
+      tags: [],
+      people: [],
+    };
+  const to = payload.to || Date.now();
+  const from = payload.from || (to - MAX_SEARCH_DURATION_MS);
   const query = {
     criteria,
     from,

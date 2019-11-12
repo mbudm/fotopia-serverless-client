@@ -30,8 +30,10 @@ const ACTION_HANDLERS = {
     {
       ...state,
       filters: {
-        tags: [],
-        people: [],
+        criteria: {
+          tags: [],
+          people: [],
+        },
         ...action.payload
       }
     }

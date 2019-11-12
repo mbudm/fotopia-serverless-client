@@ -31,7 +31,7 @@ class Tags extends Component {
           suggestions={suggestedTags}
           handleDelete={this.handleDeleteTag}
           handleAddition={this.handleAddTag}
-          allowNew />
+          allowNew={false} />
       </FormGroup>
     );
   }
