@@ -11,12 +11,11 @@ import {
   FormControl,
   FormGroup,
   ControlLabel,
-  Checkbox,
   Glyphicon
 } from 'react-bootstrap';
 
 import { SEARCH, GET_INDEXES, SEARCH_FILTERS } from '../constants/actions';
-import { MAX_SEARCH_DURATION_MS } from '../constants/search';
+import { MAX_SEARCH_DURATION_MS, CRITERIA, INDEXES } from '../constants/search';
 import Loader from './Loader';
 import {
   selectIndexCounts,
@@ -25,6 +24,7 @@ import {
 } from '../selectors/indexes';
 import selectPeople from '../selectors/people';
 import selectFilters from '../selectors/filters';
+import Tags from './Tags';
 
 import './searchHeader.css';
 
@@ -104,17 +104,14 @@ export class SearchHeader extends Component {
     } = this.props;
     const showTags = tags.length > 0;
     const showPeople = people.length > 0;
-    const countFilterGroups = [showTags, showPeople].reduce((accum, current) => current ? ++accum : accum, 0)
-    const cols = Math.floor(12 / countFilterGroups);
+    // const countFilterGroups = [showTags, showPeople].reduce((accum, current) => current ? ++accum : accum, 0)
     return (<Form horizontal className="panel-body">
       <ButtonToolbar>
         <Glyphicon glyph="remove" onClick={this.toggleFilter} className="pull-right"/>
       </ButtonToolbar>
-      <Row>
-      { showTags && this.renderFilterGroupOuter('Tags', 'tags', tags, cols) }
-      { showPeople && this.renderFilterGroupOuter('People', 'people', people, cols)  }
-      </Row>
-        {this.renderDateFields()}
+      {this.renderDateFields()}
+      { showTags && this.renderFilterGroup('Tags', 'tags', tags) }
+      { showPeople && this.renderFilterGroup('People', 'people', people)  }
       <ButtonToolbar className="pull-right">
         <Button onClick={this.toggleFilter} > Close</Button>
         <Button onClick={this.handleUpdate} bsStyle="primary"> Search</Button>
@@ -122,37 +119,28 @@ export class SearchHeader extends Component {
     </Form>);
   }
 
-  renderFilterGroupOuter(label, group, checkboxes, cols){
-    return cols > 1 ? (
-      <Col xs={cols}>
-        {this.renderFilterGroup(label, group, checkboxes)}
-      </Col>) : this.renderFilterGroup(label, group, checkboxes);
-  }
-
-  renderFilterGroup(label, group, checkboxes){
-    return (
+  renderFilterGroup(label, group, indexData){
+    const suggestedTags = indexData
+      .filter(indexItem => indexItem.name && indexItem.name.length > 1)
+      .map(indexItem => indexItem.name)
+    return suggestedTags.length > 1 ? (
       <FormGroup>
-        <Col componentClass={ControlLabel} xs={3}>
-          {label}
-        </Col>
-        <Col xs={9}>
-        {checkboxes.map(cb => (
-          <Checkbox
-            key={cb.id}
-            checked={this.state.criteria[group].includes(cb.id)}
-            data-group={group}
-            data-key={cb.id}
-            onChange={this.onCheckboxChange}
-            >{cb.name} ({cb.count})</Checkbox>
-        ))}
+        <Col xs={12}>
+          <Tags
+            id={group}
+            title={label}
+            placeholder={`Filter by ${group}`}
+            tagKey={group}
+            suggestedTags={suggestedTags}
+            onTagUpdate={this.handleFilterGroupUpdate}/>
         </Col>
       </FormGroup>
-    )
+    ) : null ;
   }
 
   renderDateFields(){
     return (
-      <Row>
+      <FormGroup>
         <Col xs={6}>
           <FormGroup controlId="from">
             <Col componentClass={ControlLabel} xs={3}>
@@ -181,31 +169,25 @@ export class SearchHeader extends Component {
             </Col>
           </FormGroup>
         </Col>
-      </Row>
+      </FormGroup>
     )
   }
 
-  onCheckboxChange = (e) =>{
-    console.log('onCheckboxChange change', e.target.dataset, e.target.checked)
-    const {
-      group,
-      key
-    } = e.target.dataset;
-    const updatedGroup = e.target.checked ?
-      this.addToGroup(key, group) :
-      this.removeFromGroup(key, group);
-
+  handleFilterGroupUpdate = (id, tagKey, tags) => {
+    const updatedFilterCriteria = {
+      ...this.state.criteria
+    }
+    if(tagKey === CRITERIA[INDEXES.TAGS]){
+      updatedFilterCriteria[tagKey] = tags;
+    } else if(tagKey === CRITERIA[INDEXES.PEOPLE]){
+      const peopleIndexes = this.props.people
+        .filter(person => tags.includes(person.name))
+        .map(person => person.id)
+      updatedFilterCriteria[tagKey] = peopleIndexes;
+    }
     this.setState({
-      criteria: {
-        ...this.state.criteria,
-        [group]: updatedGroup
-      }
+      criteria: updatedFilterCriteria
     });
-  }
-
-  addToGroup = (key, group) => {
-    const existingGroup = this.state.criteria[group];
-    return existingGroup.includes(key) ? existingGroup : existingGroup.concat(key)
   }
 
   removeFromGroup = (key, group) => {

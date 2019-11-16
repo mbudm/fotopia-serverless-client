@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import { connect } from 'react-redux';
 import ReactTags from 'react-tag-autocomplete';
-import { FormGroup, ControlLabel } from "react-bootstrap";
+import { ControlLabel } from "react-bootstrap";
 import uuid from 'uuid';
 
 import './tags.css';
@@ -23,7 +23,7 @@ class Tags extends Component {
       suggestedTags
     } = this.props;
     return (
-      <FormGroup>
+      <div>
         <ControlLabel>{title}</ControlLabel>
         <ReactTags
           placeholder={placeholder}
@@ -32,7 +32,7 @@ class Tags extends Component {
           handleDelete={this.handleDeleteTag}
           handleAddition={this.handleAddTag}
           allowNew={false} />
-      </FormGroup>
+      </div>
     );
   }
   handleDeleteTag = (i) => {
