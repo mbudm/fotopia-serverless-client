@@ -1,12 +1,9 @@
 import React, { Component }  from 'react';
-import { connect } from 'react-redux';
 import ReactTags from 'react-tag-autocomplete';
 import { ControlLabel } from "react-bootstrap";
 import uuid from 'uuid';
 
 import './tags.css';
-import getIndex from '../selectors/indexes';
-
 
 class Tags extends Component {
   constructor(props) {
@@ -51,19 +48,14 @@ const getId = () => uuid.v1();
 
 const formatTags = (tags = [], suggested = []) => {
   return tags.map((tag) => {
-    const matchingSuggestion = suggested.find(item => item.name === tag);
+    const matchingSuggestion = suggested.find(item => item.id === tag);
     return {
       id: matchingSuggestion ? matchingSuggestion.id : getId(),
-      name: tag,
+      name: matchingSuggestion.name,
     }
   });
 }
 
 const tagsToString = (tagObjects) => tagObjects.map(tagObj => tagObj.name);
 
-export default connect((state, ownProps) => {
-  const suggestedTags = getIndex(state, ownProps.tagKey);
-  return {
-    suggestedTags,
-  };
-})(Tags);
+export default Tags;

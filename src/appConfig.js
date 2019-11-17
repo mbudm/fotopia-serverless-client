@@ -19,7 +19,7 @@ const config = process.env.NODE_ENV === 'production' || process.env.REACT_APP_US
 { ...prod, ...common } : { ...dev, ...common } ;
 
 if(process.env.NODE_ENV !== 'production'){
-  window.LOG_LEVEL = 'DEBUG';
+  // window.LOG_LEVEL = 'DEBUG';
 }
 
 export default {

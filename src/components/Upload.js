@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Grid, Row, Col, Table, Button, FormGroup, FormControl, Alert } from "react-bootstrap";
 import { UPLOAD } from '../constants/actions';
 
-import Tags from './Tags';
-
 import './upload.css';
 
 class Upload extends Component {
@@ -58,7 +56,6 @@ class Upload extends Component {
                 data-filename={image.file.name}
                 className="img-thumbnail img-responsive"
                 onLoad={this.handleImageLoad}/>
-              <Tags id={image.file.name} title="Tags" placeholder="Add tags to this image" tagKey="tags" onTagUpdate={this.handleTagUpdate}/>
               {this.renderDetails(image)}
             </Col>
           ))}
