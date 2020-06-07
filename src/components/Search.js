@@ -78,10 +78,10 @@ export class Search extends Component {
       <Alert bsStyle="info" className="center-stage">
         <p>{results.message}</p>
         <p>
-          Try different
-          <a href="#" onClick={this.props.onOpenSearchFilter}>filters</a>
-          or
-          <a href="#" onClick={this.searchOlder}>search for older photos</a>
+          Try different&nbsp;
+          <Button bsSize="small" onClick={this.props.onOpenSearchFilter}>filters</Button>
+          &nbsp;or&nbsp;
+          <Button bsSize="small" onClick={this.searchOlder}>search for older photos</Button>
         </p>
       </Alert>
     );
