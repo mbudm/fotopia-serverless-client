@@ -10,8 +10,14 @@ import {
   DETAIL
 } from '../constants/routes';
 import {
-  SEARCH
+  SEARCH,
+  SEARCH_HEADER_TOGGLE,
+  SEARCH_FILTERS
 } from '../constants/actions';
+import {
+  MAX_SEARCH_DURATION_MS
+} from '../constants/search';
+import selectFilters from '../selectors/filters';
 
 const Tile = styled(Col).attrs({
   xs:3,
@@ -23,6 +29,13 @@ const Tile = styled(Col).attrs({
 `;
 
 export class Search extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterOpen: false,
+    };
+  }
+
   render() {
     const {
       isLoading,
@@ -61,7 +74,17 @@ export class Search extends Component {
         </Tile>
       ))}
     </Row>):
-    (<Alert bsStyle="info" className="center-stage">{results.message}</Alert>);
+    (
+      <Alert bsStyle="info" className="center-stage">
+        <p>{results.message}</p>
+        <p>
+          Try different
+          <a href="#" onClick={this.props.onOpenSearchFilter}>filters</a>
+          or
+          <a href="#" onClick={this.searchOlder}>search for older photos</a>
+        </p>
+      </Alert>
+    );
   }
 
   renderSearchPrompt(){
@@ -69,13 +92,23 @@ export class Search extends Component {
       <p>Get latest photos <Button onClick={this.props.onSearch} >Refresh</Button></p>
     </Alert>);
   }
+
+  searchOlder = () => {
+    const updatedFilters ={
+      ...this.props.currentFilters,
+      from: this.props.currentFilters.from - MAX_SEARCH_DURATION_MS,
+      to: this.props.currentFilters.from
+    }
+    this.props.onSearchOlder(updatedFilters)
+  }
 }
 
 const mapStateToProps = state => {
   return {
     isLoading: state.search.isLoading,
     results: state.search.results,
-    searchError: state.search.error
+    searchError: state.search.error,
+    currentFilters: selectFilters(state)
   }
 }
 
@@ -89,6 +122,19 @@ const mapDispatchToProps = dispatch => {
     onSearch(e){
       e.preventDefault();
       dispatch({type: SEARCH});
+    },
+    onOpenSearchFilter(e){
+      e.preventDefault();
+      dispatch({type: SEARCH_HEADER_TOGGLE, payload:true});
+    },
+    onSearchOlder(payload){
+      dispatch({
+        type: SEARCH_FILTERS,
+        payload
+      });
+      dispatch({
+        type: SEARCH
+      });
     }
   }
 }

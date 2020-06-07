@@ -4,6 +4,7 @@ import {
   SEARCH_RESULTS,
   SEARCH_FAILURE,
   SEARCH_FILTERS,
+  SEARCH_HEADER_TOGGLE,
 } from '../constants/actions';
 
 const ACTION_HANDLERS = {
@@ -38,6 +39,12 @@ const ACTION_HANDLERS = {
       }
     }
   ),
+  [SEARCH_HEADER_TOGGLE]: (state, action) => (
+    {
+      ...state,
+      searchHeaderOpen: action.payload
+    }
+  )
 };
 
 export const search = (state = {}, action) => {

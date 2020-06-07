@@ -9,5 +9,14 @@
   bottom:0;
   z-index: 2000;
   overflow: scroll;
-  margin:2.5vh;
+  margin:5vh;
+}
+
+@media (orientation: portrait) {
+  .filter-tools .panel {
+    margin:20vh 5vh;
+  }
+}
+.search-header-open--toolbar{
+  margin-bottom:1em;
 }

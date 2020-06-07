@@ -60,14 +60,14 @@ export class SearchHeaderOpen extends Component {
     const showPeople = people.length > 0;
 
     return (<Form horizontal className="panel-body">
-      <ButtonToolbar>
-        <Glyphicon glyph="remove" onClick={this.toggleFilter} className="pull-right"/>
+      <ButtonToolbar className="search-header-open--toolbar">
+        <Glyphicon glyph="remove" onClick={this.props.toggleFilter} className="pull-right"/>
       </ButtonToolbar>
       {this.renderDateFields()}
       { showTags && this.renderFilterGroup('Tags', CRITERIA[INDEXES.TAGS]) }
       { showPeople && this.renderFilterGroup('People', CRITERIA[INDEXES.PEOPLE])  }
       <ButtonToolbar className="pull-right">
-        <Button onClick={this.toggleFilter} > Close</Button>
+        <Button onClick={this.props.toggleFilter} > Close</Button>
         <Button onClick={this.handleUpdate} bsStyle="primary"> Search</Button>
       </ButtonToolbar>
     </Form>);
@@ -96,7 +96,7 @@ export class SearchHeaderOpen extends Component {
   renderDateFields(){
     return (
       <FormGroup>
-        <Col xs={6}>
+        <Col xs={12} sm={6}>
           <FormGroup controlId="from">
             <Col componentClass={ControlLabel} xs={3}>
               From
@@ -110,7 +110,7 @@ export class SearchHeaderOpen extends Component {
             </Col>
           </FormGroup>
         </Col>
-        <Col xs={6}>
+        <Col xs={12} sm={6}>
           <FormGroup controlId="to">
             <Col componentClass={ControlLabel} xs={3}>
               To

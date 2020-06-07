@@ -5,7 +5,12 @@ import {
   Col,
 } from 'react-bootstrap';
 
-import { SEARCH, GET_INDEXES, SEARCH_FILTERS } from "../constants/actions";
+import {
+  SEARCH,
+  GET_INDEXES,
+  SEARCH_FILTERS,
+  SEARCH_HEADER_TOGGLE
+} from "../constants/actions";
 import {
   selectIndexCounts,
   selectIndexError,
@@ -24,17 +29,11 @@ const hasIndexes = ({tags, people}) => {
 }
 
 export class SearchHeader extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      filterOpen: false,
-    };
-  }
 
   render() {
     return (<Row>
         <Col xs={12} className="filter-tools">
-          {!this.state.filterOpen &&
+          {this.props.filterOpen &&
           <SearchHeaderOpen
             currentFilters={this.props.currentFilters}
             toggleFilter={this.toggleFilter}
@@ -44,7 +43,7 @@ export class SearchHeader extends Component {
             tags={this.props.tags}
             people={this.props.people}
           />}
-          {this.state.filterOpen &&
+          {!this.props.filterOpen &&
           <SearchHeaderClosed
             currentFilters={this.props.currentFilters}
             currentFilterLabels={this.props.currentFilterLabels}
@@ -56,13 +55,15 @@ export class SearchHeader extends Component {
     );
   }
 
+  shouldGetIndexData(){
+    return !this.props.filterOpen && !this.props.indexesLoading && !hasIndexes(this.props)
+  }
+
   toggleFilter = () => {
-    if(!this.state.filterOpen && !this.props.indexesLoading && !hasIndexes(this.props)){
+    if(this.shouldGetIndexData()){
       this.props.getIndexes();
     }
-    this.setState({
-      filterOpen: !this.state.filterOpen,
-    });
+    this.props.onSearchHeaderToggle(!this.props.filterOpen)
   }
 }
 
@@ -108,7 +109,8 @@ const mapStateToProps = state => {
     currentFilterLabels: getFiltersByGroupAndKey(
       currentFilters.criteria,
       people
-    )
+    ),
+    filterOpen: state.search.searchHeaderOpen
   };
 };
 
@@ -127,6 +129,12 @@ const mapDispatchToProps = dispatch => {
     getIndexes() {
       dispatch({
         type: GET_INDEXES
+      });
+    },
+    onSearchHeaderToggle(payload){
+      dispatch({
+        type: SEARCH_HEADER_TOGGLE,
+        payload
       });
     }
   };
