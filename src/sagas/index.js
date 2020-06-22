@@ -2,14 +2,14 @@ import { all, fork, put, select, takeLatest } from 'redux-saga/effects';
 import { navigate } from 'redux-saga-first-router';
 import {
   INIT,
-  GET_CONFIG,
+  SET_UP_AUTH,
   LOG_IN_SUCCESS,
   GET_INDEXES,
   GET_PEOPLE,
   CONFIGURE_AWS,
   CONFIGURE_AWS_SUCCESS
 } from '../constants/actions';
-import listenForGetConfig from './getConfig';
+import listenForSetupAuth from './setupAuth';
 import listenForSearch from './search';
 import listenForUpload from './upload';
 import listenForGetFoto from './get';
@@ -34,7 +34,7 @@ import selectRoute from '../selectors/route';
 export default function* root() {
   yield all([
     fork(listenForCachedLoad),
-    fork(listenForGetConfig),
+    fork(listenForSetupAuth),
     fork(listenForLogIn),
     fork(listenForLoginSuccess),
     fork(listenForConfigureAWSSuccess),
@@ -43,7 +43,7 @@ export default function* root() {
     fork(listenForConfigureAWS)
   ]);
   yield put({ type: INIT });
-  yield put({ type: GET_CONFIG });
+  yield put({ type: SET_UP_AUTH });
 }
 
 export function* listenForLoginSuccess(){

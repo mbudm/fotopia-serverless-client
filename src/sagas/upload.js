@@ -3,8 +3,6 @@ import { all, call, put, takeLatest, select } from 'redux-saga/effects';
 import { navigate } from 'redux-saga-first-router';
 import { UPLOAD, UPLOADED_IMAGES, SEARCH } from '../constants/actions';
 import { HOME } from '../constants/routes';
-import appConfig from '../appConfig';
-import useAuth from '../util/useAuth';
 import * as api from './api';
 import selectFilters from '../selectors/filters';
 
@@ -13,9 +11,7 @@ export default function* listenForUpload() {
 }
 
 function* upload(action) {
-
   const info = yield select(getUserInfo);
-
   const uploadedImages = yield all(action.payload.map(image => call( api.upload, image, info.username )));
   yield put({ type: UPLOADED_IMAGES,  payload: uploadedImages});
   const filters = yield select(selectFilters);
@@ -24,11 +20,8 @@ function* upload(action) {
 }
 
 export function getUserInfo(state){
-  return useAuth() ? {
+  return {
     username: state.user.username,
     id: state.creds.params.IdentityId
-  } : {
-    username: appConfig.username,
-    id: appConfig.username //something in place of cognito user id
-  };
+  }
 }

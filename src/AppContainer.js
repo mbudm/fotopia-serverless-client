@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import App from './App';
 import Login from './components/Login';
 import ChangePassword from './components/ChangePassword';
-import useAuth from './util/useAuth'
+import selectAuth from './selectors/auth'
 import signedInStatus from './selectors/signedInStatus';
 import {
   NEW_PASSWORD_REQUIRED,
@@ -19,7 +19,7 @@ const componentMap = {
 
 class AppContainer extends Component {
   render() {
-    return this.props.config && this.props.config.received ?
+    return this.props.auth && this.props.auth.setup ?
       this.renderApp() :
       this.renderLoader() ;
   }
@@ -31,13 +31,13 @@ class AppContainer extends Component {
   }
 
   renderApp() {
-    return useAuth()? componentMap[this.props.signedIn] : (<App/>);
+    return componentMap[this.props.signedIn];
   }
 }
 
 export default connect(state => {
   return {
-    config: state.config,
+    auth: selectAuth(state),
     signedIn: signedInStatus(state)
   };
 })(AppContainer);

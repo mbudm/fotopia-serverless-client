@@ -8,8 +8,6 @@ import {
   SEARCH
 } from '../constants/actions';
 import { HOME } from '../constants/routes';
-import appConfig from '../appConfig';
-import useAuth from '../util/useAuth';
 import * as api from './api';
 import { getUserInfo } from './upload';
 import { FOTO_PATH } from '../constants/api';
@@ -21,16 +19,7 @@ export default function* listenForDeleteFoto() {
 
 function* deleteFoto(action) {
 
-  let info;
-  if(useAuth()){
-    info = yield select(getUserInfo);
-  }else{
-    info = {
-      username: appConfig.username,
-      id: appConfig.username //something in place of cognito user id
-    }
-  }
-
+  const info = yield select(getUserInfo);
   const fotoPath = FOTO_PATH(info.username, action.payload);
   const deletedImageResponse = yield call( api.del, fotoPath );
   if(deletedImageResponse){

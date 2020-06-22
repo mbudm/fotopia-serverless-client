@@ -18,8 +18,6 @@ import {
   PERSON_PATH,
   PERSON_MERGE_PATH
 } from '../constants/api';
-import useAuth from '../util/useAuth';
-import appConfig from '../appConfig';
 
 export function* listenForGetPeople() {
   yield takeLatest(GET_PEOPLE, getPeople);
@@ -54,24 +52,10 @@ export function getImageSource(result){
 }
 
 function fetchPeople(){
-  if(useAuth()){
-    return api.get(PEOPLE_PATH)
-      .then(results => {
-        return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
-      });
-  }else{
-    return api.get(PEOPLE_PATH)
-      .then((results) => {
-        console.log(results);
-        return Array.isArray(results) ? results.map((result) => {
-          const thumbnail_location = `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.thumbnail}`;
-          return {
-            ...result,
-            thumbnail_location,
-          }
-        }): results;
+  return api.get(PEOPLE_PATH)
+    .then(results => {
+      return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
     });
-  }
 }
 
 
@@ -85,28 +69,12 @@ function* updatePerson(action) {
 }
 
 function putPerson(payload){
-  if(useAuth()){
-    return api.put(PERSON_PATH(payload.id), {
-      body: payload,
-    })
-      .then(results => {
-        return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
-      });
-  }else{
-    return api.put(PERSON_PATH(payload.id), {
-      body: payload,
-    })
-      .then((results) => {
-        console.log(results);
-        return Array.isArray(results) ? results.map((result) => {
-          const thumbnail_location = `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.thumbnail}`;
-          return {
-            ...result,
-            thumbnail_location,
-          }
-        }): results;
+  return api.put(PERSON_PATH(payload.id), {
+    body: payload,
+  })
+    .then(results => {
+      return Array.isArray(results) ? Promise.all(results.map(getImageSource)) : results ;
     });
-  }
 }
 
 function* mergePeople(action){

@@ -8,8 +8,10 @@ before_script:
 script:
   - yarn lint
   - yarn test-once
+  - yarn getConfig -s dev # grab the getConfig used in fotopia-serverless test to get env vars for cognito stuff
   - REACT_APP_FOTOPIA_API=$FOTOPIA_API_DEV yarn build
   - npm install -g serverless
   - sls deploy -s dev
+  - yarn getConfig -s prod # is there a hook in the react build script we can use?
   - REACT_APP_FOTOPIA_API=$FOTOPIA_API_PROD yarn build
   - sls deploy -s prod

@@ -11,8 +11,6 @@ import {
   MAX_SEARCH_DURATION_MS
 } from '../constants/search';
 import { QUERY } from '../constants/api';
-import useAuth from '../util/useAuth';
-import appConfig from '../appConfig';
 import selectFilters from '../selectors/filters';
 
 export default function* listenForSearch() {
@@ -83,23 +81,7 @@ function fetchFotos(payload){
     to,
   };
 
-  if(useAuth()){
-    return api.post(QUERY, { body: query })
-      .then(addLocations);
-  }else{
-    return api.post(QUERY, { body: query })
-    .then((results) => {
-      console.log(results);
-      return Array.isArray(results) ? results.map((result) => {
-        const img_location = `${appConfig.s3Url}/${appConfig.s3Bucket}/${result.img_key}`
-        const img_thumb_location = getThumbLocation(img_location, result.img_key, result.img_thumb_key)
-        return {
-          ...result,
-          img_location,
-          img_thumb_location,
-        }
-      }): results;
-    });
-  }
+  return api.post(QUERY, { body: query })
+    .then(addLocations);
 }
 
