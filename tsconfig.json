@@ -14,18 +14,7 @@
     "outDir": ".build",
     "moduleResolution": "node",
     "rootDir": "./",
-    "downlevelIteration": true,
-    "allowJs": true,
-    "skipLibCheck": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve"
+    "downlevelIteration": true
   },
   "include": [
     "scripts/**/*.ts"
