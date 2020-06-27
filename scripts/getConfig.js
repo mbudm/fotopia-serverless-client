@@ -1,15 +1,15 @@
-import { config } from "dotenv";
+const config = require("dotenv").config;
 
-import * as fs from 'fs';
-import * as colors from 'colors/safe';
-import { CloudFormation } from "aws-sdk";
-import { argv } from "yargs";
-import * as envfile from 'envfile';
+const fs = require('fs');
+const colors = require('colors/safe');
+const CloudFormation = require("aws-sdk/clients/cloudformation");
+const argv = require("yargs");
+const envfile = require('envfile');
 
 config();
 
-const region = argv['region'] as string || process.env.FOTOPIA_AWS_REGION;
-const stackname = argv['stackname'] as string || process.env.FOTOPIA_STACK_NAME;
+const region = argv['region'] || process.env.FOTOPIA_AWS_REGION;
+const stackname = argv['stackname'] || process.env.FOTOPIA_STACK_NAME;
 
 function getCloudFormationConfig() {
   const cf = new CloudFormation({region});
@@ -17,9 +17,9 @@ function getCloudFormationConfig() {
     StackName: stackname,
   };
   return cf.describeStacks(params).promise()
-  .then((response: CloudFormation.DescribeStacksOutput) => {
+  .then((response) => {
     const outputsList = response.Stacks && response.Stacks[0].Outputs || [];
-    return outputsList.reduce((accum: any, output: CloudFormation.Output) => {
+    return outputsList.reduce((accum, output) => {
       return output.OutputKey ?
         {
           ...accum,
@@ -34,7 +34,7 @@ function getCloudFormationConfig() {
   });
 }
 
-function updateEnvWithCfConfig(cfConfig?:any) {
+function updateEnvWithCfConfig(cfConfig) {
   if(cfConfig && cfConfig.IdentityPoolId && cfConfig.Region){
     const updatedEnv = envfile.stringify({
       ...process.env,

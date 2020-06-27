@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.10.3",
-    "@types/dotenv": "^8.2.0",
-    "@types/node": "^14.0.13",
     "aws-amplify": "^1.1.10",
     "aws-sdk": "^2.274.1",
     "babel-core": "^6.26.3",
@@ -48,7 +46,7 @@
     "test-once": "CI=true npm test",
     "lint": "eslint ./src",
     "eject": "react-scripts eject",
-    "getConfig": "ts-node ./scripts/getConfig.ts"
+    "getConfig": "node ./scripts/getConfig.js"
   },
   "pre-commit": [
     "lint",
