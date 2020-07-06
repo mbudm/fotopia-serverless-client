@@ -38,14 +38,16 @@ function updateEnvWithCfConfig(cfConfig) {
   if(cfConfig && cfConfig.IdentityPoolId && cfConfig.Region){
     const updatedEnv = envfile.stringify({
       ...process.env,
-      REACT_CONFIG_IDENTITY_POOL_ID: cfConfig.IdentityPoolId,
-      REACT_CONFIG_USER_POOL_ID: cfConfig.UserPoolId,
-      REACT_CONFIG_USER_POOL_CLIENT_ID: cfConfig.UserPoolClientId,
-      REACT_CONFIG_BUCKET: cfConfig.Bucket,
-      REACT_CONFIG_AWS_REGION: cfConfig.Region
+      REACT_APP_FOTOPIA_API: cfConfig.ServiceEndpoint +"/",
+      REACT_APP_CONFIG_IDENTITY_POOL_ID: cfConfig.IdentityPoolId,
+      REACT_APP_CONFIG_USER_POOL_ID: cfConfig.UserPoolId,
+      REACT_APP_CONFIG_USER_POOL_CLIENT_ID: cfConfig.UserPoolClientId,
+      REACT_APP_CONFIG_BUCKET: cfConfig.Bucket,
+      REACT_APP_CONFIG_BUCKET_GENERATED: cfConfig.BucketGenerated,
+      REACT_APP_CONFIG_AWS_REGION: cfConfig.Region
     })
     return new Promise((resolve, reject) => {
-      fs.writeFile('../.env', updatedEnv, (err) => {
+      fs.writeFile('.env', updatedEnv, (err) => {
         if(err){
           reject(err);
         }

@@ -6,6 +6,7 @@ const config = {
   UserPoolClientId: process.env.REACT_APP_CONFIG_USER_POOL_CLIENT_ID,
   Region: process.env.REACT_APP_CONFIG_AWS_REGION,
   Bucket: process.env.REACT_APP_CONFIG_BUCKET,
+  BucketGenerated: process.env.REACT_APP_CONFIG_BUCKET_GENERATED,
 };
 
 if(process.env.NODE_ENV !== 'production'){

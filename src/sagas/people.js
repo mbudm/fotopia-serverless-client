@@ -2,6 +2,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import Storage from '@aws-amplify/storage';
 import * as api from './api';
+import appConfig from '../appConfig';
+import { configureStorage } from "./search";
 import {
   GET_PEOPLE,
   GET_PEOPLE_SUCCESS,
@@ -42,13 +44,19 @@ function* getPeople(action) {
 
 
 export function getImageSource(result){
+  // switch to thumbs bucket
+  configureStorage(appConfig.BucketGenerated);
   return Storage.get(result.thumbnail, {
     level: 'protected',
     identityId: result.userIdentityId
-  }).then(location => ({
-    ...result,
-    thumbnail_location: location,
-  }));
+  }).then(location => {
+    // reset Storage to img bucket
+    configureStorage(appConfig.Bucket);
+    return {
+      ...result,
+      thumbnail_location: location,
+    }
+  });
 }
 
 function fetchPeople(){

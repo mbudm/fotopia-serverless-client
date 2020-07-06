@@ -2,6 +2,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import Storage from '@aws-amplify/storage';
 import * as api from './api';
+import appConfig from '../appConfig';
 import {
   SEARCH,
   SEARCH_RESULTS,
@@ -36,25 +37,45 @@ function* queryFotos(action) {
 
 }
 
+export function configureStorage(bucket) {
+  Storage.configure({
+    AWSS3: {
+      bucket,
+    }
+  });
+}
+
 export function getThumbLocation(img_location, img_key, img_thumb_key){
  return img_location.replace(img_key, img_thumb_key);
 }
 
 export function getImageSource(result){
-  return Promise.all([
-    result.img_key,
-    result.img_thumb_key
-  ].map((key) => Storage.get(key, {
-    level: 'protected',
-    identityId: result.userIdentityId
-  }))).then((locations) => {
-    console.log("locations", locations);
-    return {
-      ...result,
-      img_location: locations[0],
-      img_thumb_location: locations[1],
-    }
-  });
+  let img_location;
+  let img_thumb_location;
+
+  return Storage.get(result.img_key, {
+      level: 'protected',
+      identityId: result.userIdentityId
+    })
+    .then((location) => {
+      img_location = location;
+      // switch to thumbs bucket
+      configureStorage(appConfig.BucketGenerated);
+      return Storage.get(result.img_thumb_key, {
+        level: 'protected',
+        identityId: result.userIdentityId
+      });
+    })
+    .then((location) => {
+      img_thumb_location = location
+      // reset Storage to img bucket
+      configureStorage(appConfig.Bucket);
+      return {
+        ...result,
+        img_location,
+        img_thumb_location,
+      }
+    });
 }
 
 function addLocations(results) {
