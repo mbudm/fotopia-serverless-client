@@ -96,6 +96,6 @@ function* mergePeople(action){
 
 function peopleMerger(payload){
   return api.post(PERSON_MERGE_PATH, {
-    body: payload,
+    body: { people: payload },
   });
 }

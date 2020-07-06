@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Table, Button, FormGroup, FormControl, Alert } from "react-bootstrap";
+import { Grid, Row, Col, Button, FormGroup, FormControl, Alert } from "react-bootstrap";
 import { UPLOAD } from '../constants/actions';
 
 import './upload.css';
@@ -56,7 +56,6 @@ class Upload extends Component {
                 data-filename={image.file.name}
                 className="img-thumbnail img-responsive"
                 onLoad={this.handleImageLoad}/>
-              {this.renderDetails(image)}
             </Col>
           ))}
         </Row>
@@ -72,37 +71,6 @@ class Upload extends Component {
         </FormGroup>
       </form>
     </Grid>);
-  }
-
-  renderDetails(image){
-    return (<Table striped>
-      <tbody>
-        <tr>
-          <th>Birthtime</th>
-          <td>{image.file.lastModified}</td>
-        </tr>
-        <tr>
-          <th>File size</th>
-          <td>{image.file.size}</td>
-        </tr>
-        <tr>
-          <th>Name</th>
-          <td>{image.file.name}</td>
-        </tr>
-        <tr>
-          <th>Type</th>
-          <td>{image.file.type}</td>
-        </tr>
-        <tr>
-          <th>Width</th>
-          <td>{image.width}</td>
-        </tr>
-        <tr>
-          <th>Height</th>
-          <td>{image.height}</td>
-        </tr>
-      </tbody>
-    </Table>)
   }
 
   handleImageLoad = (e) => {

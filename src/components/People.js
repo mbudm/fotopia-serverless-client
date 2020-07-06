@@ -117,7 +117,6 @@ export class People extends Component {
               />
               <span className="search-tile-count">
               ({result.faces.length})
-              <br />{this.getImageFilename(result.img_key)}
               </span>
             </FormGroup>
           </figure>
