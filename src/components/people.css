@@ -10,19 +10,29 @@
 }
 .search-tile-cb{
   position:absolute;
-  top:5px;
+  top:0;
   left:5px;
+  width:auto;
 }
 .search-tile-count{
   position:absolute;
   top:5px;
   right:5px;
+  color:#fff;
+  background:rgba(0,0,0,0.5);
+  border-radius:1em;
+  width:2em;
+  display:block;
+  text-align: center;
 }
 .search-tile-text{
   position:absolute;
-  bottom:5%;
+  bottom:20%;
   left:5%;
   width:90%;
+  background: rgba(255,255,255, 0.3);
+  border:none;
+  color:#000;
 }
 .people-grid .col-xs-4:nth-child(2n+1){
   clear:left;

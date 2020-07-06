@@ -98,7 +98,7 @@ export class People extends Component {
               onClick={onSearchPerson}
               data-id={result.id}
             />
-            <FormGroup bsSize="large">
+            <FormGroup bsSize="small">
               <FormControl
                 type="checkbox"
                 value={this.state.peopleSelected[result.id]}
@@ -116,7 +116,7 @@ export class People extends Component {
                 className="search-tile-text"
               />
               <span className="search-tile-count">
-              ({result.faces.length})
+              {result.faces.length}
               </span>
             </FormGroup>
           </figure>
