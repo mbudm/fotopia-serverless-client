@@ -59,7 +59,7 @@ export class SearchHeaderClosed extends Component {
     this.setState({
       criteria: filtersUpdate
     });
-    this.props.onSearch(filtersUpdate);
+    this.props.onSearch({criteria: filtersUpdate});
   };
 }
 

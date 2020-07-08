@@ -189,7 +189,9 @@ const mapDispatchToProps = dispatch => {
     onSearchPerson(e){
       e.preventDefault();
       const payload = {
-        people: [ e.target.dataset.id ]
+        criteria: {
+          people: [ e.target.dataset.id ]
+        }
       };
       dispatch({
         type: SEARCH_FILTERS,

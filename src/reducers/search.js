@@ -31,11 +31,12 @@ const ACTION_HANDLERS = {
     {
       ...state,
       filters: {
+        ...state.filters,
+        ...action.payload,
         criteria: {
-          tags: [],
-          people: [],
+          tags: action.payload.criteria.tags || [],
+          people: action.payload.criteria.people || [],
         },
-        ...action.payload
       }
     }
   ),
