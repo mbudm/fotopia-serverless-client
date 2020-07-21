@@ -8,10 +8,10 @@ before_script:
 script:
   - yarn lint
   - yarn test-once
-  - yarn getConfig -s dev
-  - REACT_APP_FOTOPIA_API=$FOTOPIA_API_DEV yarn build
+  - FOTOPIA_STACK_NAME=$FOTOPIA_STACK_NAME_DEV yarn getConfig
+  - yarn build
   - npm install -g serverless
   - sls deploy -s dev
-  - yarn getConfig -s prod
-  - REACT_APP_FOTOPIA_API=$FOTOPIA_API_PROD yarn build
+  - FOTOPIA_STACK_NAME=$FOTOPIA_STACK_NAME_PROD yarn getConfig
+  - yarn build
   - sls deploy -s prod

@@ -9,7 +9,8 @@ import {
   SEARCH_FAILURE
 } from '../constants/actions';
 import {
-  MAX_SEARCH_DURATION_MS
+  MAX_SEARCH_DURATION_MS,
+  CLIENT_ID
 } from '../constants/search';
 import { QUERY } from '../constants/api';
 import selectFilters from '../selectors/filters';
@@ -97,6 +98,8 @@ function fetchFotos(payload){
   const to = payload.to || Date.now();
   const from = payload.from || (to - MAX_SEARCH_DURATION_MS);
   const query = {
+    breakDateRestriction: true,
+    clientId: CLIENT_ID,
     criteria,
     from,
     to,
